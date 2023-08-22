@@ -14,13 +14,21 @@ const Home: NextPage = () => {
     return () => clearTimeout(timer);
   }, []);
   return (
-    <div className="relative flex h-screen overflow-hidden pt-24 ">
-      <ToggleColorMode />
-      <GrowingCircleDiv />
+    <div className="relative flex h-screen overflow-hidden bg-dark-mode pt-24 flex-col">
+      {/* <ToggleColorMode />
+      <GrowingCircleDiv /> */}
       {/* <div className="absolute left-[371px] bottom-[200px] z-20 h-10 w-10 rounded-full bg-light-mode  mix-blend-exclusion " /> */}
-      <div className="z-[5] flex h-full w-full place-content-center items-center">
+      {/* <div className="z-[5] flex h-full w-full place-content-center items-center">
         <Loader />
         <Parallax src={"/render.png"}/>
+      </div> */}
+      <div className=" flex h-screen place-content-center items-center">
+        <h1 className="font-rubik text-9xl font-bold text-white">
+          Work in Progress
+        </h1>
+      </div>
+      <div className=" flex place-content-center">
+        <h1 className=" font-wave text-7xl text-white"> Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress wip</h1>
       </div>
     </div>
   );

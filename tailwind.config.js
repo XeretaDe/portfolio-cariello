@@ -10,6 +10,7 @@ module.exports = {
       fontFamily: {
         inter: "Inter, sans-serif",
         rubik: ["var(--font-rubik)"],
+        wave: "Wavefont, cursive"
       },
       colors: {
         "home-color": "#6D6875",
