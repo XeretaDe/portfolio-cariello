@@ -70,6 +70,9 @@ function Animation() {
   }));
 
 
+  const te = "t"
+ 
+
   const [rodrigo] = useSpring(() => ({
     from: { width: "100%" },
     to: { width: "0%" },

@@ -7,6 +7,8 @@ import Parallax from "../components/ParallaxShowcase";
 
 const Home: NextPage = () => {
   const [loading, setLoading] = useState(true);
+  const Arr = new Array(42)
+  const re = [0,0,0,0]
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
@@ -30,6 +32,7 @@ const Home: NextPage = () => {
       <div className=" flex place-content-center w-full ">
         <h1 className=" font-wave text-[3.77vw] leading-[4vw] text-white"> Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress wip</h1>
       </div> */}
+
     </div>
     </div>
   );
