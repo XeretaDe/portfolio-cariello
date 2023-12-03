@@ -10,18 +10,22 @@ import { ObjectProps } from "../types/MainScene";
 //     get<K extends string>(k: K): K extends keyof T ? T[K] : undefined;
 //   }
 
+
+
+
+
 type secondT = {
   Position?: Vector3;
   Rotation?: Vector3;
 };
+
+
 
 export default function useCamera(object: ObjectProps, clicked: boolean) {
   const lerp_constant = 0.05;
   const vectorLookAt = useState(() => new Vector3())[0];
   const initialPosition = new Vector3(-10, 18.5, 11.72);
 
-  //   const MyMap = Map as new () => MyMap;
-  //   const init = new MyMap()
 
   // configurações únicas para cada objeto interagível
   const Settings = useRef(
@@ -49,7 +53,8 @@ export default function useCamera(object: ObjectProps, clicked: boolean) {
       [
         "Teclado",
         {
-          Rotation: new Vector3(0, -3, 0),
+          Position: new Vector3(0, 3, 3),
+          Rotation: new Vector3(0, 0, -3),
         },
       ],
       [

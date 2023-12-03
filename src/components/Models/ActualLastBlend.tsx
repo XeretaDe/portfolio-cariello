@@ -40,43 +40,34 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
   const { actions } = useAnimations(animations, group);
   // const camera = useThree((state) => state.camera);
 
-  //useCamera(object, isClicked);
+  useEffect(() => {
+    document.addEventListener("contextmenu", (event) => {
+      event.preventDefault();
+    });
+  }, []);
 
-  function LEDStrip() {
-    const meshRef = useRef<THREE.InstancedMesh>(null);
+  useCamera(object, isClicked);
 
-    // Set initial positions
-    useEffect(() => {
-      const tempMatrix = new Matrix4();
 
-      if (meshRef.current) {
-        for (let i = 0; i < 20; i++) {
-          tempMatrix.makeTranslation(0,0, i * 1.1); // adjust the multiplier for distance
-          meshRef.current.setMatrixAt(i, tempMatrix);
-        }
-
-        meshRef.current.instanceMatrix.needsUpdate = true;
-      }
-    }, []);
-
-    return (
-      <instancedMesh
-        ref={meshRef}
-        args={[nodes.Plane035.geometry, materials["LED Stripe"], 20]}
-        position={[-23.422, 19.103, 23.274]}
-      >
-        <primitive object={nodes.Plane035} />
-      </instancedMesh>
-    );
-  }
-
-  function BoxSafeGuard({ pos, color }: { pos: Vector3; color?: string }) {
+  function BoxSafeGuard({
+    pos,
+    color,
+    opacity,
+    size,
+    name,
+  }: {
+    pos: Vector3;
+    color?: string;
+    opacity: number;
+    size: Vector3;
+    name: string;
+  }) {
     return (
       <>
         <Box
           name="Box"
           position={pos}
-          scale={[3, 3, 3]}
+          scale={size}
           onPointerEnter={() => setHovering(true)}
           onPointerLeave={() => setHovering(false)}
           onClick={(e) => {
@@ -87,34 +78,45 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
             );
             const { x, y, z } = e.object.getWorldPosition(new Vector3());
             setObject({
-              name: "Vitrola",
+              name: name,
               position: new THREE.Vector3(x, y, z),
             });
             setClicked(!isClicked);
           }}
         >
-          <meshPhongMaterial color="#ff0000" opacity={0} transparent />
+          <meshPhongMaterial color="#ff0000" opacity={opacity} transparent />
         </Box>
       </>
     );
   }
 
   const t = new Vector3(-25.208, 10.718, 25.0);
+  const t1 = new Vector3(-17.774, 9.5, 9.432);
 
   useEffect(() => {
     document.body.style.cursor = isHovering ? "pointer" : "auto";
   }, [isHovering]);
   return (
     <group ref={group} {...props} dispose={null}>
-      <BoxSafeGuard pos={t} />
-     <LEDStrip />
-      <group name="Scene">
+      <BoxSafeGuard
+        pos={t}
+        opacity={0}
+        size={[3, 3, 3] as unknown as Vector3}
+        name="Vitrola"
+      />
+      <BoxSafeGuard
+        pos={t1}
+        opacity={0}
+        size={[7, 1, 3] as unknown as Vector3}
+        name="Teclado"
+      />
+      <group name="Scene" onPointerEnter={(e) => console.log(e.object.name)}>
         <group name="Mesa" position={[-22.853, 7.13, 17.035]}>
           <mesh name="Cube014" geometry={nodes.Cube014.geometry}>
             <meshLambertMaterial attach="material" color="#fdf5e6" />
           </mesh>
         </group>
-        {/* <mesh
+        <mesh
           name="PecasMetal"
           geometry={nodes.PecasMetal.geometry}
           material={materials.PaletteMaterial002}
@@ -219,6 +221,7 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
           scale={[0.415, 0.508, 0.552]}
         />
         <mesh
+          visible={false}
           name="SSD"
           geometry={nodes.SSD.geometry}
           material={materials.aiStandardSurface9SG}
@@ -227,6 +230,7 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
           scale={[0.415, 0.508, 0.552]}
         />
         <mesh
+          visible={false}
           name="Entradas"
           geometry={nodes.Entradas.geometry}
           material={materials.PaletteMaterial002}
@@ -235,6 +239,7 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
           scale={[0.415, 0.508, 0.552]}
         />
         <mesh
+          visible={false}
           name="EntradasUsb"
           geometry={nodes.EntradasUsb.geometry}
           material={materials.PaletteMaterial002}
@@ -243,6 +248,7 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
           scale={[0.415, 0.508, 0.552]}
         />
         <mesh
+          visible={false}
           name="EntradasPc"
           geometry={nodes.EntradasPc.geometry}
           material={materials.PaletteMaterial002}
@@ -251,6 +257,7 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
           scale={[0.415, 0.508, 0.552]}
         />
         <mesh
+          visible={false}
           name="EntradasPC2"
           geometry={nodes.EntradasPC2.geometry}
           material={materials.PaletteMaterial002}
@@ -297,7 +304,7 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
           position={[-25.144, 9.748, 9.324]}
           rotation={[-Math.PI, -0.635, Math.PI / 2]}
           scale={[0.415, 0.508, 0.552]}
-        /> */}
+        />
         <group
           visible={false}
           name="LED_Streifen020"
@@ -1015,902 +1022,905 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
           material={materials.BedMaterial}
           position={[-17.996, 6.461, -14.08]}
         />
-        <mesh
-          name="MoldeTeclado"
-          geometry={nodes.MoldeTeclado.geometry}
-          material={materials.PaletteMaterial007}
-          position={[-16.274, 9.157, 9.032]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={[0.019, 0.019, 0.034]}
-        />
-        <group
-          name="Pad7"
-          position={[-19.207, 9.294, 9.02]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={[0.019, 0.011, 0.019]}
-        >
+        <group name={"Teclado"}>
           <mesh
-            name="Mesh016"
-            geometry={nodes.Mesh016.geometry}
+            name="MoldeTeclado"
+            geometry={nodes.MoldeTeclado.geometry}
             material={materials.PaletteMaterial007}
+            position={[-16.274, 9.157, 9.032]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={[0.019, 0.019, 0.034]}
           />
+          <group
+            name="Pad7"
+            position={[-19.207, 9.294, 9.02]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={[0.019, 0.011, 0.019]}
+          >
+            <mesh
+              name="Mesh016"
+              geometry={nodes.Mesh016.geometry}
+              material={materials.PaletteMaterial007}
+            />
+            <mesh
+              name="Mesh016_1"
+              geometry={nodes.Mesh016_1.geometry}
+              material={materials.PaletteMaterial007}
+            />
+          </group>
+          <group
+            name="Pad8"
+            position={[-19.2, 9.294, 9.326]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={[0.019, 0.011, 0.019]}
+          >
+            <mesh
+              name="Mesh016"
+              geometry={nodes.Mesh016.geometry}
+              material={materials.PaletteMaterial007}
+            />
+            <mesh
+              name="Mesh016_1"
+              geometry={nodes.Mesh016_1.geometry}
+              material={materials.PaletteMaterial007}
+            />
+          </group>
+          <group
+            name="Pad5"
+            position={[-19.527, 9.294, 9.027]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={[0.019, 0.011, 0.019]}
+          >
+            <mesh
+              name="Mesh016"
+              geometry={nodes.Mesh016.geometry}
+              material={materials.PaletteMaterial007}
+            />
+            <mesh
+              name="Mesh016_1"
+              geometry={nodes.Mesh016_1.geometry}
+              material={materials.PaletteMaterial007}
+            />
+          </group>
+          <group
+            name="Pad6"
+            position={[-19.521, 9.294, 9.333]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={[0.019, 0.011, 0.019]}
+          >
+            <mesh
+              name="Mesh016"
+              geometry={nodes.Mesh016.geometry}
+              material={materials.PaletteMaterial007}
+            />
+            <mesh
+              name="Mesh016_1"
+              geometry={nodes.Mesh016_1.geometry}
+              material={materials.PaletteMaterial007}
+            />
+          </group>
+          <group
+            name="Pad3"
+            position={[-19.852, 9.292, 9.034]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={[0.019, 0.011, 0.019]}
+          >
+            <mesh
+              name="Mesh016"
+              geometry={nodes.Mesh016.geometry}
+              material={materials.PaletteMaterial007}
+            />
+            <mesh
+              name="Mesh016_1"
+              geometry={nodes.Mesh016_1.geometry}
+              material={materials.PaletteMaterial007}
+            />
+          </group>
+          <group
+            name="Pad4"
+            position={[-19.846, 9.294, 9.34]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={[0.019, 0.011, 0.019]}
+          >
+            <mesh
+              name="Mesh016"
+              geometry={nodes.Mesh016.geometry}
+              material={materials.PaletteMaterial007}
+            />
+            <mesh
+              name="Mesh016_1"
+              geometry={nodes.Mesh016_1.geometry}
+              material={materials.PaletteMaterial007}
+            />
+          </group>
+          <group
+            name="Pad1"
+            position={[-20.166, 9.294, 9.04]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={[0.019, 0.011, 0.019]}
+          >
+            <mesh
+              name="Mesh016"
+              geometry={nodes.Mesh016.geometry}
+              material={materials.PaletteMaterial007}
+            />
+            <mesh
+              name="Mesh016_1"
+              geometry={nodes.Mesh016_1.geometry}
+              material={materials.PaletteMaterial007}
+            />
+          </group>
+          <group
+            name="Pad2"
+            position={[-20.159, 9.292, 9.346]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={[0.019, 0.011, 0.019]}
+          >
+            <mesh
+              name="Mesh016"
+              geometry={nodes.Mesh016.geometry}
+              material={materials.PaletteMaterial007}
+            />
+            <mesh
+              name="Mesh016_1"
+              geometry={nodes.Mesh016_1.geometry}
+              material={materials.PaletteMaterial007}
+            />
+          </group>
+          <group
+            name="Pad10"
+            position={[-18.874, 9.292, 9.309]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={[0.019, 0.011, 0.019]}
+          >
+            <mesh
+              name="Mesh016"
+              geometry={nodes.Mesh016.geometry}
+              material={materials.PaletteMaterial007}
+            />
+            <mesh
+              name="Mesh016_1"
+              geometry={nodes.Mesh016_1.geometry}
+              material={materials.PaletteMaterial007}
+            />
+          </group>
+          <group
+            name="Pad9"
+            position={[-18.88, 9.294, 9.003]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={[0.019, 0.011, 0.019]}
+          >
+            <mesh
+              name="Mesh016"
+              geometry={nodes.Mesh016.geometry}
+              material={materials.PaletteMaterial007}
+            />
+            <mesh
+              name="Mesh016_1"
+              geometry={nodes.Mesh016_1.geometry}
+              material={materials.PaletteMaterial007}
+            />
+          </group>
+          <group
+            name="Pad12"
+            position={[-18.56, 9.294, 9.303]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={[0.019, 0.011, 0.019]}
+          >
+            <mesh
+              name="Mesh016"
+              geometry={nodes.Mesh016.geometry}
+              material={materials.PaletteMaterial007}
+            />
+            <mesh
+              name="Mesh016_1"
+              geometry={nodes.Mesh016_1.geometry}
+              material={materials.PaletteMaterial007}
+            />
+          </group>
+          <group
+            name="Pad11"
+            position={[-18.566, 9.292, 8.997]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={[0.019, 0.011, 0.019]}
+          >
+            <mesh
+              name="Mesh016"
+              geometry={nodes.Mesh016.geometry}
+              material={materials.PaletteMaterial007}
+            />
+            <mesh
+              name="Mesh016_1"
+              geometry={nodes.Mesh016_1.geometry}
+              material={materials.PaletteMaterial007}
+            />
+          </group>
+          <group
+            name="Pad14"
+            position={[-18.235, 9.294, 9.296]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={[0.019, 0.011, 0.019]}
+          >
+            <mesh
+              name="Mesh016"
+              geometry={nodes.Mesh016.geometry}
+              material={materials.PaletteMaterial007}
+            />
+            <mesh
+              name="Mesh016_1"
+              geometry={nodes.Mesh016_1.geometry}
+              material={materials.PaletteMaterial007}
+            />
+          </group>
+          <group
+            name="Pad13"
+            position={[-18.241, 9.294, 8.99]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={[0.019, 0.011, 0.019]}
+          >
+            <mesh
+              name="Mesh016"
+              geometry={nodes.Mesh016.geometry}
+              material={materials.PaletteMaterial007}
+            />
+            <mesh
+              name="Mesh016_1"
+              geometry={nodes.Mesh016_1.geometry}
+              material={materials.PaletteMaterial007}
+            />
+          </group>
+          <group
+            name="Pad16"
+            position={[-17.915, 9.294, 9.289]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={[0.019, 0.011, 0.019]}
+          >
+            <mesh
+              name="Mesh016"
+              geometry={nodes.Mesh016.geometry}
+              material={materials.PaletteMaterial007}
+            />
+            <mesh
+              name="Mesh016_1"
+              geometry={nodes.Mesh016_1.geometry}
+              material={materials.PaletteMaterial007}
+            />
+          </group>
+          <group
+            name="Pad15"
+            position={[-17.921, 9.294, 8.983]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={[0.019, 0.011, 0.019]}
+          >
+            <mesh
+              name="Mesh016"
+              geometry={nodes.Mesh016.geometry}
+              material={materials.PaletteMaterial007}
+            />
+            <mesh
+              name="Mesh016_1"
+              geometry={nodes.Mesh016_1.geometry}
+              material={materials.PaletteMaterial007}
+            />
+          </group>
+          <group
+            name="OrganButton"
+            position={[-20.601, 9.294, 9.218]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={[0.019, 0.011, 0.019]}
+          >
+            <mesh
+              name="Mesh017"
+              geometry={nodes.Mesh017.geometry}
+              material={materials.PaletteMaterial007}
+            />
+            <mesh
+              name="Mesh017_1"
+              geometry={nodes.Mesh017_1.geometry}
+              material={materials.PaletteMaterial007}
+            />
+          </group>
+          <group
+            name="PianoButton"
+            position={[-20.836, 9.294, 9.223]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={[0.019, 0.011, 0.019]}
+          >
+            <mesh
+              name="Mesh017"
+              geometry={nodes.Mesh017.geometry}
+              material={materials.PaletteMaterial007}
+            />
+            <mesh
+              name="Mesh017_1"
+              geometry={nodes.Mesh017_1.geometry}
+              material={materials.PaletteMaterial007}
+            />
+          </group>
+          <group
+            name="BassButton"
+            position={[-20.598, 9.294, 9.36]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={[0.019, 0.011, 0.019]}
+          >
+            <mesh
+              name="Mesh017"
+              geometry={nodes.Mesh017.geometry}
+              material={materials.PaletteMaterial007}
+            />
+            <mesh
+              name="Mesh017_1"
+              geometry={nodes.Mesh017_1.geometry}
+              material={materials.PaletteMaterial007}
+            />
+          </group>
+          <group
+            name="StringsButton"
+            position={[-20.833, 9.294, 9.365]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={[0.019, 0.011, 0.019]}
+          >
+            <mesh
+              name="Mesh017"
+              geometry={nodes.Mesh017.geometry}
+              material={materials.PaletteMaterial007}
+            />
+            <mesh
+              name="Mesh017_1"
+              geometry={nodes.Mesh017_1.geometry}
+              material={materials.PaletteMaterial007}
+            />
+          </group>
           <mesh
-            name="Mesh016_1"
-            geometry={nodes.Mesh016_1.geometry}
+            name="VolumeSlider"
+            geometry={nodes.VolumeSlider.geometry}
             material={materials.PaletteMaterial007}
+            position={[-20.714, 9.312, 8.968]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={0.019}
           />
-        </group>
-        <group
-          name="Pad8"
-          position={[-19.2, 9.294, 9.326]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={[0.019, 0.011, 0.019]}
-        >
+          <group
+            name="CutoffSlider"
+            position={[-17.093, 9.301, 9.159]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={0.019}
+          >
+            <mesh
+              name="Mesh021"
+              geometry={nodes.Mesh021.geometry}
+              material={materials.PaletteMaterial007}
+            />
+            <mesh
+              name="Mesh021_1"
+              geometry={nodes.Mesh021_1.geometry}
+              material={materials.PaletteMaterial008}
+            />
+          </group>
+          <group
+            name="ResonanceSlider"
+            position={[-16.813, 9.301, 9.153]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={0.019}
+          >
+            <mesh
+              name="Mesh021"
+              geometry={nodes.Mesh021.geometry}
+              material={materials.PaletteMaterial007}
+            />
+            <mesh
+              name="Mesh021_1"
+              geometry={nodes.Mesh021_1.geometry}
+              material={materials.PaletteMaterial008}
+            />
+          </group>
+          <group
+            name="ReverbSlider"
+            position={[-15.621, 9.301, 9.132]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={0.019}
+          >
+            <mesh
+              name="Mesh021"
+              geometry={nodes.Mesh021.geometry}
+              material={materials.PaletteMaterial007}
+            />
+            <mesh
+              name="Mesh021_1"
+              geometry={nodes.Mesh021_1.geometry}
+              material={materials.PaletteMaterial008}
+            />
+          </group>
+          <group
+            name="ReleaseSlider"
+            position={[-16.21, 9.301, 9.143]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={0.019}
+          >
+            <mesh
+              name="Mesh036"
+              geometry={nodes.Mesh036.geometry}
+              material={materials.PaletteMaterial007}
+            />
+            <mesh
+              name="Mesh036_1"
+              geometry={nodes.Mesh036_1.geometry}
+              material={materials.PaletteMaterial008}
+            />
+          </group>
+          <group
+            name="ChorusSlider"
+            position={[-15.912, 9.301, 9.138]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={0.019}
+          >
+            <mesh
+              name="Mesh036"
+              geometry={nodes.Mesh036.geometry}
+              material={materials.PaletteMaterial007}
+            />
+            <mesh
+              name="Mesh036_1"
+              geometry={nodes.Mesh036_1.geometry}
+              material={materials.PaletteMaterial008}
+            />
+          </group>
+          <group
+            name="AttackSlider"
+            position={[-16.523, 9.301, 9.147]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={0.019}
+          >
+            <mesh
+              name="Mesh036"
+              geometry={nodes.Mesh036.geometry}
+              material={materials.PaletteMaterial007}
+            />
+            <mesh
+              name="Mesh036_1"
+              geometry={nodes.Mesh036_1.geometry}
+              material={materials.PaletteMaterial008}
+            />
+          </group>
+          <group
+            name="CuttoffMarker"
+            position={[-17.092, 9.361, 9.147]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={[0.008, 0.009, 0.009]}
+          >
+            <mesh
+              name="Mesh022"
+              geometry={nodes.Mesh022.geometry}
+              material={materials.PaletteMaterial007}
+            />
+            <mesh
+              name="Mesh022_1"
+              geometry={nodes.Mesh022_1.geometry}
+              material={nodes.Mesh022_1.material}
+            />
+          </group>
+          <group
+            name="ReleaseMarker"
+            position={[-16.21, 9.361, 9.131]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={[0.008, 0.009, 0.009]}
+          >
+            <mesh
+              name="Mesh022"
+              geometry={nodes.Mesh022.geometry}
+              material={materials.PaletteMaterial007}
+            />
+            <mesh
+              name="Mesh022_1"
+              geometry={nodes.Mesh022_1.geometry}
+              material={nodes.Mesh022_1.material}
+            />
+          </group>
+          <group
+            name="ResonanceMarker"
+            position={[-16.813, 9.361, 9.141]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={[0.008, 0.009, 0.009]}
+          >
+            <mesh
+              name="Mesh022"
+              geometry={nodes.Mesh022.geometry}
+              material={materials.PaletteMaterial007}
+            />
+            <mesh
+              name="Mesh022_1"
+              geometry={nodes.Mesh022_1.geometry}
+              material={nodes.Mesh022_1.material}
+            />
+          </group>
+          <group
+            name="ChorusMarker"
+            position={[-15.911, 9.361, 9.125]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={[0.008, 0.009, 0.009]}
+          >
+            <mesh
+              name="Mesh022"
+              geometry={nodes.Mesh022.geometry}
+              material={materials.PaletteMaterial007}
+            />
+            <mesh
+              name="Mesh022_1"
+              geometry={nodes.Mesh022_1.geometry}
+              material={nodes.Mesh022_1.material}
+            />
+          </group>
+          <group
+            name="AttackMarker"
+            position={[-16.522, 9.361, 9.135]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={[0.008, 0.009, 0.009]}
+          >
+            <mesh
+              name="Mesh022"
+              geometry={nodes.Mesh022.geometry}
+              material={materials.PaletteMaterial007}
+            />
+            <mesh
+              name="Mesh022_1"
+              geometry={nodes.Mesh022_1.geometry}
+              material={nodes.Mesh022_1.material}
+            />
+          </group>
+          <group
+            name="ReverbMarker"
+            position={[-15.621, 9.361, 9.119]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={[0.008, 0.009, 0.009]}
+          >
+            <mesh
+              name="Mesh022"
+              geometry={nodes.Mesh022.geometry}
+              material={materials.PaletteMaterial007}
+            />
+            <mesh
+              name="Mesh022_1"
+              geometry={nodes.Mesh022_1.geometry}
+              material={nodes.Mesh022_1.material}
+            />
+          </group>
           <mesh
-            name="Mesh016"
-            geometry={nodes.Mesh016.geometry}
-            material={materials.PaletteMaterial007}
-          />
-          <mesh
-            name="Mesh016_1"
-            geometry={nodes.Mesh016_1.geometry}
-            material={materials.PaletteMaterial007}
-          />
-        </group>
-        <group
-          name="Pad5"
-          position={[-19.527, 9.294, 9.027]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={[0.019, 0.011, 0.019]}
-        >
-          <mesh
-            name="Mesh016"
-            geometry={nodes.Mesh016.geometry}
-            material={materials.PaletteMaterial007}
-          />
-          <mesh
-            name="Mesh016_1"
-            geometry={nodes.Mesh016_1.geometry}
-            material={materials.PaletteMaterial007}
-          />
-        </group>
-        <group
-          name="Pad6"
-          position={[-19.521, 9.294, 9.333]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={[0.019, 0.011, 0.019]}
-        >
-          <mesh
-            name="Mesh016"
-            geometry={nodes.Mesh016.geometry}
-            material={materials.PaletteMaterial007}
-          />
-          <mesh
-            name="Mesh016_1"
-            geometry={nodes.Mesh016_1.geometry}
-            material={materials.PaletteMaterial007}
-          />
-        </group>
-        <group
-          name="Pad3"
-          position={[-19.852, 9.292, 9.034]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={[0.019, 0.011, 0.019]}
-        >
-          <mesh
-            name="Mesh016"
-            geometry={nodes.Mesh016.geometry}
-            material={materials.PaletteMaterial007}
-          />
-          <mesh
-            name="Mesh016_1"
-            geometry={nodes.Mesh016_1.geometry}
-            material={materials.PaletteMaterial007}
-          />
-        </group>
-        <group
-          name="Pad4"
-          position={[-19.846, 9.294, 9.34]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={[0.019, 0.011, 0.019]}
-        >
-          <mesh
-            name="Mesh016"
-            geometry={nodes.Mesh016.geometry}
-            material={materials.PaletteMaterial007}
-          />
-          <mesh
-            name="Mesh016_1"
-            geometry={nodes.Mesh016_1.geometry}
-            material={materials.PaletteMaterial007}
-          />
-        </group>
-        <group
-          name="Pad1"
-          position={[-20.166, 9.294, 9.04]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={[0.019, 0.011, 0.019]}
-        >
-          <mesh
-            name="Mesh016"
-            geometry={nodes.Mesh016.geometry}
-            material={materials.PaletteMaterial007}
-          />
-          <mesh
-            name="Mesh016_1"
-            geometry={nodes.Mesh016_1.geometry}
-            material={materials.PaletteMaterial007}
-          />
-        </group>
-        <group
-          name="Pad2"
-          position={[-20.159, 9.292, 9.346]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={[0.019, 0.011, 0.019]}
-        >
-          <mesh
-            name="Mesh016"
-            geometry={nodes.Mesh016.geometry}
-            material={materials.PaletteMaterial007}
-          />
-          <mesh
-            name="Mesh016_1"
-            geometry={nodes.Mesh016_1.geometry}
-            material={materials.PaletteMaterial007}
-          />
-        </group>
-        <group
-          name="Pad10"
-          position={[-18.874, 9.292, 9.309]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={[0.019, 0.011, 0.019]}
-        >
-          <mesh
-            name="Mesh016"
-            geometry={nodes.Mesh016.geometry}
-            material={materials.PaletteMaterial007}
-          />
-          <mesh
-            name="Mesh016_1"
-            geometry={nodes.Mesh016_1.geometry}
-            material={materials.PaletteMaterial007}
-          />
-        </group>
-        <group
-          name="Pad9"
-          position={[-18.88, 9.294, 9.003]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={[0.019, 0.011, 0.019]}
-        >
-          <mesh
-            name="Mesh016"
-            geometry={nodes.Mesh016.geometry}
-            material={materials.PaletteMaterial007}
-          />
-          <mesh
-            name="Mesh016_1"
-            geometry={nodes.Mesh016_1.geometry}
-            material={materials.PaletteMaterial007}
-          />
-        </group>
-        <group
-          name="Pad12"
-          position={[-18.56, 9.294, 9.303]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={[0.019, 0.011, 0.019]}
-        >
-          <mesh
-            name="Mesh016"
-            geometry={nodes.Mesh016.geometry}
-            material={materials.PaletteMaterial007}
-          />
-          <mesh
-            name="Mesh016_1"
-            geometry={nodes.Mesh016_1.geometry}
-            material={materials.PaletteMaterial007}
-          />
-        </group>
-        <group
-          name="Pad11"
-          position={[-18.566, 9.292, 8.997]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={[0.019, 0.011, 0.019]}
-        >
-          <mesh
-            name="Mesh016"
-            geometry={nodes.Mesh016.geometry}
-            material={materials.PaletteMaterial007}
-          />
-          <mesh
-            name="Mesh016_1"
-            geometry={nodes.Mesh016_1.geometry}
-            material={materials.PaletteMaterial007}
-          />
-        </group>
-        <group
-          name="Pad14"
-          position={[-18.235, 9.294, 9.296]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={[0.019, 0.011, 0.019]}
-        >
-          <mesh
-            name="Mesh016"
-            geometry={nodes.Mesh016.geometry}
-            material={materials.PaletteMaterial007}
-          />
-          <mesh
-            name="Mesh016_1"
-            geometry={nodes.Mesh016_1.geometry}
-            material={materials.PaletteMaterial007}
-          />
-        </group>
-        <group
-          name="Pad13"
-          position={[-18.241, 9.294, 8.99]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={[0.019, 0.011, 0.019]}
-        >
-          <mesh
-            name="Mesh016"
-            geometry={nodes.Mesh016.geometry}
-            material={materials.PaletteMaterial007}
-          />
-          <mesh
-            name="Mesh016_1"
-            geometry={nodes.Mesh016_1.geometry}
-            material={materials.PaletteMaterial007}
-          />
-        </group>
-        <group
-          name="Pad16"
-          position={[-17.915, 9.294, 9.289]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={[0.019, 0.011, 0.019]}
-        >
-          <mesh
-            name="Mesh016"
-            geometry={nodes.Mesh016.geometry}
-            material={materials.PaletteMaterial007}
-          />
-          <mesh
-            name="Mesh016_1"
-            geometry={nodes.Mesh016_1.geometry}
-            material={materials.PaletteMaterial007}
-          />
-        </group>
-        <group
-          name="Pad15"
-          position={[-17.921, 9.294, 8.983]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={[0.019, 0.011, 0.019]}
-        >
-          <mesh
-            name="Mesh016"
-            geometry={nodes.Mesh016.geometry}
-            material={materials.PaletteMaterial007}
-          />
-          <mesh
-            name="Mesh016_1"
-            geometry={nodes.Mesh016_1.geometry}
-            material={materials.PaletteMaterial007}
-          />
-        </group>
-        <group
-          name="OrganButton"
-          position={[-20.601, 9.294, 9.218]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={[0.019, 0.011, 0.019]}
-        >
-          <mesh
-            name="Mesh017"
-            geometry={nodes.Mesh017.geometry}
-            material={materials.PaletteMaterial007}
-          />
-          <mesh
-            name="Mesh017_1"
-            geometry={nodes.Mesh017_1.geometry}
-            material={materials.PaletteMaterial007}
-          />
-        </group>
-        <group
-          name="PianoButton"
-          position={[-20.836, 9.294, 9.223]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={[0.019, 0.011, 0.019]}
-        >
-          <mesh
-            name="Mesh017"
-            geometry={nodes.Mesh017.geometry}
-            material={materials.PaletteMaterial007}
-          />
-          <mesh
-            name="Mesh017_1"
-            geometry={nodes.Mesh017_1.geometry}
-            material={materials.PaletteMaterial007}
-          />
-        </group>
-        <group
-          name="BassButton"
-          position={[-20.598, 9.294, 9.36]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={[0.019, 0.011, 0.019]}
-        >
-          <mesh
-            name="Mesh017"
-            geometry={nodes.Mesh017.geometry}
-            material={materials.PaletteMaterial007}
-          />
-          <mesh
-            name="Mesh017_1"
-            geometry={nodes.Mesh017_1.geometry}
-            material={materials.PaletteMaterial007}
-          />
-        </group>
-        <group
-          name="StringsButton"
-          position={[-20.833, 9.294, 9.365]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={[0.019, 0.011, 0.019]}
-        >
-          <mesh
-            name="Mesh017"
-            geometry={nodes.Mesh017.geometry}
-            material={materials.PaletteMaterial007}
-          />
-          <mesh
-            name="Mesh017_1"
-            geometry={nodes.Mesh017_1.geometry}
-            material={materials.PaletteMaterial007}
-          />
-        </group>
-        <mesh
-          name="VolumeSlider"
-          geometry={nodes.VolumeSlider.geometry}
-          material={materials.PaletteMaterial007}
-          position={[-20.714, 9.312, 8.968]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={0.019}
-        />
-        <group
-          name="CutoffSlider"
-          position={[-17.093, 9.301, 9.159]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={0.019}
-        >
-          <mesh
-            name="Mesh021"
-            geometry={nodes.Mesh021.geometry}
-            material={materials.PaletteMaterial007}
-          />
-          <mesh
-            name="Mesh021_1"
-            geometry={nodes.Mesh021_1.geometry}
+            name="C3"
+            geometry={nodes.C3.geometry}
             material={materials.PaletteMaterial008}
-          />
-        </group>
-        <group
-          name="ResonanceSlider"
-          position={[-16.813, 9.301, 9.153]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={0.019}
-        >
-          <mesh
-            name="Mesh021"
-            geometry={nodes.Mesh021.geometry}
-            material={materials.PaletteMaterial007}
+            position={[-17.281, 9.196, 10.156]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={0.019}
           />
           <mesh
-            name="Mesh021_1"
-            geometry={nodes.Mesh021_1.geometry}
+            name="B2"
+            geometry={nodes.B2.geometry}
             material={materials.PaletteMaterial008}
-          />
-        </group>
-        <group
-          name="ReverbSlider"
-          position={[-15.621, 9.301, 9.132]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={0.019}
-        >
-          <mesh
-            name="Mesh021"
-            geometry={nodes.Mesh021.geometry}
-            material={materials.PaletteMaterial007}
+            position={[-17.518, 9.196, 10.155]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={0.019}
           />
           <mesh
-            name="Mesh021_1"
-            geometry={nodes.Mesh021_1.geometry}
+            name="A2"
+            geometry={nodes.A2.geometry}
             material={materials.PaletteMaterial008}
-          />
-        </group>
-        <group
-          name="ReleaseSlider"
-          position={[-16.21, 9.301, 9.143]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={0.019}
-        >
-          <mesh
-            name="Mesh036"
-            geometry={nodes.Mesh036.geometry}
-            material={materials.PaletteMaterial007}
+            position={[-17.755, 9.196, 10.156]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={0.019}
           />
           <mesh
-            name="Mesh036_1"
-            geometry={nodes.Mesh036_1.geometry}
+            name="G2"
+            geometry={nodes.G2.geometry}
             material={materials.PaletteMaterial008}
-          />
-        </group>
-        <group
-          name="ChorusSlider"
-          position={[-15.912, 9.301, 9.138]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={0.019}
-        >
-          <mesh
-            name="Mesh036"
-            geometry={nodes.Mesh036.geometry}
-            material={materials.PaletteMaterial007}
+            position={[-17.998, 9.196, 10.159]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={0.019}
           />
           <mesh
-            name="Mesh036_1"
-            geometry={nodes.Mesh036_1.geometry}
+            name="F2"
+            geometry={nodes.F2.geometry}
             material={materials.PaletteMaterial008}
-          />
-        </group>
-        <group
-          name="AttackSlider"
-          position={[-16.523, 9.301, 9.147]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={0.019}
-        >
-          <mesh
-            name="Mesh036"
-            geometry={nodes.Mesh036.geometry}
-            material={materials.PaletteMaterial007}
+            position={[-18.237, 9.196, 10.166]}
+            rotation={[-3.14, 1.55, Math.PI]}
+            scale={0.019}
           />
           <mesh
-            name="Mesh036_1"
-            geometry={nodes.Mesh036_1.geometry}
+            name="E2"
+            geometry={nodes.E2.geometry}
             material={materials.PaletteMaterial008}
+            position={[-18.481, 9.196, 10.171]}
+            rotation={[-3.14, 1.55, Math.PI]}
+            scale={0.019}
+          />
+          <mesh
+            name="D2"
+            geometry={nodes.D2.geometry}
+            material={materials.PaletteMaterial008}
+            position={[-18.728, 9.196, 10.182]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={0.019}
+          />
+          <mesh
+            name="C2"
+            geometry={nodes.C2.geometry}
+            material={materials.PaletteMaterial008}
+            position={[-18.976, 9.196, 10.186]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={0.019}
+          />
+          <mesh
+            name="B1"
+            geometry={nodes.B1.geometry}
+            material={materials.PaletteMaterial008}
+            position={[-19.214, 9.196, 10.187]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={0.019}
+          />
+          <mesh
+            name="A1"
+            geometry={nodes.A1.geometry}
+            material={materials.PaletteMaterial008}
+            position={[-19.45, 9.196, 10.197]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={0.019}
+          />
+          <mesh
+            name="G1"
+            geometry={nodes.G1.geometry}
+            material={materials.PaletteMaterial008}
+            position={[-19.688, 9.196, 10.194]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={0.019}
+          />
+          <mesh
+            name="F1"
+            geometry={nodes.F1.geometry}
+            material={materials.PaletteMaterial008}
+            position={[-19.931, 9.196, 10.207]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={0.019}
+          />
+          <mesh
+            name="E1"
+            geometry={nodes.E1.geometry}
+            material={materials.PaletteMaterial008}
+            position={[-20.17, 9.206, 10.219]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={0.019}
+          />
+          <mesh
+            name="D1"
+            geometry={nodes.D1.geometry}
+            material={materials.PaletteMaterial008}
+            position={[-20.421, 9.196, 10.226]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={0.019}
+          />
+          <mesh
+            name="C1"
+            geometry={nodes.C1.geometry}
+            material={materials.PaletteMaterial008}
+            position={[-20.661, 9.206, 10.235]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={0.019}
+          />
+          <mesh
+            name="D3"
+            geometry={nodes.D3.geometry}
+            material={materials.PaletteMaterial008}
+            position={[-17.04, 9.196, 10.158]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={0.019}
+          />
+          <mesh
+            name="E3"
+            geometry={nodes.E3.geometry}
+            material={materials.PaletteMaterial008}
+            position={[-16.793, 9.196, 10.153]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={0.019}
+          />
+          <mesh
+            name="F3"
+            geometry={nodes.F3.geometry}
+            material={materials.PaletteMaterial008}
+            position={[-16.549, 9.196, 10.148]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={0.019}
+          />
+          <mesh
+            name="G3"
+            geometry={nodes.G3.geometry}
+            material={materials.PaletteMaterial008}
+            position={[-16.31, 9.196, 10.143]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={0.019}
+          />
+          <mesh
+            name="A3"
+            geometry={nodes.A3.geometry}
+            material={materials.PaletteMaterial008}
+            position={[-16.067, 9.196, 10.146]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={0.019}
+          />
+          <mesh
+            name="B3"
+            geometry={nodes.B3.geometry}
+            material={materials.PaletteMaterial008}
+            position={[-15.83, 9.196, 10.141]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={0.019}
+          />
+          <mesh
+            name="C4"
+            geometry={nodes.C4.geometry}
+            material={materials.PaletteMaterial008}
+            position={[-15.593, 9.196, 10.136]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={0.019}
+          />
+          <mesh
+            name="D4"
+            geometry={nodes.D4.geometry}
+            material={materials.PaletteMaterial008}
+            position={[-15.352, 9.196, 10.125]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={0.019}
+          />
+          <mesh
+            name="E4"
+            geometry={nodes.E4.geometry}
+            material={materials.PaletteMaterial008}
+            position={[-15.105, 9.196, 10.12]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={0.019}
+          />
+          <mesh
+            name="F4"
+            geometry={nodes.F4.geometry}
+            material={materials.PaletteMaterial008}
+            position={[-14.861, 9.196, 10.115]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={0.019}
+          />
+          <mesh
+            name="A#2"
+            geometry={nodes["A#2"].geometry}
+            material={materials.PaletteMaterial008}
+            position={[-17.653, 9.254, 9.968]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={[0.019, 0.011, 0.019]}
+          />
+          <mesh
+            name="G#2"
+            geometry={nodes["G#2"].geometry}
+            material={materials.PaletteMaterial008}
+            position={[-17.881, 9.254, 9.98]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={[0.019, 0.011, 0.019]}
+          />
+          <mesh
+            name="F#2"
+            geometry={nodes["F#2"].geometry}
+            material={materials.PaletteMaterial008}
+            position={[-18.125, 9.254, 9.982]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={[0.019, 0.011, 0.019]}
+          />
+          <mesh
+            name="D#2"
+            geometry={nodes["D#2"].geometry}
+            material={materials.PaletteMaterial008}
+            position={[-18.604, 9.254, 9.997]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={[0.019, 0.011, 0.019]}
+          />
+          <mesh
+            name="C#2"
+            geometry={nodes["C#2"].geometry}
+            material={materials.PaletteMaterial008}
+            position={[-18.847, 9.254, 10.007]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={[0.019, 0.011, 0.019]}
+          />
+          <mesh
+            name="A#1"
+            geometry={nodes["A#1"].geometry}
+            material={materials.PaletteMaterial008}
+            position={[-19.336, 9.254, 10.007]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={[0.019, 0.011, 0.019]}
+          />
+          <mesh
+            name="G#1"
+            geometry={nodes["G#1"].geometry}
+            material={materials.PaletteMaterial008}
+            position={[-19.565, 9.254, 10.009]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={[0.019, 0.011, 0.019]}
+          />
+          <mesh
+            name="F#1"
+            geometry={nodes["F#1"].geometry}
+            material={materials.PaletteMaterial008}
+            position={[-19.809, 9.254, 10.02]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={[0.019, 0.011, 0.019]}
+          />
+          <mesh
+            name="D#1"
+            geometry={nodes["D#1"].geometry}
+            material={materials.PaletteMaterial008}
+            position={[-20.294, 9.254, 10.043]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={[0.019, 0.011, 0.019]}
+          />
+          <mesh
+            name="C#1"
+            geometry={nodes["C#1"].geometry}
+            material={materials.PaletteMaterial008}
+            position={[-20.537, 9.254, 10.047]}
+            rotation={[-3.14, 1.55, 3.142]}
+            scale={[0.019, 0.011, 0.019]}
+          />
+          <mesh
+            name="A#3"
+            geometry={nodes["A#3"].geometry}
+            material={materials.PaletteMaterial008}
+            position={[-15.965, 9.254, 9.967]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={[0.019, 0.011, 0.019]}
+          />
+          <mesh
+            name="C#3"
+            geometry={nodes["C#3"].geometry}
+            material={materials.PaletteMaterial008}
+            position={[-17.16, 9.254, 9.971]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={[0.019, 0.011, 0.019]}
+          />
+          <mesh
+            name="C#4"
+            geometry={nodes["C#4"].geometry}
+            material={materials.PaletteMaterial008}
+            position={[-15.471, 9.254, 9.939]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={[0.019, 0.011, 0.019]}
+          />
+          <mesh
+            name="D#3"
+            geometry={nodes["D#3"].geometry}
+            material={materials.PaletteMaterial008}
+            position={[-16.916, 9.254, 9.979]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={[0.019, 0.011, 0.019]}
+          />
+          <mesh
+            name="D#4"
+            geometry={nodes["D#4"].geometry}
+            material={materials.PaletteMaterial008}
+            position={[-15.228, 9.254, 9.934]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={[0.019, 0.011, 0.019]}
+          />
+          <mesh
+            name="F#3"
+            geometry={nodes["F#3"].geometry}
+            material={materials.PaletteMaterial008}
+            position={[-16.437, 9.254, 9.969]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={[0.019, 0.011, 0.019]}
+          />
+          <mesh
+            name="G#3"
+            geometry={nodes["G#3"].geometry}
+            material={materials.PaletteMaterial008}
+            position={[-16.193, 9.254, 9.964]}
+            rotation={[-Math.PI, 1.55, -Math.PI]}
+            scale={[0.019, 0.011, 0.019]}
           />
         </group>
-        <group
-          name="CuttoffMarker"
-          position={[-17.092, 9.361, 9.147]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={[0.008, 0.009, 0.009]}
-        >
-          <mesh
-            name="Mesh022"
-            geometry={nodes.Mesh022.geometry}
-            material={materials.PaletteMaterial007}
-          />
-          <mesh
-            name="Mesh022_1"
-            geometry={nodes.Mesh022_1.geometry}
-            material={nodes.Mesh022_1.material}
-          />
-        </group>
-        <group
-          name="ReleaseMarker"
-          position={[-16.21, 9.361, 9.131]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={[0.008, 0.009, 0.009]}
-        >
-          <mesh
-            name="Mesh022"
-            geometry={nodes.Mesh022.geometry}
-            material={materials.PaletteMaterial007}
-          />
-          <mesh
-            name="Mesh022_1"
-            geometry={nodes.Mesh022_1.geometry}
-            material={nodes.Mesh022_1.material}
-          />
-        </group>
-        <group
-          name="ResonanceMarker"
-          position={[-16.813, 9.361, 9.141]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={[0.008, 0.009, 0.009]}
-        >
-          <mesh
-            name="Mesh022"
-            geometry={nodes.Mesh022.geometry}
-            material={materials.PaletteMaterial007}
-          />
-          <mesh
-            name="Mesh022_1"
-            geometry={nodes.Mesh022_1.geometry}
-            material={nodes.Mesh022_1.material}
-          />
-        </group>
-        <group
-          name="ChorusMarker"
-          position={[-15.911, 9.361, 9.125]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={[0.008, 0.009, 0.009]}
-        >
-          <mesh
-            name="Mesh022"
-            geometry={nodes.Mesh022.geometry}
-            material={materials.PaletteMaterial007}
-          />
-          <mesh
-            name="Mesh022_1"
-            geometry={nodes.Mesh022_1.geometry}
-            material={nodes.Mesh022_1.material}
-          />
-        </group>
-        <group
-          name="AttackMarker"
-          position={[-16.522, 9.361, 9.135]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={[0.008, 0.009, 0.009]}
-        >
-          <mesh
-            name="Mesh022"
-            geometry={nodes.Mesh022.geometry}
-            material={materials.PaletteMaterial007}
-          />
-          <mesh
-            name="Mesh022_1"
-            geometry={nodes.Mesh022_1.geometry}
-            material={nodes.Mesh022_1.material}
-          />
-        </group>
-        <group
-          name="ReverbMarker"
-          position={[-15.621, 9.361, 9.119]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={[0.008, 0.009, 0.009]}
-        >
-          <mesh
-            name="Mesh022"
-            geometry={nodes.Mesh022.geometry}
-            material={materials.PaletteMaterial007}
-          />
-          <mesh
-            name="Mesh022_1"
-            geometry={nodes.Mesh022_1.geometry}
-            material={nodes.Mesh022_1.material}
-          />
-        </group>
-        <mesh
-          name="C3"
-          geometry={nodes.C3.geometry}
-          material={materials.PaletteMaterial008}
-          position={[-17.281, 9.196, 10.156]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={0.019}
-        />
-        <mesh
-          name="B2"
-          geometry={nodes.B2.geometry}
-          material={materials.PaletteMaterial008}
-          position={[-17.518, 9.196, 10.155]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={0.019}
-        />
-        <mesh
-          name="A2"
-          geometry={nodes.A2.geometry}
-          material={materials.PaletteMaterial008}
-          position={[-17.755, 9.196, 10.156]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={0.019}
-        />
-        <mesh
-          name="G2"
-          geometry={nodes.G2.geometry}
-          material={materials.PaletteMaterial008}
-          position={[-17.998, 9.196, 10.159]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={0.019}
-        />
-        <mesh
-          name="F2"
-          geometry={nodes.F2.geometry}
-          material={materials.PaletteMaterial008}
-          position={[-18.237, 9.196, 10.166]}
-          rotation={[-3.14, 1.55, Math.PI]}
-          scale={0.019}
-        />
-        <mesh
-          name="E2"
-          geometry={nodes.E2.geometry}
-          material={materials.PaletteMaterial008}
-          position={[-18.481, 9.196, 10.171]}
-          rotation={[-3.14, 1.55, Math.PI]}
-          scale={0.019}
-        />
-        <mesh
-          name="D2"
-          geometry={nodes.D2.geometry}
-          material={materials.PaletteMaterial008}
-          position={[-18.728, 9.196, 10.182]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={0.019}
-        />
-        <mesh
-          name="C2"
-          geometry={nodes.C2.geometry}
-          material={materials.PaletteMaterial008}
-          position={[-18.976, 9.196, 10.186]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={0.019}
-        />
-        <mesh
-          name="B1"
-          geometry={nodes.B1.geometry}
-          material={materials.PaletteMaterial008}
-          position={[-19.214, 9.196, 10.187]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={0.019}
-        />
-        <mesh
-          name="A1"
-          geometry={nodes.A1.geometry}
-          material={materials.PaletteMaterial008}
-          position={[-19.45, 9.196, 10.197]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={0.019}
-        />
-        <mesh
-          name="G1"
-          geometry={nodes.G1.geometry}
-          material={materials.PaletteMaterial008}
-          position={[-19.688, 9.196, 10.194]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={0.019}
-        />
-        <mesh
-          name="F1"
-          geometry={nodes.F1.geometry}
-          material={materials.PaletteMaterial008}
-          position={[-19.931, 9.196, 10.207]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={0.019}
-        />
-        <mesh
-          name="E1"
-          geometry={nodes.E1.geometry}
-          material={materials.PaletteMaterial008}
-          position={[-20.17, 9.206, 10.219]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={0.019}
-        />
-        <mesh
-          name="D1"
-          geometry={nodes.D1.geometry}
-          material={materials.PaletteMaterial008}
-          position={[-20.421, 9.196, 10.226]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={0.019}
-        />
-        <mesh
-          name="C1"
-          geometry={nodes.C1.geometry}
-          material={materials.PaletteMaterial008}
-          position={[-20.661, 9.206, 10.235]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={0.019}
-        />
-        <mesh
-          name="D3"
-          geometry={nodes.D3.geometry}
-          material={materials.PaletteMaterial008}
-          position={[-17.04, 9.196, 10.158]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={0.019}
-        />
-        <mesh
-          name="E3"
-          geometry={nodes.E3.geometry}
-          material={materials.PaletteMaterial008}
-          position={[-16.793, 9.196, 10.153]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={0.019}
-        />
-        <mesh
-          name="F3"
-          geometry={nodes.F3.geometry}
-          material={materials.PaletteMaterial008}
-          position={[-16.549, 9.196, 10.148]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={0.019}
-        />
-        <mesh
-          name="G3"
-          geometry={nodes.G3.geometry}
-          material={materials.PaletteMaterial008}
-          position={[-16.31, 9.196, 10.143]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={0.019}
-        />
-        <mesh
-          name="A3"
-          geometry={nodes.A3.geometry}
-          material={materials.PaletteMaterial008}
-          position={[-16.067, 9.196, 10.146]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={0.019}
-        />
-        <mesh
-          name="B3"
-          geometry={nodes.B3.geometry}
-          material={materials.PaletteMaterial008}
-          position={[-15.83, 9.196, 10.141]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={0.019}
-        />
-        <mesh
-          name="C4"
-          geometry={nodes.C4.geometry}
-          material={materials.PaletteMaterial008}
-          position={[-15.593, 9.196, 10.136]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={0.019}
-        />
-        <mesh
-          name="D4"
-          geometry={nodes.D4.geometry}
-          material={materials.PaletteMaterial008}
-          position={[-15.352, 9.196, 10.125]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={0.019}
-        />
-        <mesh
-          name="E4"
-          geometry={nodes.E4.geometry}
-          material={materials.PaletteMaterial008}
-          position={[-15.105, 9.196, 10.12]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={0.019}
-        />
-        <mesh
-          name="F4"
-          geometry={nodes.F4.geometry}
-          material={materials.PaletteMaterial008}
-          position={[-14.861, 9.196, 10.115]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={0.019}
-        />
-        <mesh
-          name="A#2"
-          geometry={nodes["A#2"].geometry}
-          material={materials.PaletteMaterial008}
-          position={[-17.653, 9.254, 9.968]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={[0.019, 0.011, 0.019]}
-        />
-        <mesh
-          name="G#2"
-          geometry={nodes["G#2"].geometry}
-          material={materials.PaletteMaterial008}
-          position={[-17.881, 9.254, 9.98]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={[0.019, 0.011, 0.019]}
-        />
-        <mesh
-          name="F#2"
-          geometry={nodes["F#2"].geometry}
-          material={materials.PaletteMaterial008}
-          position={[-18.125, 9.254, 9.982]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={[0.019, 0.011, 0.019]}
-        />
-        <mesh
-          name="D#2"
-          geometry={nodes["D#2"].geometry}
-          material={materials.PaletteMaterial008}
-          position={[-18.604, 9.254, 9.997]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={[0.019, 0.011, 0.019]}
-        />
-        <mesh
-          name="C#2"
-          geometry={nodes["C#2"].geometry}
-          material={materials.PaletteMaterial008}
-          position={[-18.847, 9.254, 10.007]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={[0.019, 0.011, 0.019]}
-        />
-        <mesh
-          name="A#1"
-          geometry={nodes["A#1"].geometry}
-          material={materials.PaletteMaterial008}
-          position={[-19.336, 9.254, 10.007]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={[0.019, 0.011, 0.019]}
-        />
-        <mesh
-          name="G#1"
-          geometry={nodes["G#1"].geometry}
-          material={materials.PaletteMaterial008}
-          position={[-19.565, 9.254, 10.009]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={[0.019, 0.011, 0.019]}
-        />
-        <mesh
-          name="F#1"
-          geometry={nodes["F#1"].geometry}
-          material={materials.PaletteMaterial008}
-          position={[-19.809, 9.254, 10.02]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={[0.019, 0.011, 0.019]}
-        />
-        <mesh
-          name="D#1"
-          geometry={nodes["D#1"].geometry}
-          material={materials.PaletteMaterial008}
-          position={[-20.294, 9.254, 10.043]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={[0.019, 0.011, 0.019]}
-        />
-        <mesh
-          name="C#1"
-          geometry={nodes["C#1"].geometry}
-          material={materials.PaletteMaterial008}
-          position={[-20.537, 9.254, 10.047]}
-          rotation={[-3.14, 1.55, 3.142]}
-          scale={[0.019, 0.011, 0.019]}
-        />
-        <mesh
-          name="A#3"
-          geometry={nodes["A#3"].geometry}
-          material={materials.PaletteMaterial008}
-          position={[-15.965, 9.254, 9.967]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={[0.019, 0.011, 0.019]}
-        />
-        <mesh
-          name="C#3"
-          geometry={nodes["C#3"].geometry}
-          material={materials.PaletteMaterial008}
-          position={[-17.16, 9.254, 9.971]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={[0.019, 0.011, 0.019]}
-        />
-        <mesh
-          name="C#4"
-          geometry={nodes["C#4"].geometry}
-          material={materials.PaletteMaterial008}
-          position={[-15.471, 9.254, 9.939]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={[0.019, 0.011, 0.019]}
-        />
-        <mesh
-          name="D#3"
-          geometry={nodes["D#3"].geometry}
-          material={materials.PaletteMaterial008}
-          position={[-16.916, 9.254, 9.979]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={[0.019, 0.011, 0.019]}
-        />
-        <mesh
-          name="D#4"
-          geometry={nodes["D#4"].geometry}
-          material={materials.PaletteMaterial008}
-          position={[-15.228, 9.254, 9.934]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={[0.019, 0.011, 0.019]}
-        />
-        <mesh
-          name="F#3"
-          geometry={nodes["F#3"].geometry}
-          material={materials.PaletteMaterial008}
-          position={[-16.437, 9.254, 9.969]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={[0.019, 0.011, 0.019]}
-        />
-        <mesh
-          name="G#3"
-          geometry={nodes["G#3"].geometry}
-          material={materials.PaletteMaterial008}
-          position={[-16.193, 9.254, 9.964]}
-          rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={[0.019, 0.011, 0.019]}
-        />
+
         <mesh
           name="Prateleira"
           geometry={nodes.Prateleira.geometry}

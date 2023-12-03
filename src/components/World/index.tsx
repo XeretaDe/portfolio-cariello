@@ -90,7 +90,7 @@ export default function World() {
             >
               <meshStandardMaterial attach="material" color="white" />
             </Box> */}
-         <OrbitControls/> 
+          {/* <OrbitControls/>   */}
       </Canvas>
       <Loader />
     </>
