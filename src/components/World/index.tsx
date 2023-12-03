@@ -1,17 +1,18 @@
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Suspense, useRef } from "react";
+import { Suspense, useRef, useState } from "react";
 import {
   Loader,
   OrbitControls,
+  PerformanceMonitor,
   PerspectiveCamera,
   PivotControls,
   Sky,
   TransformControls,
   useHelper,
 } from "@react-three/drei";
-import { Cena } from "../Models/Cena";
 import { DirectionalLightHelper, CameraHelper } from "three";
 import { Perf } from "r3f-perf";
+import { Model } from "../Models/ActualLastBlend";
 
 const MyLight = () => {
   const ref = useRef<any>(null);
@@ -29,26 +30,36 @@ const CameraPerspective = () => {
   return (
     <>
       <PivotControls
-       
-         rotation={[0, -Math.PI / 2, 0]}
-         depthTest={false}
-         lineWidth={2}
-         anchor={[0, 1, 0]}
+        rotation={[0, -Math.PI / 2, 0]}
+        depthTest={false}
+        lineWidth={2}
+        anchor={[0, 1, 0]}
       >
-        
-      
-          <PerspectiveCamera ref={camera} position={[0.23, 22.5, 11.72]} far={1} fov={40} />
-       
+        <PerspectiveCamera
+          ref={camera}
+          position={[0.23, 22.5, 11.72]}
+          far={1}
+          fov={40}
+        />
       </PivotControls>
     </>
   );
 };
 
 export default function World() {
+  const [dpr, setDpr] = useState(1.5);
+
   return (
     <>
-      <Canvas style={{ width: "100%", height: "100vh" }}>
+      <Canvas
+        style={{ width: "100%", height: "100vh" }}
+        camera={{ position: [50, 10, 0] }}
+      >
         <Perf />
+        <PerformanceMonitor
+          onIncline={() => setDpr(2)}
+          onDecline={() => setDpr(1)}
+        />
         {/* <PerspectiveCamera makeDefault position={[0.23,22.5,11.72]} far={1} fov={40}/> */}
         <CameraPerspective />
         <color attach="background" args={["#c1ddef"]} />
@@ -65,7 +76,7 @@ export default function World() {
           shadow-bias={-0.0001}
         />
 
-        <Cena />
+        <Model />
         {/* <Environment files={"http://localhost:3000/envmap.hdr"} background /> */}
         {/* <PerspectiveCamera makeDefault fov={40}  position={[0, 2, 10]}  /> */}
         {/* <OrbitControls target={[-2.64, -0.71, 0.03]} /> */}
@@ -79,7 +90,7 @@ export default function World() {
             >
               <meshStandardMaterial attach="material" color="white" />
             </Box> */}
-      
+          {/* <OrbitControls/>   */}
       </Canvas>
       <Loader />
     </>
