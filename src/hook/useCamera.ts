@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { GLTFResult } from "../components/Models/types/MainScene";
+import { GLTFResult } from "../types/MainScene";
 import { Euler, MathUtils, Quaternion, Vector3 } from "three";
 import { useFrame } from "@react-three/fiber";
 import { ObjectProps } from "../types/MainScene";
@@ -9,8 +9,6 @@ import { ObjectProps } from "../types/MainScene";
 //     set<K extends string, V>(k: Exclude<K, keyof T>, v: V): MyMap<T & Record<K, V>>;
 //     get<K extends string>(k: K): K extends keyof T ? T[K] : undefined;
 //   }
-
-
 
 
 

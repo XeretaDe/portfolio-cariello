@@ -7,8 +7,6 @@ import Parallax from "../components/ParallaxShowcase";
 
 const Home: NextPage = () => {
   const [loading, setLoading] = useState(true);
-  const Arr = new Array(42)
-  const re = [0,0,0,0]
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);

@@ -14,7 +14,7 @@ import {
   Merged,
   Instance,
 } from "@react-three/drei";
-import { GLTFResult } from "./types/MainScene";
+import { GLTFResult } from "../../types/MainScene";
 import useCamera from "../../hook/useCamera";
 import { BufferGeometry, Matrix4, MeshPhongMaterial, Vector3 } from "three";
 import { extend, useThree } from "@react-three/fiber";
@@ -90,8 +90,8 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
     );
   }
 
-  const t = new Vector3(-25.208, 10.718, 25.0);
-  const t1 = new Vector3(-17.774, 9.5, 9.432);
+  const vitrolaPos = new Vector3(-25.208, 10.718, 25.0);
+  const tecladoPos = new Vector3(-17.774, 9.5, 9.432);
 
   useEffect(() => {
     document.body.style.cursor = isHovering ? "pointer" : "auto";
@@ -99,13 +99,13 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
   return (
     <group ref={group} {...props} dispose={null}>
       <BoxSafeGuard
-        pos={t}
+        pos={vitrolaPos}
         opacity={0}
         size={[3, 3, 3] as unknown as Vector3}
         name="Vitrola"
       />
       <BoxSafeGuard
-        pos={t1}
+        pos={tecladoPos}
         opacity={0}
         size={[7, 1, 3] as unknown as Vector3}
         name="Teclado"
