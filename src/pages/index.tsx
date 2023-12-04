@@ -14,7 +14,7 @@ const Home: NextPage = () => {
     return () => clearTimeout(timer);
   }, []);
   return (
-    <div className="relative flex h-screen overflow-hidden bg-dark-mode pt-24 flex-col">
+    <div className="relative flex h-screen flex-col overflow-hidden bg-dark-mode pt-24">
       {/* <ToggleColorMode />
       <GrowingCircleDiv /> */}
       {/* <div className="absolute left-[371px] bottom-[200px] z-20 h-10 w-10 rounded-full bg-light-mode  mix-blend-exclusion " /> */}
@@ -23,15 +23,25 @@ const Home: NextPage = () => {
         <Parallax src={"/render.png"}/>
       </div> */}
       <div className=" flex h-screen place-content-center items-center">
-        {/* <h1 className="font-rubik text-[10vw] font-bold text-white">
+        <h1 className="font-rubik text-[10vw] font-bold text-white">
           Work in Progress
         </h1>
       </div>
-      <div className=" flex place-content-center w-full ">
-        <h1 className=" font-wave text-[3.77vw] leading-[4vw] text-white"> Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress Work in Progress wip</h1>
-      </div> */}
-
-    </div>
+      <div className=" flex w-full place-content-center ">
+        <h1 className=" font-wave text-[2vw] md:leading-[4vh] leading-[1vh] text-white ">
+          {" "}
+          Work in Progress Work in Progress Work in Progress Work in Progress
+          Work in Progress Work in Progress Work in Progress Work in Progress
+          Work in Progress Work in Progress Work in Progress Work in Progress
+          Work in Progress Work in Progress Work in Progress Work in Progress
+          Work in Progress Work in Progress Work in Progress Work in Progress
+          Work in Progress Work in Progress Work in Progress Work in Progress
+          Work in Progress Work in Progress Work in Progress Work in Progress
+          Work in Progress Work in Progress Work in Progress Work in Progress
+          Work in Progress Work in Progress Work in Progress Work in Progress
+          Work in Progress Work in Progress Work in Progressss
+        </h1>
+      </div>
     </div>
   );
 };
