@@ -398,7 +398,7 @@ export type GLTFResult = GLTF & {
     PaletteMaterial012: THREE.MeshStandardMaterial;
     vitrolaWood: THREE.MeshStandardMaterial;
     PaletteMaterial006: THREE.MeshStandardMaterial;
-    PaletteMaterial011: THREE.MeshPhysicalMaterial;
+    PaletteMaterial011: THREE.MeshStandardMaterial; // Actually physical
   };
   animations: GLTFAction[];
 };

@@ -5,19 +5,20 @@ Files: ./ActualLastBlend.glb [68.95MB] > ActualLastBlend-transformed.glb [9.44MB
 */
 
 import * as THREE from "three";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   useGLTF,
   useAnimations,
   Box,
-  Instances,
-  Merged,
-  Instance,
 } from "@react-three/drei";
 import { GLTFResult } from "../../types/MainScene";
 import useCamera from "../../hook/useCamera";
-import { BufferGeometry, Matrix4, MeshPhongMaterial, Vector3 } from "three";
-import { extend, useThree } from "@react-three/fiber";
+import {
+ 
+  Vector3,
+} from "three";
+import { LedStripes } from "./components/LedLight";
+
 
 type ObjectProps = {
   name: string;
@@ -38,7 +39,7 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
   ) as GLTFResult;
 
   const { actions } = useAnimations(animations, group);
-  // const camera = useThree((state) => state.camera);
+
 
   useEffect(() => {
     document.addEventListener("contextmenu", (event) => {
@@ -46,8 +47,8 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
     });
   }, []);
 
-  useCamera(object, isClicked);
 
+  useCamera(object, isClicked);
 
   function BoxSafeGuard({
     pos,
@@ -96,6 +97,7 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
   useEffect(() => {
     document.body.style.cursor = isHovering ? "pointer" : "auto";
   }, [isHovering]);
+
   return (
     <group ref={group} {...props} dispose={null}>
       <BoxSafeGuard
@@ -110,12 +112,13 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
         size={[7, 1, 3] as unknown as Vector3}
         name="Teclado"
       />
-      <group name="Scene" onPointerEnter={(e) => console.log(e.object.name)}>
+      <group name="Scene">
         <group name="Mesa" position={[-22.853, 7.13, 17.035]}>
           <mesh name="Cube014" geometry={nodes.Cube014.geometry}>
             <meshLambertMaterial attach="material" color="#fdf5e6" />
           </mesh>
         </group>
+        <LedStripes />
         <mesh
           name="PecasMetal"
           geometry={nodes.PecasMetal.geometry}
@@ -305,448 +308,6 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
           rotation={[-Math.PI, -0.635, Math.PI / 2]}
           scale={[0.415, 0.508, 0.552]}
         />
-        <group
-          visible={false}
-          name="LED_Streifen020"
-          position={[-23.422, 19.103, 23.274]}
-        >
-          <mesh
-            name="Plane035"
-            geometry={nodes.Plane035.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_1"
-            geometry={nodes.Plane035_1.geometry}
-            material={materials.PaletteMaterial005}
-          />
-          <mesh
-            name="Plane035_2"
-            geometry={nodes.Plane035_2.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_3"
-            geometry={nodes.Plane035_3.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_4"
-            geometry={nodes.Plane035_4.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_5"
-            geometry={nodes.Plane035_5.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_6"
-            geometry={nodes.Plane035_6.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_7"
-            geometry={nodes.Plane035_7.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_8"
-            geometry={nodes.Plane035_8.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_9"
-            geometry={nodes.Plane035_9.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_10"
-            geometry={nodes.Plane035_10.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_11"
-            geometry={nodes.Plane035_11.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_12"
-            geometry={nodes.Plane035_12.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_13"
-            geometry={nodes.Plane035_13.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_14"
-            geometry={nodes.Plane035_14.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_15"
-            geometry={nodes.Plane035_15.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_16"
-            geometry={nodes.Plane035_16.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_17"
-            geometry={nodes.Plane035_17.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_18"
-            geometry={nodes.Plane035_18.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_19"
-            geometry={nodes.Plane035_19.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_20"
-            geometry={nodes.Plane035_20.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_21"
-            geometry={nodes.Plane035_21.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_22"
-            geometry={nodes.Plane035_22.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_23"
-            geometry={nodes.Plane035_23.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_24"
-            geometry={nodes.Plane035_24.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_25"
-            geometry={nodes.Plane035_25.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_26"
-            geometry={nodes.Plane035_26.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_27"
-            geometry={nodes.Plane035_27.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_28"
-            geometry={nodes.Plane035_28.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_29"
-            geometry={nodes.Plane035_29.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_30"
-            geometry={nodes.Plane035_30.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_31"
-            geometry={nodes.Plane035_31.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_32"
-            geometry={nodes.Plane035_32.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_33"
-            geometry={nodes.Plane035_33.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_34"
-            geometry={nodes.Plane035_34.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_35"
-            geometry={nodes.Plane035_35.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_36"
-            geometry={nodes.Plane035_36.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_37"
-            geometry={nodes.Plane035_37.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_38"
-            geometry={nodes.Plane035_38.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_39"
-            geometry={nodes.Plane035_39.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_40"
-            geometry={nodes.Plane035_40.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_41"
-            geometry={nodes.Plane035_41.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_42"
-            geometry={nodes.Plane035_42.geometry}
-            material={materials["LED Stripe"]}
-          />
-        </group>
-        <group
-          visible={false}
-          name="LED_Streifen063"
-          position={[-23.399, 9.352, 23.297]}
-        >
-          <mesh
-            name="Plane077"
-            geometry={nodes.Plane077.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_1"
-            geometry={nodes.Plane077_1.geometry}
-            material={materials.PaletteMaterial005}
-          />
-          <mesh
-            name="Plane077_2"
-            geometry={nodes.Plane077_2.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_3"
-            geometry={nodes.Plane077_3.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_4"
-            geometry={nodes.Plane077_4.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_5"
-            geometry={nodes.Plane077_5.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_6"
-            geometry={nodes.Plane077_6.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_7"
-            geometry={nodes.Plane077_7.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_8"
-            geometry={nodes.Plane077_8.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_9"
-            geometry={nodes.Plane077_9.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_10"
-            geometry={nodes.Plane077_10.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_11"
-            geometry={nodes.Plane077_11.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_12"
-            geometry={nodes.Plane077_12.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_13"
-            geometry={nodes.Plane077_13.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_14"
-            geometry={nodes.Plane077_14.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_15"
-            geometry={nodes.Plane077_15.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_16"
-            geometry={nodes.Plane077_16.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_17"
-            geometry={nodes.Plane077_17.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_18"
-            geometry={nodes.Plane077_18.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_19"
-            geometry={nodes.Plane077_19.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_20"
-            geometry={nodes.Plane077_20.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_21"
-            geometry={nodes.Plane077_21.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_22"
-            geometry={nodes.Plane077_22.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_23"
-            geometry={nodes.Plane077_23.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_24"
-            geometry={nodes.Plane077_24.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_25"
-            geometry={nodes.Plane077_25.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_26"
-            geometry={nodes.Plane077_26.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_27"
-            geometry={nodes.Plane077_27.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_28"
-            geometry={nodes.Plane077_28.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_29"
-            geometry={nodes.Plane077_29.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_30"
-            geometry={nodes.Plane077_30.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_31"
-            geometry={nodes.Plane077_31.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_32"
-            geometry={nodes.Plane077_32.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_33"
-            geometry={nodes.Plane077_33.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_34"
-            geometry={nodes.Plane077_34.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_35"
-            geometry={nodes.Plane077_35.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_36"
-            geometry={nodes.Plane077_36.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_37"
-            geometry={nodes.Plane077_37.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_38"
-            geometry={nodes.Plane077_38.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_39"
-            geometry={nodes.Plane077_39.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_40"
-            geometry={nodes.Plane077_40.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_41"
-            geometry={nodes.Plane077_41.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_42"
-            geometry={nodes.Plane077_42.geometry}
-            material={materials["LED Stripe"]}
-          />
-        </group>
         <group name="Wall" position={[-8.761, 15.37, 1.697]}>
           <mesh
             name="Cube012"
@@ -848,6 +409,7 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
         />
         <group
           name="Monitor"
+          visible={true}
           onPointerEnter={() => setHovering(true)}
           onPointerLeave={() => setHovering(false)}
           onClick={(e) => {
@@ -956,12 +518,12 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
             material={materials.BackMonitorMaterial}
             position={[-26.898, 10.944, 18.03]}
           />
-          {/* <mesh
+          <mesh
             name="KeyBoard"
             geometry={nodes.KeyBoard.geometry}
             material={materials.TecladoMaterial}
             position={[-25.453, 9.2, 19.918]}
-          /> */}
+          />
         </group>
         <group
           name="AgulhaHolderVitrola"
@@ -1017,12 +579,13 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
           position={[-18.763, 9.257, 26.541]}
         />
         <mesh
+          visible={true}
           name="Cama"
           geometry={nodes.Cama.geometry}
           material={materials.BedMaterial}
           position={[-17.996, 6.461, -14.08]}
         />
-        <group name={"Teclado"}>
+        <group visible={true} name={"Teclado"}>
           <mesh
             name="MoldeTeclado"
             geometry={nodes.MoldeTeclado.geometry}
@@ -1937,6 +1500,7 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
         />
         <group
           name="Livro"
+          visible={true}
           onPointerEnter={() => setHovering(true)}
           onPointerLeave={() => setHovering(false)}
           onClick={(e) => {
@@ -3483,7 +3047,7 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
             />
           </mesh>
         </group>
-        <group name="Janela">
+        <group name="Janela" visible={true}>
           <mesh
             name="Mesh019"
             geometry={nodes.Mesh019.geometry}
@@ -3508,6 +3072,43 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
             position={[5.15, 25.711, -26.024]}
             rotation={[0, -0.003, 0]}
           />
+          <group name="Operating_glass_L" rotation={[-Math.PI, 0, -Math.PI]}>
+            <mesh
+              name="Mesh033"
+              geometry={nodes.Mesh033.geometry}
+              material={materials.MoldeVidroMaterial}
+            />
+
+            {/* <mesh
+              name="Mesh033_1"
+              geometry={nodes.Mesh033_1.geometry}
+              material={materials.PaletteMaterial011}
+            /> */}
+
+            <mesh
+              name="Mesh033_2"
+              geometry={nodes.Mesh033_2.geometry}
+              material={materials.PaletteMaterial012}
+            />
+          </group>
+          <group
+            visible={true}
+            name="Operating_glass_R"
+            rotation={[0, 0, -Math.PI]}
+          >
+            <mesh
+              name="Mesh034"
+              geometry={nodes.Mesh034.geometry}
+              material={materials.MoldeVidroMaterial}
+            />
+            {/* <mesh
+              name="Mesh034_1"
+              geometry={nodes.Mesh034_1.geometry}
+              // material={materials.PaletteMaterial011}
+            >
+            
+            </mesh> */}
+          </group>
         </group>
         <group name="Vitrola">
           <group
@@ -3583,35 +3184,6 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
             material={materials.PaletteMaterial006}
             position={[-26.558, 10.718, 26.171]}
           />
-          <group name="Operating_glass_L" rotation={[-Math.PI, 0, -Math.PI]}>
-            <mesh
-              name="Mesh033"
-              geometry={nodes.Mesh033.geometry}
-              material={materials.MoldeVidroMaterial}
-            />
-            <mesh
-              name="Mesh033_1"
-              geometry={nodes.Mesh033_1.geometry}
-              material={materials.PaletteMaterial011}
-            />
-            <mesh
-              name="Mesh033_2"
-              geometry={nodes.Mesh033_2.geometry}
-              material={materials.PaletteMaterial012}
-            />
-          </group>
-          <group name="Operating_glass_R" rotation={[0, 0, -Math.PI]}>
-            <mesh
-              name="Mesh034"
-              geometry={nodes.Mesh034.geometry}
-              material={materials.MoldeVidroMaterial}
-            />
-            <mesh
-              name="Mesh034_1"
-              geometry={nodes.Mesh034_1.geometry}
-              material={materials.PaletteMaterial011}
-            />
-          </group>
         </group>
       </group>
     </group>
