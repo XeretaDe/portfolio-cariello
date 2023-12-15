@@ -5,19 +5,12 @@ Files: ./ActualLastBlend.glb [68.95MB] > ActualLastBlend-transformed.glb [9.44MB
 */
 
 import * as THREE from "three";
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import {
-  useGLTF,
-  useAnimations,
-  Box,
-  Instances,
-  Merged,
-  Instance,
-} from "@react-three/drei";
+import React, { useEffect, useState, useRef } from "react";
+import { useGLTF, useAnimations, Box } from "@react-three/drei";
 import { GLTFResult } from "../../types/MainScene";
 import useCamera from "../../hook/useCamera";
-import { BufferGeometry, Matrix4, MeshPhongMaterial, Vector3 } from "three";
-import { extend, useThree } from "@react-three/fiber";
+import { Vector3 } from "three";
+import { LedStripes } from "./components/LedLight";
 
 type ObjectProps = {
   name: string;
@@ -38,7 +31,6 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
   ) as GLTFResult;
 
   const { actions } = useAnimations(animations, group);
-  // const camera = useThree((state) => state.camera);
 
   useEffect(() => {
     document.addEventListener("contextmenu", (event) => {
@@ -47,7 +39,6 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
   }, []);
 
   useCamera(object, isClicked);
-
 
   function BoxSafeGuard({
     pos,
@@ -96,6 +87,7 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
   useEffect(() => {
     document.body.style.cursor = isHovering ? "pointer" : "auto";
   }, [isHovering]);
+
   return (
     <group ref={group} {...props} dispose={null}>
       <BoxSafeGuard
@@ -110,1848 +102,318 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
         size={[7, 1, 3] as unknown as Vector3}
         name="Teclado"
       />
-      <group name="Scene" onPointerEnter={(e) => console.log(e.object.name)}>
+
+      <group name="Scene">
         <group name="Mesa" position={[-22.853, 7.13, 17.035]}>
-          <mesh name="Cube014" geometry={nodes.Cube014.geometry}>
-            <meshLambertMaterial attach="material" color="#fdf5e6" />
+          <mesh
+            name="Cube014"
+            castShadow
+            receiveShadow
+            geometry={nodes.Cube014.geometry}
+          >
+            <meshStandardMaterial color={"gray"} attach={"material"} />
           </mesh>
         </group>
-        <mesh
-          name="PecasMetal"
-          geometry={nodes.PecasMetal.geometry}
-          material={materials.PaletteMaterial002}
-          position={[-25.144, 9.748, 9.324]}
-          rotation={[-Math.PI, -0.635, Math.PI / 2]}
-          scale={[0.415, 0.508, 0.552]}
-        />
-        <mesh
-          name="Grades"
-          geometry={nodes.Grades.geometry}
-          material={materials.PaletteMaterial002}
-          position={[-25.144, 9.748, 9.324]}
-          rotation={[-Math.PI, -0.635, Math.PI / 2]}
-          scale={[0.415, 0.508, 0.552]}
-        />
-        <mesh
-          name="PCPartes"
-          geometry={nodes.PCPartes.geometry}
-          material={materials.aiStandardSurface14SG}
-          position={[-25.144, 9.748, 9.324]}
-          rotation={[-Math.PI, -0.635, Math.PI / 2]}
-          scale={[0.415, 0.508, 0.552]}
-        />
-        <mesh
-          name="Fios"
-          geometry={nodes.Fios.geometry}
-          material={materials.PaletteMaterial002}
-          position={[-25.144, 9.748, 9.324]}
-          rotation={[-Math.PI, -0.635, Math.PI / 2]}
-          scale={[0.415, 0.508, 0.552]}
-        />
-        <mesh
-          name="Grades2"
-          geometry={nodes.Grades2.geometry}
-          material={materials.PaletteMaterial002}
-          position={[-25.144, 9.748, 9.324]}
-          rotation={[-Math.PI, -0.635, Math.PI / 2]}
-          scale={[0.415, 0.508, 0.552]}
-        />
-        <mesh
-          name="Case001"
-          geometry={nodes.Case001.geometry}
-          material={materials.PaletteMaterial002}
-          position={[-25.144, 9.748, 9.324]}
-          rotation={[-Math.PI, -0.635, Math.PI / 2]}
-          scale={[0.415, 0.508, 0.552]}
-        />
-        <mesh
-          name="Case"
-          geometry={nodes.Case.geometry}
-          material={materials.PaletteMaterial002}
-          position={[-25.144, 9.748, 9.324]}
-          rotation={[-Math.PI, -0.635, Math.PI / 2]}
-          scale={[0.415, 0.508, 0.552]}
-        />
-        <mesh
-          name="Grades3"
-          geometry={nodes.Grades3.geometry}
-          material={materials.PaletteMaterial002}
-          position={[-25.144, 9.748, 9.324]}
-          rotation={[-Math.PI, -0.635, Math.PI / 2]}
-          scale={[0.415, 0.508, 0.552]}
-        />
-        <mesh
-          name="PecasPC"
-          geometry={nodes.PecasPC.geometry}
-          material={materials.PaletteMaterial002}
-          position={[-25.144, 9.748, 9.324]}
-          rotation={[-Math.PI, -0.635, Math.PI / 2]}
-          scale={[0.415, 0.508, 0.552]}
-        />
-        <mesh
-          name="Parafusos"
-          geometry={nodes.Parafusos.geometry}
-          material={materials.PaletteMaterial002}
-          position={[-25.144, 9.748, 9.324]}
-          rotation={[-Math.PI, -0.635, Math.PI / 2]}
-          scale={[0.415, 0.508, 0.552]}
-        />
-        <mesh
-          name="Parafusos2"
-          geometry={nodes.Parafusos2.geometry}
-          material={materials.PaletteMaterial002}
-          position={[-25.144, 9.748, 9.324]}
-          rotation={[-Math.PI, -0.635, Math.PI / 2]}
-          scale={[0.415, 0.508, 0.552]}
-        />
-        <mesh
-          name="PecasPe"
-          geometry={nodes.PecasPe.geometry}
-          material={materials.PaletteMaterial002}
-          position={[-25.144, 9.748, 9.324]}
-          rotation={[-Math.PI, -0.635, Math.PI / 2]}
-          scale={[0.415, 0.508, 0.552]}
-        />
-        <mesh
-          name="Leds"
-          geometry={nodes.Leds.geometry}
-          material={materials.PaletteMaterial003}
-          position={[-25.144, 9.748, 9.324]}
-          rotation={[-Math.PI, -0.635, Math.PI / 2]}
-          scale={[0.415, 0.508, 0.552]}
-        />
-        <mesh
-          visible={false}
-          name="SSD"
-          geometry={nodes.SSD.geometry}
-          material={materials.aiStandardSurface9SG}
-          position={[-25.144, 9.748, 9.324]}
-          rotation={[-Math.PI, -0.635, Math.PI / 2]}
-          scale={[0.415, 0.508, 0.552]}
-        />
-        <mesh
-          visible={false}
-          name="Entradas"
-          geometry={nodes.Entradas.geometry}
-          material={materials.PaletteMaterial002}
-          position={[-25.144, 9.748, 9.324]}
-          rotation={[-Math.PI, -0.635, Math.PI / 2]}
-          scale={[0.415, 0.508, 0.552]}
-        />
-        <mesh
-          visible={false}
-          name="EntradasUsb"
-          geometry={nodes.EntradasUsb.geometry}
-          material={materials.PaletteMaterial002}
-          position={[-25.144, 9.748, 9.324]}
-          rotation={[-Math.PI, -0.635, Math.PI / 2]}
-          scale={[0.415, 0.508, 0.552]}
-        />
-        <mesh
-          visible={false}
-          name="EntradasPc"
-          geometry={nodes.EntradasPc.geometry}
-          material={materials.PaletteMaterial002}
-          position={[-25.144, 9.748, 9.324]}
-          rotation={[-Math.PI, -0.635, Math.PI / 2]}
-          scale={[0.415, 0.508, 0.552]}
-        />
-        <mesh
-          visible={false}
-          name="EntradasPC2"
-          geometry={nodes.EntradasPC2.geometry}
-          material={materials.PaletteMaterial002}
-          position={[-25.144, 9.748, 9.324]}
-          rotation={[-Math.PI, -0.635, Math.PI / 2]}
-          scale={[0.415, 0.508, 0.552]}
-        />
-        <mesh
-          name="EntradasPC3"
-          geometry={nodes.EntradasPC3.geometry}
-          material={materials.PaletteMaterial002}
-          position={[-25.144, 9.748, 9.324]}
-          rotation={[-Math.PI, -0.635, Math.PI / 2]}
-          scale={[0.415, 0.508, 0.552]}
-        />
-        <mesh
-          name="EntradaEthernet"
-          geometry={nodes.EntradaEthernet.geometry}
-          material={materials.PaletteMaterial002}
-          position={[-25.144, 9.748, 9.324]}
-          rotation={[-Math.PI, -0.635, Math.PI / 2]}
-          scale={[0.415, 0.508, 0.552]}
-        />
-        <mesh
-          name="Parafusos2001"
-          geometry={nodes.Parafusos2001.geometry}
-          material={materials.PaletteMaterial002}
-          position={[-25.144, 9.748, 9.324]}
-          rotation={[-Math.PI, -0.635, Math.PI / 2]}
-          scale={[0.415, 0.508, 0.552]}
-        />
-        <mesh
-          name="Pinos"
-          geometry={nodes.Pinos.geometry}
-          material={materials.PaletteMaterial002}
-          position={[-25.144, 9.748, 9.324]}
-          rotation={[-Math.PI, -0.635, Math.PI / 2]}
-          scale={[0.415, 0.508, 0.552]}
-        />
-        <mesh
-          name="VidroPc"
-          geometry={nodes.VidroPc.geometry}
-          material={materials.PaletteMaterial004}
-          position={[-25.144, 9.748, 9.324]}
-          rotation={[-Math.PI, -0.635, Math.PI / 2]}
-          scale={[0.415, 0.508, 0.552]}
-        />
-        <group
-          visible={false}
-          name="LED_Streifen020"
-          position={[-23.422, 19.103, 23.274]}
-        >
+        <group name="PC">
+          <mesh
+            name="PecasMetal"
+            castShadow
+            receiveShadow
+            geometry={nodes.PecasMetal.geometry}
+            material={materials.aiStandardSurface2SG}
+            position={[-25.144, 9.748, 9.324]}
+            rotation={[-Math.PI, -0.635, Math.PI / 2]}
+            scale={[0.415, 0.508, 0.552]}
+          />
+          <mesh
+            name="Grades"
+            castShadow
+            receiveShadow
+            geometry={nodes.Grades.geometry}
+            material={materials.aiStandardSurface4SG}
+            position={[-25.144, 9.748, 9.324]}
+            rotation={[-Math.PI, -0.635, Math.PI / 2]}
+            scale={[0.415, 0.508, 0.552]}
+          />
+          <mesh
+            name="PCPartes"
+            castShadow
+            receiveShadow
+            geometry={nodes.PCPartes.geometry}
+            material={materials.aiStandardSurface14SG}
+            position={[-25.144, 9.748, 9.324]}
+            rotation={[-Math.PI, -0.635, Math.PI / 2]}
+            scale={[0.415, 0.508, 0.552]}
+          />
+          <mesh
+            name="Fios"
+            castShadow
+            receiveShadow
+            geometry={nodes.Fios.geometry}
+            material={materials.aiStandardSurface1SG}
+            position={[-25.144, 9.748, 9.324]}
+            rotation={[-Math.PI, -0.635, Math.PI / 2]}
+            scale={[0.415, 0.508, 0.552]}
+          />
+          <mesh
+            name="PecasPe"
+            castShadow
+            receiveShadow
+            geometry={nodes.PecasPe.geometry}
+            material={materials.aiStandardSurface5SG}
+            position={[-25.144, 9.748, 9.324]}
+            rotation={[-Math.PI, -0.635, Math.PI / 2]}
+            scale={[0.415, 0.508, 0.552]}
+          />
+          <mesh
+            name="Leds"
+            castShadow
+            receiveShadow
+            geometry={nodes.Leds.geometry}
+            material={materials.aiStandardSurface8SG}
+            position={[-25.144, 9.748, 9.324]}
+            rotation={[-Math.PI, -0.635, Math.PI / 2]}
+            scale={[0.415, 0.508, 0.552]}
+          />
+          <mesh
+            name="SSD"
+            castShadow
+            receiveShadow
+            geometry={nodes.SSD.geometry}
+            material={materials.aiStandardSurface9SG}
+            position={[-25.144, 9.748, 9.324]}
+            rotation={[-Math.PI, -0.635, Math.PI / 2]}
+            scale={[0.415, 0.508, 0.552]}
+          />
+          <mesh
+            name="Entradas"
+            castShadow
+            receiveShadow
+            geometry={nodes.Entradas.geometry}
+            material={materials.conectores_0014aiStandardSurface1SG}
+            position={[-25.144, 9.748, 9.324]}
+            rotation={[-Math.PI, -0.635, Math.PI / 2]}
+            scale={[0.415, 0.508, 0.552]}
+          />
+          <mesh
+            name="EntradasPc"
+            castShadow
+            receiveShadow
+            geometry={nodes.EntradasPc.geometry}
+            material={materials.conectores_0014aiStandardSurface2SG}
+            position={[-25.144, 9.748, 9.324]}
+            rotation={[-Math.PI, -0.635, Math.PI / 2]}
+            scale={[0.415, 0.508, 0.552]}
+          />
+          <mesh
+            name="EntradaEthernet"
+            castShadow
+            receiveShadow
+            geometry={nodes.EntradaEthernet.geometry}
+            material={materials.conectores_0014aiStandardSurface3SG}
+            position={[-25.144, 9.748, 9.324]}
+            rotation={[-Math.PI, -0.635, Math.PI / 2]}
+            scale={[0.415, 0.508, 0.552]}
+          />
           <mesh
-            name="Plane035"
-            geometry={nodes.Plane035.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_1"
-            geometry={nodes.Plane035_1.geometry}
-            material={materials.PaletteMaterial005}
-          />
-          <mesh
-            name="Plane035_2"
-            geometry={nodes.Plane035_2.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_3"
-            geometry={nodes.Plane035_3.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_4"
-            geometry={nodes.Plane035_4.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_5"
-            geometry={nodes.Plane035_5.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_6"
-            geometry={nodes.Plane035_6.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_7"
-            geometry={nodes.Plane035_7.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_8"
-            geometry={nodes.Plane035_8.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_9"
-            geometry={nodes.Plane035_9.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_10"
-            geometry={nodes.Plane035_10.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_11"
-            geometry={nodes.Plane035_11.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_12"
-            geometry={nodes.Plane035_12.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_13"
-            geometry={nodes.Plane035_13.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_14"
-            geometry={nodes.Plane035_14.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_15"
-            geometry={nodes.Plane035_15.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_16"
-            geometry={nodes.Plane035_16.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_17"
-            geometry={nodes.Plane035_17.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_18"
-            geometry={nodes.Plane035_18.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_19"
-            geometry={nodes.Plane035_19.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_20"
-            geometry={nodes.Plane035_20.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_21"
-            geometry={nodes.Plane035_21.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_22"
-            geometry={nodes.Plane035_22.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_23"
-            geometry={nodes.Plane035_23.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_24"
-            geometry={nodes.Plane035_24.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_25"
-            geometry={nodes.Plane035_25.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_26"
-            geometry={nodes.Plane035_26.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_27"
-            geometry={nodes.Plane035_27.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_28"
-            geometry={nodes.Plane035_28.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_29"
-            geometry={nodes.Plane035_29.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_30"
-            geometry={nodes.Plane035_30.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_31"
-            geometry={nodes.Plane035_31.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_32"
-            geometry={nodes.Plane035_32.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_33"
-            geometry={nodes.Plane035_33.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_34"
-            geometry={nodes.Plane035_34.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_35"
-            geometry={nodes.Plane035_35.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_36"
-            geometry={nodes.Plane035_36.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_37"
-            geometry={nodes.Plane035_37.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_38"
-            geometry={nodes.Plane035_38.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_39"
-            geometry={nodes.Plane035_39.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_40"
-            geometry={nodes.Plane035_40.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_41"
-            geometry={nodes.Plane035_41.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane035_42"
-            geometry={nodes.Plane035_42.geometry}
-            material={materials["LED Stripe"]}
-          />
-        </group>
-        <group
-          visible={false}
-          name="LED_Streifen063"
-          position={[-23.399, 9.352, 23.297]}
-        >
-          <mesh
-            name="Plane077"
-            geometry={nodes.Plane077.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_1"
-            geometry={nodes.Plane077_1.geometry}
-            material={materials.PaletteMaterial005}
-          />
-          <mesh
-            name="Plane077_2"
-            geometry={nodes.Plane077_2.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_3"
-            geometry={nodes.Plane077_3.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_4"
-            geometry={nodes.Plane077_4.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_5"
-            geometry={nodes.Plane077_5.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_6"
-            geometry={nodes.Plane077_6.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_7"
-            geometry={nodes.Plane077_7.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_8"
-            geometry={nodes.Plane077_8.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_9"
-            geometry={nodes.Plane077_9.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_10"
-            geometry={nodes.Plane077_10.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_11"
-            geometry={nodes.Plane077_11.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_12"
-            geometry={nodes.Plane077_12.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_13"
-            geometry={nodes.Plane077_13.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_14"
-            geometry={nodes.Plane077_14.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_15"
-            geometry={nodes.Plane077_15.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_16"
-            geometry={nodes.Plane077_16.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_17"
-            geometry={nodes.Plane077_17.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_18"
-            geometry={nodes.Plane077_18.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_19"
-            geometry={nodes.Plane077_19.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_20"
-            geometry={nodes.Plane077_20.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_21"
-            geometry={nodes.Plane077_21.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_22"
-            geometry={nodes.Plane077_22.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_23"
-            geometry={nodes.Plane077_23.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_24"
-            geometry={nodes.Plane077_24.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_25"
-            geometry={nodes.Plane077_25.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_26"
-            geometry={nodes.Plane077_26.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_27"
-            geometry={nodes.Plane077_27.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_28"
-            geometry={nodes.Plane077_28.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_29"
-            geometry={nodes.Plane077_29.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_30"
-            geometry={nodes.Plane077_30.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_31"
-            geometry={nodes.Plane077_31.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_32"
-            geometry={nodes.Plane077_32.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_33"
-            geometry={nodes.Plane077_33.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_34"
-            geometry={nodes.Plane077_34.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_35"
-            geometry={nodes.Plane077_35.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_36"
-            geometry={nodes.Plane077_36.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_37"
-            geometry={nodes.Plane077_37.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_38"
-            geometry={nodes.Plane077_38.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_39"
-            geometry={nodes.Plane077_39.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_40"
-            geometry={nodes.Plane077_40.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_41"
-            geometry={nodes.Plane077_41.geometry}
-            material={materials["LED Stripe"]}
-          />
-          <mesh
-            name="Plane077_42"
-            geometry={nodes.Plane077_42.geometry}
-            material={materials["LED Stripe"]}
+            name="Parafusos2001"
+            castShadow
+            receiveShadow
+            geometry={nodes.Parafusos2001.geometry}
+            material={materials.conectores_0014aiStandardSurface5SG}
+            position={[-25.144, 9.748, 9.324]}
+            rotation={[-Math.PI, -0.635, Math.PI / 2]}
+            scale={[0.415, 0.508, 0.552]}
+          />
+          <mesh
+            name="Pinos"
+            castShadow
+            receiveShadow
+            geometry={nodes.Pinos.geometry}
+            material={materials.initialShadingGroup}
+            position={[-25.144, 9.748, 9.324]}
+            rotation={[-Math.PI, -0.635, Math.PI / 2]}
+            scale={[0.415, 0.508, 0.552]}
+          />
+          <mesh
+            name="VidroPc"
+            castShadow
+            receiveShadow
+            geometry={nodes.VidroPc.geometry}
+            material={materials.aiStandardSurface3SG}
+            position={[-25.144, 9.748, 9.324]}
+            rotation={[-Math.PI, -0.635, Math.PI / 2]}
+            scale={[0.415, 0.508, 0.552]}
           />
         </group>
         <group name="Wall" position={[-8.761, 15.37, 1.697]}>
           <mesh
             name="Cube012"
+            castShadow
+            receiveShadow
             geometry={nodes.Cube012.geometry}
             material={materials.LeftWallMaterial}
           />
           <mesh
             name="Cube012_1"
+            castShadow
+            receiveShadow
             geometry={nodes.Cube012_1.geometry}
             material={materials.MiddleWallMaterial}
           />
           <mesh
             name="Cube012_2"
+            castShadow
+            receiveShadow
             geometry={nodes.Cube012_2.geometry}
             material={materials.RightWallMaterial}
           />
           <mesh
             name="Cube012_3"
+            castShadow
+            receiveShadow
             geometry={nodes.Cube012_3.geometry}
             material={materials.FloorMaterial}
           />
+        </group>
+        <group name="Vitrola">
+          <group
+            name="AgulhaHolderVitrola"
+            position={[-26.457, 9.45, 25.346]}
+            rotation={[0.081, -0.812, 0.023]}
+          >
+            <mesh
+              name="Object_6004"
+              castShadow
+              receiveShadow
+              geometry={nodes.Object_6004.geometry}
+              material={materials.vitrolaMetal}
+            />
+            <mesh
+              name="Object_6004_1"
+              castShadow
+              receiveShadow
+              geometry={nodes.Object_6004_1.geometry}
+              material={materials.PlasticoPretoVitrola}
+            />
+          </group>
+          <group
+            name="Disc"
+            position={[-26.031, 9.362, 25.874]}
+            scale={[1.025, 0.003, 1.025]}
+          >
+            <mesh
+              name="Cylinder"
+              castShadow
+              receiveShadow
+              geometry={nodes.Cylinder.geometry}
+              material={materials.vitrolaBlack}
+            />
+            <mesh
+              name="Cylinder_1"
+              castShadow
+              receiveShadow
+              geometry={nodes.Cylinder_1.geometry}
+              material={materials.centerVitrola}
+            />
+          </group>
           <mesh
-            name="Cube012_4"
-            geometry={nodes.Cube012_4.geometry}
-            material={materials.FloorMaterial}
+            name="HolderVitrola"
+            castShadow
+            receiveShadow
+            geometry={nodes.HolderVitrola.geometry}
+            material={materials.vitrolaMetal}
+            position={[-26.03, 9.366, 25.874]}
+            scale={[0.026, 0.059, 0.026]}
+          />
+          <mesh
+            name="Circle_0"
+            castShadow
+            receiveShadow
+            geometry={nodes.Circle_0.geometry}
+            material={materials.Indoor_Plant_pot}
+            position={[-18.768, 9.353, 26.54]}
+          />
+          <mesh
+            name="Circle_1"
+            castShadow
+            receiveShadow
+            geometry={nodes.Circle_1.geometry}
+            material={nodes.Circle_1.material}
+            position={[-18.759, 9.013, 26.546]}
+          />
+          <mesh
+            name="Circle_2"
+            castShadow
+            receiveShadow
+            geometry={nodes.Circle_2.geometry}
+            material={materials.FlorMaterial}
+            position={[-18.757, 10.821, 26.528]}
+          />
+          <mesh
+            name="Circle_3"
+            castShadow
+            receiveShadow
+            geometry={nodes.Circle_3.geometry}
+            material={materials.Indoor_Plant}
+            position={[-18.783, 10.388, 26.465]}
+          />
+          <mesh
+            name="Circle_4"
+            castShadow
+            receiveShadow
+            geometry={nodes.Circle_4.geometry}
+            material={materials.Indoor_Plant_ground}
+            position={[-18.759, 9.683, 26.546]}
+          />
+          <mesh
+            name="BotoesVitrola"
+            castShadow
+            receiveShadow
+            geometry={nodes.BotoesVitrola.geometry}
+            material={materials.PlasticoPretoVitrola}
+            position={[-26.111, 9.395, 24.729]}
+          />
+          <mesh
+            name="DetalheVitrola"
+            castShadow
+            receiveShadow
+            geometry={nodes.DetalheVitrola.geometry}
+            material={materials.vitrolaWood}
+            position={[-26.42, 9.328, 27.615]}
+          />
+          <mesh
+            name="TampaVitrola"
+            castShadow
+            receiveShadow
+            geometry={nodes.TampaVitrola.geometry}
+            material={materials.vitrolaVidro}
+            position={[-26.558, 10.718, 26.171]}
           />
         </group>
-        <mesh
-          name="Livro6"
-          geometry={nodes.Livro6.geometry}
-          material={materials.Books}
-          position={[-9.473, 20.583, 26.927]}
-        />
-        <mesh
-          name="LivroCima"
-          geometry={nodes.LivroCima.geometry}
-          material={materials.Books}
-          position={[-9.363, 20.653, 26.989]}
-        />
-        <mesh
-          name="LivroCima2"
-          geometry={nodes.LivroCima2.geometry}
-          material={materials.Books}
-          position={[-9.45, 21.049, 26.911]}
-        />
-        <mesh
-          name="Livro3"
-          geometry={nodes.Livro3.geometry}
-          material={materials.Books}
-          position={[-9.338, 20.874, 27.211]}
-        />
-        <mesh
-          name="Livro4"
-          geometry={nodes.Livro4.geometry}
-          material={materials.Books}
-          position={[-9.28, 20.283, 27.141]}
-        />
-        <mesh
-          name="Livro5"
-          geometry={nodes.Livro5.geometry}
-          material={materials.Books}
-          position={[-9.227, 19.889, 27.006]}
-        />
-        <mesh
-          name="BookStack4"
-          geometry={nodes.BookStack4.geometry}
-          material={materials.PropBooksMaterial2}
-          position={[-26.728, 21.03, 18.123]}
-        />
-        <mesh
-          name="BookStack1"
-          geometry={nodes.BookStack1.geometry}
-          material={materials.PropBookMaterial}
-          position={[-26.755, 20.674, 12.341]}
-        />
-        <mesh
-          name="BookStack2"
-          geometry={nodes.BookStack2.geometry}
-          material={materials.PropBookMaterial}
-          position={[-23.707, 20.773, 26.633]}
-        />
-        <mesh
-          name="BookStack3"
-          geometry={nodes.BookStack3.geometry}
-          material={materials.PropBookMaterial}
-          position={[-16.448, 20.97, 26.752]}
-        />
-        <mesh
-          name="BookStack5"
-          geometry={nodes.BookStack5.geometry}
-          material={materials.PropBookMaterial}
-          position={[-26.595, 20.548, 24.528]}
-        />
-        <mesh
-          name="MousePad"
-          geometry={nodes.MousePad.geometry}
-          material={materials.MousePadMaterial}
-          position={[-25.798, 9.025, 17.987]}
-        />
-        <group
-          name="Monitor"
-          onPointerEnter={() => setHovering(true)}
-          onPointerLeave={() => setHovering(false)}
-          onClick={(e) => {
-            e.stopPropagation();
-            const { x, y, z } = e.object.getWorldPosition(new Vector3());
-            setObject({
-              name: "Monitor",
-              position: new THREE.Vector3(x, y, z),
-            });
-            setClicked(!isClicked);
-          }}
-        >
-          <mesh
-            name="MonitorBotao"
-            geometry={nodes.MonitorBotao.geometry}
-            material={materials.BotoesMonitorImg}
-            position={[-26.967, 10.242, 16.06]}
-          />
-          <mesh
-            name="MonitorAtras1"
-            geometry={nodes.MonitorAtras1.geometry}
-            material={materials.BackMonitorMaterial}
-            position={[-27.106, 11.156, 17.987]}
-          />
-          <mesh
-            name="MonitorAtras2"
-            geometry={nodes.MonitorAtras2.geometry}
-            material={materials["achter.ribbel.001"]}
-            position={[-26.995, 11.665, 18.021]}
-          />
-          <mesh
-            name="MonitorAtras3"
-            geometry={nodes.MonitorAtras3.geometry}
-            material={materials["logo.coutout.smooth.001"]}
-            position={[-27.186, 11.025, 18.049]}
-          />
-          <mesh
-            name="MonitorAtras4"
-            geometry={nodes.MonitorAtras4.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-27.12, 10.162, 17.954]}
-          />
-          <mesh
-            name="PeMonitor"
-            geometry={nodes.PeMonitor.geometry}
-            material={materials.BackMonitorMaterial}
-            position={[-27.136, 9.094, 18.007]}
-          />
-          <mesh
-            name="PeMonitor2"
-            geometry={nodes.PeMonitor2.geometry}
-            material={materials["logo.coutout.smooth"]}
-            position={[-27.176, 9.103, 18.012]}
-          />
-          <mesh
-            name="PeMonitor3"
-            geometry={nodes.PeMonitor3.geometry}
-            material={materials.PeMonitorMaterial2}
-            position={[-27.368, 9.126, 17.994]}
-          />
-          <mesh
-            name="FerroMonitor"
-            geometry={nodes.FerroMonitor.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-26.992, 9.957, 18.006]}
-          />
-          <mesh
-            name="HoldMonitor"
-            geometry={nodes.HoldMonitor.geometry}
-            material={materials.PeMonitorMaterial2}
-            position={[-27.142, 9.898, 18.002]}
-          />
-          <mesh
-            name="HoldMonitorAtras"
-            geometry={nodes.HoldMonitorAtras.geometry}
-            material={materials.BackMonitorMaterial}
-            position={[-27.275, 9.739, 17.992]}
-          />
-          <mesh
-            name="Tela"
-            geometry={nodes.Tela.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-26.878, 10.931, 17.998]}
-          />
-          <mesh
-            name="AcerHold"
-            geometry={nodes.AcerHold.geometry}
-            material={materials.AcerLoogo}
-            position={[-26.846, 9.713, 18.007]}
-          />
-          <mesh
-            name="FerrinhoTelaEmbaixo"
-            geometry={nodes.FerrinhoTelaEmbaixo.geometry}
-            material={materials["logo.coutout.smooth.001"]}
-            position={[-26.836, 9.709, 17.245]}
-          />
-          <mesh
-            name="MoldeTela"
-            geometry={nodes.MoldeTela.geometry}
-            material={materials.VoltaMonitorMaterial}
-            position={[-26.901, 11.097, 17.998]}
-          />
-          <mesh
-            name="MoldeTela2"
-            geometry={nodes.MoldeTela2.geometry}
-            material={materials.BackMonitorMaterial}
-            position={[-26.898, 10.944, 18.03]}
-          />
-          {/* <mesh
-            name="KeyBoard"
-            geometry={nodes.KeyBoard.geometry}
-            material={materials.TecladoMaterial}
-            position={[-25.453, 9.2, 19.918]}
-          /> */}
-        </group>
-        <group
-          name="AgulhaHolderVitrola"
-          position={[-26.457, 9.45, 25.346]}
-          rotation={[0.081, -0.812, 0.023]}
-        >
-          <mesh
-            name="Object_6004"
-            geometry={nodes.Object_6004.geometry}
-            material={materials.PaletteMaterial002}
-          />
-          <mesh
-            name="Object_6004_1"
-            geometry={nodes.Object_6004_1.geometry}
-            material={materials.PaletteMaterial002}
-          />
-        </group>
-
-        <mesh
-          name="Circle_0"
-          geometry={nodes.Circle_0.geometry}
-          material={materials.Indoor_Plant_pot}
-          position={[-18.768, 9.353, 26.54]}
-        />
-        <mesh
-          name="Circle_1"
-          geometry={nodes.Circle_1.geometry}
-          material={nodes.Circle_1.material}
-          position={[-18.759, 9.013, 26.546]}
-        />
-        <mesh
-          name="Circle_2"
-          geometry={nodes.Circle_2.geometry}
-          material={materials.FlorMaterial}
-          position={[-18.757, 10.821, 26.528]}
-        />
-        <mesh
-          name="Circle_3"
-          geometry={nodes.Circle_3.geometry}
-          material={materials.Indoor_Plant}
-          position={[-18.783, 10.388, 26.465]}
-        />
-        <mesh
-          name="Circle_4"
-          geometry={nodes.Circle_4.geometry}
-          material={materials.Indoor_Plant_ground}
-          position={[-18.759, 9.683, 26.546]}
-        />
-        <mesh
-          name="Circle_5"
-          geometry={nodes.Circle_5.geometry}
-          material={materials.Indoor_Plant_pot}
-          position={[-18.763, 9.257, 26.541]}
-        />
         <mesh
           name="Cama"
+          castShadow
+          receiveShadow
           geometry={nodes.Cama.geometry}
           material={materials.BedMaterial}
           position={[-17.996, 6.461, -14.08]}
         />
-        <group name={"Teclado"}>
-          <mesh
-            name="MoldeTeclado"
-            geometry={nodes.MoldeTeclado.geometry}
-            material={materials.PaletteMaterial007}
-            position={[-16.274, 9.157, 9.032]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={[0.019, 0.019, 0.034]}
-          />
-          <group
-            name="Pad7"
-            position={[-19.207, 9.294, 9.02]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={[0.019, 0.011, 0.019]}
-          >
-            <mesh
-              name="Mesh016"
-              geometry={nodes.Mesh016.geometry}
-              material={materials.PaletteMaterial007}
-            />
-            <mesh
-              name="Mesh016_1"
-              geometry={nodes.Mesh016_1.geometry}
-              material={materials.PaletteMaterial007}
-            />
-          </group>
-          <group
-            name="Pad8"
-            position={[-19.2, 9.294, 9.326]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={[0.019, 0.011, 0.019]}
-          >
-            <mesh
-              name="Mesh016"
-              geometry={nodes.Mesh016.geometry}
-              material={materials.PaletteMaterial007}
-            />
-            <mesh
-              name="Mesh016_1"
-              geometry={nodes.Mesh016_1.geometry}
-              material={materials.PaletteMaterial007}
-            />
-          </group>
-          <group
-            name="Pad5"
-            position={[-19.527, 9.294, 9.027]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={[0.019, 0.011, 0.019]}
-          >
-            <mesh
-              name="Mesh016"
-              geometry={nodes.Mesh016.geometry}
-              material={materials.PaletteMaterial007}
-            />
-            <mesh
-              name="Mesh016_1"
-              geometry={nodes.Mesh016_1.geometry}
-              material={materials.PaletteMaterial007}
-            />
-          </group>
-          <group
-            name="Pad6"
-            position={[-19.521, 9.294, 9.333]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={[0.019, 0.011, 0.019]}
-          >
-            <mesh
-              name="Mesh016"
-              geometry={nodes.Mesh016.geometry}
-              material={materials.PaletteMaterial007}
-            />
-            <mesh
-              name="Mesh016_1"
-              geometry={nodes.Mesh016_1.geometry}
-              material={materials.PaletteMaterial007}
-            />
-          </group>
-          <group
-            name="Pad3"
-            position={[-19.852, 9.292, 9.034]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={[0.019, 0.011, 0.019]}
-          >
-            <mesh
-              name="Mesh016"
-              geometry={nodes.Mesh016.geometry}
-              material={materials.PaletteMaterial007}
-            />
-            <mesh
-              name="Mesh016_1"
-              geometry={nodes.Mesh016_1.geometry}
-              material={materials.PaletteMaterial007}
-            />
-          </group>
-          <group
-            name="Pad4"
-            position={[-19.846, 9.294, 9.34]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={[0.019, 0.011, 0.019]}
-          >
-            <mesh
-              name="Mesh016"
-              geometry={nodes.Mesh016.geometry}
-              material={materials.PaletteMaterial007}
-            />
-            <mesh
-              name="Mesh016_1"
-              geometry={nodes.Mesh016_1.geometry}
-              material={materials.PaletteMaterial007}
-            />
-          </group>
-          <group
-            name="Pad1"
-            position={[-20.166, 9.294, 9.04]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={[0.019, 0.011, 0.019]}
-          >
-            <mesh
-              name="Mesh016"
-              geometry={nodes.Mesh016.geometry}
-              material={materials.PaletteMaterial007}
-            />
-            <mesh
-              name="Mesh016_1"
-              geometry={nodes.Mesh016_1.geometry}
-              material={materials.PaletteMaterial007}
-            />
-          </group>
-          <group
-            name="Pad2"
-            position={[-20.159, 9.292, 9.346]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={[0.019, 0.011, 0.019]}
-          >
-            <mesh
-              name="Mesh016"
-              geometry={nodes.Mesh016.geometry}
-              material={materials.PaletteMaterial007}
-            />
-            <mesh
-              name="Mesh016_1"
-              geometry={nodes.Mesh016_1.geometry}
-              material={materials.PaletteMaterial007}
-            />
-          </group>
-          <group
-            name="Pad10"
-            position={[-18.874, 9.292, 9.309]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={[0.019, 0.011, 0.019]}
-          >
-            <mesh
-              name="Mesh016"
-              geometry={nodes.Mesh016.geometry}
-              material={materials.PaletteMaterial007}
-            />
-            <mesh
-              name="Mesh016_1"
-              geometry={nodes.Mesh016_1.geometry}
-              material={materials.PaletteMaterial007}
-            />
-          </group>
-          <group
-            name="Pad9"
-            position={[-18.88, 9.294, 9.003]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={[0.019, 0.011, 0.019]}
-          >
-            <mesh
-              name="Mesh016"
-              geometry={nodes.Mesh016.geometry}
-              material={materials.PaletteMaterial007}
-            />
-            <mesh
-              name="Mesh016_1"
-              geometry={nodes.Mesh016_1.geometry}
-              material={materials.PaletteMaterial007}
-            />
-          </group>
-          <group
-            name="Pad12"
-            position={[-18.56, 9.294, 9.303]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={[0.019, 0.011, 0.019]}
-          >
-            <mesh
-              name="Mesh016"
-              geometry={nodes.Mesh016.geometry}
-              material={materials.PaletteMaterial007}
-            />
-            <mesh
-              name="Mesh016_1"
-              geometry={nodes.Mesh016_1.geometry}
-              material={materials.PaletteMaterial007}
-            />
-          </group>
-          <group
-            name="Pad11"
-            position={[-18.566, 9.292, 8.997]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={[0.019, 0.011, 0.019]}
-          >
-            <mesh
-              name="Mesh016"
-              geometry={nodes.Mesh016.geometry}
-              material={materials.PaletteMaterial007}
-            />
-            <mesh
-              name="Mesh016_1"
-              geometry={nodes.Mesh016_1.geometry}
-              material={materials.PaletteMaterial007}
-            />
-          </group>
-          <group
-            name="Pad14"
-            position={[-18.235, 9.294, 9.296]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={[0.019, 0.011, 0.019]}
-          >
-            <mesh
-              name="Mesh016"
-              geometry={nodes.Mesh016.geometry}
-              material={materials.PaletteMaterial007}
-            />
-            <mesh
-              name="Mesh016_1"
-              geometry={nodes.Mesh016_1.geometry}
-              material={materials.PaletteMaterial007}
-            />
-          </group>
-          <group
-            name="Pad13"
-            position={[-18.241, 9.294, 8.99]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={[0.019, 0.011, 0.019]}
-          >
-            <mesh
-              name="Mesh016"
-              geometry={nodes.Mesh016.geometry}
-              material={materials.PaletteMaterial007}
-            />
-            <mesh
-              name="Mesh016_1"
-              geometry={nodes.Mesh016_1.geometry}
-              material={materials.PaletteMaterial007}
-            />
-          </group>
-          <group
-            name="Pad16"
-            position={[-17.915, 9.294, 9.289]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={[0.019, 0.011, 0.019]}
-          >
-            <mesh
-              name="Mesh016"
-              geometry={nodes.Mesh016.geometry}
-              material={materials.PaletteMaterial007}
-            />
-            <mesh
-              name="Mesh016_1"
-              geometry={nodes.Mesh016_1.geometry}
-              material={materials.PaletteMaterial007}
-            />
-          </group>
-          <group
-            name="Pad15"
-            position={[-17.921, 9.294, 8.983]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={[0.019, 0.011, 0.019]}
-          >
-            <mesh
-              name="Mesh016"
-              geometry={nodes.Mesh016.geometry}
-              material={materials.PaletteMaterial007}
-            />
-            <mesh
-              name="Mesh016_1"
-              geometry={nodes.Mesh016_1.geometry}
-              material={materials.PaletteMaterial007}
-            />
-          </group>
-          <group
-            name="OrganButton"
-            position={[-20.601, 9.294, 9.218]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={[0.019, 0.011, 0.019]}
-          >
-            <mesh
-              name="Mesh017"
-              geometry={nodes.Mesh017.geometry}
-              material={materials.PaletteMaterial007}
-            />
-            <mesh
-              name="Mesh017_1"
-              geometry={nodes.Mesh017_1.geometry}
-              material={materials.PaletteMaterial007}
-            />
-          </group>
-          <group
-            name="PianoButton"
-            position={[-20.836, 9.294, 9.223]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={[0.019, 0.011, 0.019]}
-          >
-            <mesh
-              name="Mesh017"
-              geometry={nodes.Mesh017.geometry}
-              material={materials.PaletteMaterial007}
-            />
-            <mesh
-              name="Mesh017_1"
-              geometry={nodes.Mesh017_1.geometry}
-              material={materials.PaletteMaterial007}
-            />
-          </group>
-          <group
-            name="BassButton"
-            position={[-20.598, 9.294, 9.36]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={[0.019, 0.011, 0.019]}
-          >
-            <mesh
-              name="Mesh017"
-              geometry={nodes.Mesh017.geometry}
-              material={materials.PaletteMaterial007}
-            />
-            <mesh
-              name="Mesh017_1"
-              geometry={nodes.Mesh017_1.geometry}
-              material={materials.PaletteMaterial007}
-            />
-          </group>
-          <group
-            name="StringsButton"
-            position={[-20.833, 9.294, 9.365]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={[0.019, 0.011, 0.019]}
-          >
-            <mesh
-              name="Mesh017"
-              geometry={nodes.Mesh017.geometry}
-              material={materials.PaletteMaterial007}
-            />
-            <mesh
-              name="Mesh017_1"
-              geometry={nodes.Mesh017_1.geometry}
-              material={materials.PaletteMaterial007}
-            />
-          </group>
-          <mesh
-            name="VolumeSlider"
-            geometry={nodes.VolumeSlider.geometry}
-            material={materials.PaletteMaterial007}
-            position={[-20.714, 9.312, 8.968]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={0.019}
-          />
-          <group
-            name="CutoffSlider"
-            position={[-17.093, 9.301, 9.159]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={0.019}
-          >
-            <mesh
-              name="Mesh021"
-              geometry={nodes.Mesh021.geometry}
-              material={materials.PaletteMaterial007}
-            />
-            <mesh
-              name="Mesh021_1"
-              geometry={nodes.Mesh021_1.geometry}
-              material={materials.PaletteMaterial008}
-            />
-          </group>
-          <group
-            name="ResonanceSlider"
-            position={[-16.813, 9.301, 9.153]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={0.019}
-          >
-            <mesh
-              name="Mesh021"
-              geometry={nodes.Mesh021.geometry}
-              material={materials.PaletteMaterial007}
-            />
-            <mesh
-              name="Mesh021_1"
-              geometry={nodes.Mesh021_1.geometry}
-              material={materials.PaletteMaterial008}
-            />
-          </group>
-          <group
-            name="ReverbSlider"
-            position={[-15.621, 9.301, 9.132]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={0.019}
-          >
-            <mesh
-              name="Mesh021"
-              geometry={nodes.Mesh021.geometry}
-              material={materials.PaletteMaterial007}
-            />
-            <mesh
-              name="Mesh021_1"
-              geometry={nodes.Mesh021_1.geometry}
-              material={materials.PaletteMaterial008}
-            />
-          </group>
-          <group
-            name="ReleaseSlider"
-            position={[-16.21, 9.301, 9.143]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={0.019}
-          >
-            <mesh
-              name="Mesh036"
-              geometry={nodes.Mesh036.geometry}
-              material={materials.PaletteMaterial007}
-            />
-            <mesh
-              name="Mesh036_1"
-              geometry={nodes.Mesh036_1.geometry}
-              material={materials.PaletteMaterial008}
-            />
-          </group>
-          <group
-            name="ChorusSlider"
-            position={[-15.912, 9.301, 9.138]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={0.019}
-          >
-            <mesh
-              name="Mesh036"
-              geometry={nodes.Mesh036.geometry}
-              material={materials.PaletteMaterial007}
-            />
-            <mesh
-              name="Mesh036_1"
-              geometry={nodes.Mesh036_1.geometry}
-              material={materials.PaletteMaterial008}
-            />
-          </group>
-          <group
-            name="AttackSlider"
-            position={[-16.523, 9.301, 9.147]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={0.019}
-          >
-            <mesh
-              name="Mesh036"
-              geometry={nodes.Mesh036.geometry}
-              material={materials.PaletteMaterial007}
-            />
-            <mesh
-              name="Mesh036_1"
-              geometry={nodes.Mesh036_1.geometry}
-              material={materials.PaletteMaterial008}
-            />
-          </group>
-          <group
-            name="CuttoffMarker"
-            position={[-17.092, 9.361, 9.147]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={[0.008, 0.009, 0.009]}
-          >
-            <mesh
-              name="Mesh022"
-              geometry={nodes.Mesh022.geometry}
-              material={materials.PaletteMaterial007}
-            />
-            <mesh
-              name="Mesh022_1"
-              geometry={nodes.Mesh022_1.geometry}
-              material={nodes.Mesh022_1.material}
-            />
-          </group>
-          <group
-            name="ReleaseMarker"
-            position={[-16.21, 9.361, 9.131]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={[0.008, 0.009, 0.009]}
-          >
-            <mesh
-              name="Mesh022"
-              geometry={nodes.Mesh022.geometry}
-              material={materials.PaletteMaterial007}
-            />
-            <mesh
-              name="Mesh022_1"
-              geometry={nodes.Mesh022_1.geometry}
-              material={nodes.Mesh022_1.material}
-            />
-          </group>
-          <group
-            name="ResonanceMarker"
-            position={[-16.813, 9.361, 9.141]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={[0.008, 0.009, 0.009]}
-          >
-            <mesh
-              name="Mesh022"
-              geometry={nodes.Mesh022.geometry}
-              material={materials.PaletteMaterial007}
-            />
-            <mesh
-              name="Mesh022_1"
-              geometry={nodes.Mesh022_1.geometry}
-              material={nodes.Mesh022_1.material}
-            />
-          </group>
-          <group
-            name="ChorusMarker"
-            position={[-15.911, 9.361, 9.125]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={[0.008, 0.009, 0.009]}
-          >
-            <mesh
-              name="Mesh022"
-              geometry={nodes.Mesh022.geometry}
-              material={materials.PaletteMaterial007}
-            />
-            <mesh
-              name="Mesh022_1"
-              geometry={nodes.Mesh022_1.geometry}
-              material={nodes.Mesh022_1.material}
-            />
-          </group>
-          <group
-            name="AttackMarker"
-            position={[-16.522, 9.361, 9.135]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={[0.008, 0.009, 0.009]}
-          >
-            <mesh
-              name="Mesh022"
-              geometry={nodes.Mesh022.geometry}
-              material={materials.PaletteMaterial007}
-            />
-            <mesh
-              name="Mesh022_1"
-              geometry={nodes.Mesh022_1.geometry}
-              material={nodes.Mesh022_1.material}
-            />
-          </group>
-          <group
-            name="ReverbMarker"
-            position={[-15.621, 9.361, 9.119]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={[0.008, 0.009, 0.009]}
-          >
-            <mesh
-              name="Mesh022"
-              geometry={nodes.Mesh022.geometry}
-              material={materials.PaletteMaterial007}
-            />
-            <mesh
-              name="Mesh022_1"
-              geometry={nodes.Mesh022_1.geometry}
-              material={nodes.Mesh022_1.material}
-            />
-          </group>
-          <mesh
-            name="C3"
-            geometry={nodes.C3.geometry}
-            material={materials.PaletteMaterial008}
-            position={[-17.281, 9.196, 10.156]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={0.019}
-          />
-          <mesh
-            name="B2"
-            geometry={nodes.B2.geometry}
-            material={materials.PaletteMaterial008}
-            position={[-17.518, 9.196, 10.155]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={0.019}
-          />
-          <mesh
-            name="A2"
-            geometry={nodes.A2.geometry}
-            material={materials.PaletteMaterial008}
-            position={[-17.755, 9.196, 10.156]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={0.019}
-          />
-          <mesh
-            name="G2"
-            geometry={nodes.G2.geometry}
-            material={materials.PaletteMaterial008}
-            position={[-17.998, 9.196, 10.159]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={0.019}
-          />
-          <mesh
-            name="F2"
-            geometry={nodes.F2.geometry}
-            material={materials.PaletteMaterial008}
-            position={[-18.237, 9.196, 10.166]}
-            rotation={[-3.14, 1.55, Math.PI]}
-            scale={0.019}
-          />
-          <mesh
-            name="E2"
-            geometry={nodes.E2.geometry}
-            material={materials.PaletteMaterial008}
-            position={[-18.481, 9.196, 10.171]}
-            rotation={[-3.14, 1.55, Math.PI]}
-            scale={0.019}
-          />
-          <mesh
-            name="D2"
-            geometry={nodes.D2.geometry}
-            material={materials.PaletteMaterial008}
-            position={[-18.728, 9.196, 10.182]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={0.019}
-          />
-          <mesh
-            name="C2"
-            geometry={nodes.C2.geometry}
-            material={materials.PaletteMaterial008}
-            position={[-18.976, 9.196, 10.186]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={0.019}
-          />
-          <mesh
-            name="B1"
-            geometry={nodes.B1.geometry}
-            material={materials.PaletteMaterial008}
-            position={[-19.214, 9.196, 10.187]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={0.019}
-          />
-          <mesh
-            name="A1"
-            geometry={nodes.A1.geometry}
-            material={materials.PaletteMaterial008}
-            position={[-19.45, 9.196, 10.197]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={0.019}
-          />
-          <mesh
-            name="G1"
-            geometry={nodes.G1.geometry}
-            material={materials.PaletteMaterial008}
-            position={[-19.688, 9.196, 10.194]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={0.019}
-          />
-          <mesh
-            name="F1"
-            geometry={nodes.F1.geometry}
-            material={materials.PaletteMaterial008}
-            position={[-19.931, 9.196, 10.207]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={0.019}
-          />
-          <mesh
-            name="E1"
-            geometry={nodes.E1.geometry}
-            material={materials.PaletteMaterial008}
-            position={[-20.17, 9.206, 10.219]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={0.019}
-          />
-          <mesh
-            name="D1"
-            geometry={nodes.D1.geometry}
-            material={materials.PaletteMaterial008}
-            position={[-20.421, 9.196, 10.226]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={0.019}
-          />
-          <mesh
-            name="C1"
-            geometry={nodes.C1.geometry}
-            material={materials.PaletteMaterial008}
-            position={[-20.661, 9.206, 10.235]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={0.019}
-          />
-          <mesh
-            name="D3"
-            geometry={nodes.D3.geometry}
-            material={materials.PaletteMaterial008}
-            position={[-17.04, 9.196, 10.158]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={0.019}
-          />
-          <mesh
-            name="E3"
-            geometry={nodes.E3.geometry}
-            material={materials.PaletteMaterial008}
-            position={[-16.793, 9.196, 10.153]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={0.019}
-          />
-          <mesh
-            name="F3"
-            geometry={nodes.F3.geometry}
-            material={materials.PaletteMaterial008}
-            position={[-16.549, 9.196, 10.148]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={0.019}
-          />
-          <mesh
-            name="G3"
-            geometry={nodes.G3.geometry}
-            material={materials.PaletteMaterial008}
-            position={[-16.31, 9.196, 10.143]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={0.019}
-          />
-          <mesh
-            name="A3"
-            geometry={nodes.A3.geometry}
-            material={materials.PaletteMaterial008}
-            position={[-16.067, 9.196, 10.146]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={0.019}
-          />
-          <mesh
-            name="B3"
-            geometry={nodes.B3.geometry}
-            material={materials.PaletteMaterial008}
-            position={[-15.83, 9.196, 10.141]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={0.019}
-          />
-          <mesh
-            name="C4"
-            geometry={nodes.C4.geometry}
-            material={materials.PaletteMaterial008}
-            position={[-15.593, 9.196, 10.136]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={0.019}
-          />
-          <mesh
-            name="D4"
-            geometry={nodes.D4.geometry}
-            material={materials.PaletteMaterial008}
-            position={[-15.352, 9.196, 10.125]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={0.019}
-          />
-          <mesh
-            name="E4"
-            geometry={nodes.E4.geometry}
-            material={materials.PaletteMaterial008}
-            position={[-15.105, 9.196, 10.12]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={0.019}
-          />
-          <mesh
-            name="F4"
-            geometry={nodes.F4.geometry}
-            material={materials.PaletteMaterial008}
-            position={[-14.861, 9.196, 10.115]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={0.019}
-          />
-          <mesh
-            name="A#2"
-            geometry={nodes["A#2"].geometry}
-            material={materials.PaletteMaterial008}
-            position={[-17.653, 9.254, 9.968]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={[0.019, 0.011, 0.019]}
-          />
-          <mesh
-            name="G#2"
-            geometry={nodes["G#2"].geometry}
-            material={materials.PaletteMaterial008}
-            position={[-17.881, 9.254, 9.98]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={[0.019, 0.011, 0.019]}
-          />
-          <mesh
-            name="F#2"
-            geometry={nodes["F#2"].geometry}
-            material={materials.PaletteMaterial008}
-            position={[-18.125, 9.254, 9.982]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={[0.019, 0.011, 0.019]}
-          />
-          <mesh
-            name="D#2"
-            geometry={nodes["D#2"].geometry}
-            material={materials.PaletteMaterial008}
-            position={[-18.604, 9.254, 9.997]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={[0.019, 0.011, 0.019]}
-          />
-          <mesh
-            name="C#2"
-            geometry={nodes["C#2"].geometry}
-            material={materials.PaletteMaterial008}
-            position={[-18.847, 9.254, 10.007]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={[0.019, 0.011, 0.019]}
-          />
-          <mesh
-            name="A#1"
-            geometry={nodes["A#1"].geometry}
-            material={materials.PaletteMaterial008}
-            position={[-19.336, 9.254, 10.007]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={[0.019, 0.011, 0.019]}
-          />
-          <mesh
-            name="G#1"
-            geometry={nodes["G#1"].geometry}
-            material={materials.PaletteMaterial008}
-            position={[-19.565, 9.254, 10.009]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={[0.019, 0.011, 0.019]}
-          />
-          <mesh
-            name="F#1"
-            geometry={nodes["F#1"].geometry}
-            material={materials.PaletteMaterial008}
-            position={[-19.809, 9.254, 10.02]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={[0.019, 0.011, 0.019]}
-          />
-          <mesh
-            name="D#1"
-            geometry={nodes["D#1"].geometry}
-            material={materials.PaletteMaterial008}
-            position={[-20.294, 9.254, 10.043]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={[0.019, 0.011, 0.019]}
-          />
-          <mesh
-            name="C#1"
-            geometry={nodes["C#1"].geometry}
-            material={materials.PaletteMaterial008}
-            position={[-20.537, 9.254, 10.047]}
-            rotation={[-3.14, 1.55, 3.142]}
-            scale={[0.019, 0.011, 0.019]}
-          />
-          <mesh
-            name="A#3"
-            geometry={nodes["A#3"].geometry}
-            material={materials.PaletteMaterial008}
-            position={[-15.965, 9.254, 9.967]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={[0.019, 0.011, 0.019]}
-          />
-          <mesh
-            name="C#3"
-            geometry={nodes["C#3"].geometry}
-            material={materials.PaletteMaterial008}
-            position={[-17.16, 9.254, 9.971]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={[0.019, 0.011, 0.019]}
-          />
-          <mesh
-            name="C#4"
-            geometry={nodes["C#4"].geometry}
-            material={materials.PaletteMaterial008}
-            position={[-15.471, 9.254, 9.939]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={[0.019, 0.011, 0.019]}
-          />
-          <mesh
-            name="D#3"
-            geometry={nodes["D#3"].geometry}
-            material={materials.PaletteMaterial008}
-            position={[-16.916, 9.254, 9.979]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={[0.019, 0.011, 0.019]}
-          />
-          <mesh
-            name="D#4"
-            geometry={nodes["D#4"].geometry}
-            material={materials.PaletteMaterial008}
-            position={[-15.228, 9.254, 9.934]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={[0.019, 0.011, 0.019]}
-          />
-          <mesh
-            name="F#3"
-            geometry={nodes["F#3"].geometry}
-            material={materials.PaletteMaterial008}
-            position={[-16.437, 9.254, 9.969]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={[0.019, 0.011, 0.019]}
-          />
-          <mesh
-            name="G#3"
-            geometry={nodes["G#3"].geometry}
-            material={materials.PaletteMaterial008}
-            position={[-16.193, 9.254, 9.964]}
-            rotation={[-Math.PI, 1.55, -Math.PI]}
-            scale={[0.019, 0.011, 0.019]}
-          />
-        </group>
-
         <mesh
           name="Prateleira"
+          castShadow
+          receiveShadow
           geometry={nodes.Prateleira.geometry}
-          material={materials.PaletteMaterial009}
+          material={materials.GuardaLivrosMaterial}
           position={[-17.846, 19.526, 27.014]}
           scale={[1, 0.143, 1]}
         />
-        <mesh
-          name="Prateleira002"
-          geometry={nodes.Prateleira002.geometry}
-          material={materials.PaletteMaterial009}
-          position={[-17.846, 22.667, 27.014]}
-          scale={[1, 0.143, 1]}
-        />
-        <group
-          name="Livro"
-          onPointerEnter={() => setHovering(true)}
-          onPointerLeave={() => setHovering(false)}
-          onClick={(e) => {
-            e.stopPropagation();
-
-            const { x, y, z } = e.object.getWorldPosition(new Vector3());
-            setObject({
-              name: "Livro",
-              position: new THREE.Vector3(x, y, z),
-            });
-            setClicked(!isClicked);
-          }}
-        >
+        {/* #region Livro */}
+        <group name="Livro">
           <mesh
             name="BookBack"
+            castShadow
+            receiveShadow
             geometry={nodes.BookBack.geometry}
             material={materials.BookCover}
             position={[-20.042, 9.036, 24.868]}
@@ -1960,17 +422,21 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
           />
           <group
             name="BookFace"
-            position={[-20.081, 9.27, 24.949]}
-            rotation={[3.135, -0.006, -3.129]}
+            position={[-19.843, 9.04, 24.949]}
+            rotation={[-3.135, 0.005, -0.009]}
             scale={[0.342, 0.427, 0.427]}
           >
             <mesh
               name="Plane029"
+              castShadow
+              receiveShadow
               geometry={nodes.Plane029.geometry}
               material={materials.BookCover}
             />
             <mesh
               name="Plane029_1"
+              castShadow
+              receiveShadow
               geometry={nodes.Plane029_1.geometry}
               material={materials.BookCover}
             />
@@ -1978,1641 +444,2375 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
           <group
             name="BookSIde"
             position={[-20.073, 9.028, 25.31]}
-            rotation={[2.203, 1.555, -0.638]}
+            rotation={[1.58, -0.04, -0.006]}
             scale={[0.427, 0.427, 0.342]}
           >
             <mesh
               name="Cube007"
+              castShadow
+              receiveShadow
               geometry={nodes.Cube007.geometry}
               material={materials.BookCover}
             />
             <mesh
               name="Cube007_1"
+              castShadow
+              receiveShadow
               geometry={nodes.Cube007_1.geometry}
-              material={materials.PaletteMaterial002}
+              material={materials.GoldLivro}
             />
             <mesh
               name="Cube007_2"
+              castShadow
+              receiveShadow
               geometry={nodes.Cube007_2.geometry}
-              material={materials.PaletteMaterial010}
+              material={materials.RubiLivro}
             />
           </group>
           <mesh
             name="Page1"
+            castShadow
+            receiveShadow
             geometry={nodes.Page1.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.244, 24.909]}
-            rotation={[3.138, -0.002, -3.139]}
+            material={materials.PageMaterial}
+            position={[-19.333, 9.241, 24.904]}
+            rotation={[-3.138, 0.002, 0.005]}
             scale={[0.625, 1.011, 1.029]}
           >
             <group
               name="Rotacao001"
-              position={[-0.971, 0.002, -0.057]}
+              position={[0.342, 0.012, -0.051]}
               rotation={[-1.586, 0.008, 3.102]}
               scale={[1.6, 0.972, 0.989]}
             />
           </mesh>
           <mesh
             name="Page2"
+            castShadow
+            receiveShadow
             geometry={nodes.Page2.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.242, 24.909]}
-            rotation={[3.138, -0.002, -3.139]}
+            material={materials.PageMaterial}
+            position={[-19.333, 9.239, 24.904]}
+            rotation={[-3.138, 0.002, 0.005]}
             scale={[0.625, 1.011, 1.029]}
           >
             <group
               name="Rotacao005"
-              position={[-0.971, 0.002, -0.057]}
+              position={[0.342, 0.012, -0.051]}
               rotation={[-1.586, 0.008, 3.102]}
               scale={[1.6, 0.972, 0.989]}
             />
           </mesh>
           <mesh
             name="Page3"
+            castShadow
+            receiveShadow
             geometry={nodes.Page3.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.24, 24.909]}
-            rotation={[3.138, -0.002, -3.139]}
+            material={materials.PageMaterial}
+            position={[-19.332, 9.237, 24.904]}
+            rotation={[-3.138, 0.002, 0.005]}
             scale={[0.625, 1.011, 1.029]}
           >
             <group
               name="Rotacao007"
-              position={[-0.971, 0.002, -0.057]}
+              position={[0.342, 0.012, -0.051]}
               rotation={[-1.586, 0.008, 3.102]}
               scale={[1.6, 0.972, 0.989]}
             />
           </mesh>
           <mesh
             name="Page4"
+            castShadow
+            receiveShadow
             geometry={nodes.Page4.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.238, 24.909]}
-            rotation={[3.138, -0.002, -3.139]}
+            material={materials.PageMaterial}
+            position={[-19.332, 9.235, 24.904]}
+            rotation={[-3.138, 0.002, 0.005]}
             scale={[0.625, 1.011, 1.029]}
           >
             <group
               name="Rotacao006"
-              position={[-0.971, 0.002, -0.057]}
+              position={[0.342, 0.012, -0.051]}
               rotation={[-1.586, 0.008, 3.102]}
               scale={[1.6, 0.972, 0.989]}
             />
           </mesh>
           <mesh
             name="Page8"
+            castShadow
+            receiveShadow
             geometry={nodes.Page8.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.23, 24.909]}
-            rotation={[3.138, -0.002, -3.139]}
+            material={materials.PageMaterial}
+            position={[-19.332, 9.227, 24.904]}
+            rotation={[-3.138, 0.002, 0.005]}
             scale={[0.625, 1.011, 1.029]}
           >
             <group
               name="Rotacao009"
-              position={[-0.971, 0.002, -0.057]}
+              position={[0.342, 0.012, -0.051]}
               rotation={[-1.586, 0.008, 3.102]}
               scale={[1.6, 0.972, 0.989]}
             />
           </mesh>
           <mesh
             name="Page7"
+            castShadow
+            receiveShadow
             geometry={nodes.Page7.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.232, 24.909]}
-            rotation={[3.138, -0.002, -3.139]}
+            material={materials.PageMaterial}
+            position={[-19.332, 9.229, 24.904]}
+            rotation={[-3.138, 0.002, 0.005]}
             scale={[0.625, 1.011, 1.029]}
           >
             <group
               name="Rotacao008"
-              position={[-0.971, 0.002, -0.057]}
-              rotation={[-1.586, 0.008, 3.102]}
-              scale={[1.6, 0.972, 0.989]}
-            />
-          </mesh>
-          <mesh
-            name="Page6"
-            geometry={nodes.Page6.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.234, 24.909]}
-            rotation={[3.138, -0.002, -3.139]}
-            scale={[0.625, 1.011, 1.029]}
-          >
-            <group
-              name="Rotacao010"
-              position={[-0.971, 0.002, -0.057]}
-              rotation={[-1.586, 0.008, 3.102]}
-              scale={[1.6, 0.972, 0.989]}
-            />
-          </mesh>
-          <mesh
-            name="Page5"
-            geometry={nodes.Page5.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.236, 24.909]}
-            rotation={[3.138, -0.002, -3.139]}
-            scale={[0.625, 1.011, 1.029]}
-          >
-            <group
-              name="Rotacao011"
-              position={[-0.971, 0.002, -0.057]}
-              rotation={[-1.586, 0.008, 3.102]}
-              scale={[1.6, 0.972, 0.989]}
-            />
-          </mesh>
-          <mesh
-            name="Page13"
-            geometry={nodes.Page13.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.221, 24.909]}
-            rotation={[3.138, -0.002, -3.139]}
-            scale={[0.625, 1.011, 1.029]}
-          >
-            <group
-              name="Rotacao012"
-              position={[-0.971, 0.002, -0.057]}
+              position={[0.342, 0.012, -0.051]}
               rotation={[-1.586, 0.008, 3.102]}
               scale={[1.6, 0.972, 0.989]}
             />
           </mesh>
           <mesh
             name="Page14"
+            castShadow
+            receiveShadow
             geometry={nodes.Page14.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.219, 24.909]}
-            rotation={[3.138, -0.002, -3.139]}
+            material={materials.PageMaterial}
+            position={[-19.332, 9.216, 24.904]}
+            rotation={[-3.138, 0.002, 0.005]}
             scale={[0.625, 1.011, 1.029]}
           >
             <group
               name="Rotacao013"
-              position={[-0.971, 0.002, -0.057]}
-              rotation={[-1.586, 0.008, 3.102]}
-              scale={[1.6, 0.972, 0.989]}
-            />
-          </mesh>
-          <mesh
-            name="Page15"
-            geometry={nodes.Page15.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.218, 24.909]}
-            rotation={[3.138, -0.002, -3.139]}
-            scale={[0.625, 1.011, 1.029]}
-          >
-            <group
-              name="Rotacao015"
-              position={[-0.971, 0.002, -0.057]}
-              rotation={[-1.586, 0.008, 3.102]}
-              scale={[1.6, 0.972, 0.989]}
-            />
-          </mesh>
-          <mesh
-            name="Page16"
-            geometry={nodes.Page16.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.216, 24.909]}
-            rotation={[3.138, -0.002, -3.139]}
-            scale={[0.625, 1.011, 1.029]}
-          >
-            <group
-              name="Rotacao014"
-              position={[-0.971, 0.002, -0.057]}
-              rotation={[-1.586, 0.008, 3.102]}
-              scale={[1.6, 0.972, 0.989]}
-            />
-          </mesh>
-          <mesh
-            name="Page12"
-            geometry={nodes.Page12.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.223, 24.909]}
-            rotation={[3.138, -0.002, -3.139]}
-            scale={[0.625, 1.011, 1.029]}
-          >
-            <group
-              name="Rotacao017"
-              position={[-0.971, 0.002, -0.057]}
-              rotation={[-1.586, 0.008, 3.102]}
-              scale={[1.6, 0.972, 0.989]}
-            />
-          </mesh>
-          <mesh
-            name="Page11"
-            geometry={nodes.Page11.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.225, 24.909]}
-            rotation={[3.138, -0.002, -3.139]}
-            scale={[0.625, 1.011, 1.029]}
-          >
-            <group
-              name="Rotacao016"
-              position={[-0.971, 0.002, -0.057]}
-              rotation={[-1.586, 0.008, 3.102]}
-              scale={[1.6, 0.972, 0.989]}
-            />
-          </mesh>
-          <mesh
-            name="Page10"
-            geometry={nodes.Page10.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.227, 24.909]}
-            rotation={[3.138, -0.002, -3.139]}
-            scale={[0.625, 1.011, 1.029]}
-          >
-            <group
-              name="Rotacao018"
-              position={[-0.971, 0.002, -0.057]}
-              rotation={[-1.586, 0.008, 3.102]}
-              scale={[1.6, 0.972, 0.989]}
-            />
-          </mesh>
-          <mesh
-            name="Page9"
-            geometry={nodes.Page9.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.229, 24.909]}
-            rotation={[3.138, -0.002, -3.139]}
-            scale={[0.625, 1.011, 1.029]}
-          >
-            <group
-              name="Rotacao019"
-              position={[-0.971, 0.002, -0.057]}
-              rotation={[-1.586, 0.008, 3.102]}
-              scale={[1.6, 0.972, 0.989]}
-            />
-          </mesh>
-          <mesh
-            name="Page25"
-            geometry={nodes.Page25.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.199, 24.909]}
-            rotation={[3.138, -0.002, -3.139]}
-            scale={[0.625, 1.011, 1.029]}
-          >
-            <group
-              name="Rotacao002"
-              position={[-0.971, 0.002, -0.057]}
-              rotation={[-1.586, 0.008, 3.102]}
-              scale={[1.6, 0.972, 0.989]}
-            />
-          </mesh>
-          <mesh
-            name="Page26"
-            geometry={nodes.Page26.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.197, 24.909]}
-            rotation={[3.138, -0.002, -3.139]}
-            scale={[0.625, 1.011, 1.029]}
-          >
-            <group
-              name="Rotacao003"
-              position={[-0.971, 0.002, -0.057]}
-              rotation={[-1.586, 0.008, 3.102]}
-              scale={[1.6, 0.972, 0.989]}
-            />
-          </mesh>
-          <mesh
-            name="Page27"
-            geometry={nodes.Page27.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.195, 24.909]}
-            rotation={[3.138, -0.002, -3.139]}
-            scale={[0.625, 1.011, 1.029]}
-          >
-            <group
-              name="Rotacao020"
-              position={[-0.971, 0.002, -0.057]}
-              rotation={[-1.586, 0.008, 3.102]}
-              scale={[1.6, 0.972, 0.989]}
-            />
-          </mesh>
-          <mesh
-            name="Page28"
-            geometry={nodes.Page28.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.193, 24.909]}
-            rotation={[3.138, -0.002, -3.139]}
-            scale={[0.625, 1.011, 1.029]}
-          >
-            <group
-              name="Rotacao004"
-              position={[-0.971, 0.002, -0.057]}
-              rotation={[-1.586, 0.008, 3.102]}
-              scale={[1.6, 0.972, 0.989]}
-            />
-          </mesh>
-          <mesh
-            name="Page32"
-            geometry={nodes.Page32.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.186, 24.909]}
-            rotation={[3.138, -0.002, -3.139]}
-            scale={[0.625, 1.011, 1.029]}
-          >
-            <group
-              name="Rotacao022"
-              position={[-0.971, 0.002, -0.057]}
-              rotation={[-1.586, 0.008, 3.102]}
-              scale={[1.6, 0.972, 0.989]}
-            />
-          </mesh>
-          <mesh
-            name="Page31"
-            geometry={nodes.Page31.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.188, 24.909]}
-            rotation={[3.138, -0.002, -3.139]}
-            scale={[0.625, 1.011, 1.029]}
-          >
-            <group
-              name="Rotacao021"
-              position={[-0.971, 0.002, -0.057]}
-              rotation={[-1.586, 0.008, 3.102]}
-              scale={[1.6, 0.972, 0.989]}
-            />
-          </mesh>
-          <mesh
-            name="Page30"
-            geometry={nodes.Page30.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.189, 24.909]}
-            rotation={[3.138, -0.002, -3.139]}
-            scale={[0.625, 1.011, 1.029]}
-          >
-            <group
-              name="Rotacao023"
-              position={[-0.971, 0.002, -0.057]}
+              position={[0.342, 0.012, -0.051]}
               rotation={[-1.586, 0.008, 3.102]}
               scale={[1.6, 0.972, 0.989]}
             />
           </mesh>
           <mesh
             name="Page29"
+            castShadow
+            receiveShadow
             geometry={nodes.Page29.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.191, 24.909]}
-            rotation={[3.138, -0.002, -3.139]}
+            material={materials.PageMaterial}
+            position={[-19.332, 9.188, 24.904]}
+            rotation={[-3.138, 0.002, 0.005]}
             scale={[0.625, 1.011, 1.029]}
           >
             <group
               name="Rotacao024"
-              position={[-0.971, 0.002, -0.057]}
-              rotation={[-1.586, 0.008, 3.102]}
-              scale={[1.6, 0.972, 0.989]}
-            />
-          </mesh>
-          <mesh
-            name="Page21"
-            geometry={nodes.Page21.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.206, 24.909]}
-            rotation={[3.138, -0.002, -3.139]}
-            scale={[0.625, 1.011, 1.029]}
-          >
-            <group
-              name="Rotacao025"
-              position={[-0.971, 0.002, -0.057]}
-              rotation={[-1.586, 0.008, 3.102]}
-              scale={[1.6, 0.972, 0.989]}
-            />
-          </mesh>
-          <mesh
-            name="Page22"
-            geometry={nodes.Page22.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.204, 24.909]}
-            rotation={[3.138, -0.002, -3.139]}
-            scale={[0.625, 1.011, 1.029]}
-          >
-            <group
-              name="Rotacao026"
-              position={[-0.971, 0.002, -0.057]}
-              rotation={[-1.586, 0.008, 3.102]}
-              scale={[1.6, 0.972, 0.989]}
-            />
-          </mesh>
-          <mesh
-            name="Page23"
-            geometry={nodes.Page23.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.203, 24.909]}
-            rotation={[3.138, -0.002, -3.139]}
-            scale={[0.625, 1.011, 1.029]}
-          >
-            <group
-              name="Rotacao028"
-              position={[-0.971, 0.002, -0.057]}
-              rotation={[-1.586, 0.008, 3.102]}
-              scale={[1.6, 0.972, 0.989]}
-            />
-          </mesh>
-          <mesh
-            name="Page24"
-            geometry={nodes.Page24.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.201, 24.909]}
-            rotation={[3.138, -0.002, -3.139]}
-            scale={[0.625, 1.011, 1.029]}
-          >
-            <group
-              name="Rotacao027"
-              position={[-0.971, 0.002, -0.057]}
-              rotation={[-1.586, 0.008, 3.102]}
-              scale={[1.6, 0.972, 0.989]}
-            />
-          </mesh>
-          <mesh
-            name="Page20"
-            geometry={nodes.Page20.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.208, 24.909]}
-            rotation={[3.138, -0.002, -3.139]}
-            scale={[0.625, 1.011, 1.029]}
-          >
-            <group
-              name="Rotacao030"
-              position={[-0.971, 0.002, -0.057]}
-              rotation={[-1.586, 0.008, 3.102]}
-              scale={[1.6, 0.972, 0.989]}
-            />
-          </mesh>
-          <mesh
-            name="Page19"
-            geometry={nodes.Page19.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.21, 24.909]}
-            rotation={[3.138, -0.002, -3.139]}
-            scale={[0.625, 1.011, 1.029]}
-          >
-            <group
-              name="Rotacao029"
-              position={[-0.971, 0.002, -0.057]}
-              rotation={[-1.586, 0.008, 3.102]}
-              scale={[1.6, 0.972, 0.989]}
-            />
-          </mesh>
-          <mesh
-            name="Page18"
-            geometry={nodes.Page18.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.212, 24.909]}
-            rotation={[3.138, -0.002, -3.139]}
-            scale={[0.625, 1.011, 1.029]}
-          >
-            <group
-              name="Rotacao031"
-              position={[-0.971, 0.002, -0.057]}
-              rotation={[-1.586, 0.008, 3.102]}
-              scale={[1.6, 0.972, 0.989]}
-            />
-          </mesh>
-          <mesh
-            name="Page17"
-            geometry={nodes.Page17.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.214, 24.909]}
-            rotation={[3.138, -0.002, -3.139]}
-            scale={[0.625, 1.011, 1.029]}
-          >
-            <group
-              name="Rotacao032"
-              position={[-0.971, 0.002, -0.057]}
-              rotation={[-1.586, 0.008, 3.102]}
-              scale={[1.6, 0.972, 0.989]}
-            />
-          </mesh>
-          <mesh
-            name="Page49LastFlip"
-            geometry={nodes.Page49LastFlip.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.154, 24.909]}
-            rotation={[3.138, -0.002, -3.139]}
-            scale={[0.625, 1.011, 1.029]}
-          >
-            <group
-              name="Rotacao033"
-              position={[-0.971, 0.002, -0.057]}
-              rotation={[-1.586, 0.008, 3.102]}
-              scale={[1.6, 0.972, 0.989]}
-            />
-          </mesh>
-          <mesh
-            name="Page56"
-            geometry={nodes.Page56.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.141, 24.909]}
-            rotation={[3.138, -0.006, -3.139]}
-            scale={[0.625, 1.011, 1.029]}
-          >
-            <group
-              name="Rotacao038"
-              position={[-0.971, 0.002, -0.057]}
-              rotation={[-1.586, 0.008, 3.102]}
-              scale={[1.6, 0.972, 0.989]}
-            />
-          </mesh>
-          <mesh
-            name="Page55"
-            geometry={nodes.Page55.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.143, 24.909]}
-            rotation={[3.138, -0.006, -3.139]}
-            scale={[0.625, 1.011, 1.029]}
-          >
-            <group
-              name="Rotacao037"
-              position={[-0.971, 0.002, -0.057]}
-              rotation={[-1.586, 0.008, 3.102]}
-              scale={[1.6, 0.972, 0.989]}
-            />
-          </mesh>
-          <mesh
-            name="Page61"
-            geometry={nodes.Page61.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.131, 24.909]}
-            rotation={[3.138, -0.006, -3.139]}
-            scale={[0.625, 1.011, 1.029]}
-          >
-            <group
-              name="Rotacao041"
-              position={[-0.971, 0.002, -0.057]}
-              rotation={[-1.586, 0.008, 3.102]}
-              scale={[1.6, 0.972, 0.989]}
-            />
-          </mesh>
-          <mesh
-            name="Page62"
-            geometry={nodes.Page62.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.129, 24.909]}
-            rotation={[3.138, -0.006, -3.139]}
-            scale={[0.625, 1.011, 1.029]}
-          >
-            <group
-              name="Rotacao042"
-              position={[-0.971, 0.002, -0.057]}
-              rotation={[-1.586, 0.008, 3.102]}
-              scale={[1.6, 0.972, 0.989]}
-            />
-          </mesh>
-          <mesh
-            name="Page63"
-            geometry={nodes.Page63.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.128, 24.909]}
-            rotation={[3.138, -0.006, -3.139]}
-            scale={[0.625, 1.011, 1.029]}
-          >
-            <group
-              name="Rotacao044"
-              position={[-0.971, 0.002, -0.057]}
-              rotation={[-1.586, 0.008, 3.102]}
-              scale={[1.6, 0.972, 0.989]}
-            />
-          </mesh>
-          <mesh
-            name="Page64"
-            geometry={nodes.Page64.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.126, 24.909]}
-            rotation={[3.138, -0.006, -3.139]}
-            scale={[0.625, 1.011, 1.029]}
-          >
-            <group
-              name="Rotacao043"
-              position={[-0.971, 0.002, -0.057]}
-              rotation={[-1.586, 0.008, 3.102]}
-              scale={[1.6, 0.972, 0.989]}
-            />
-          </mesh>
-          <mesh
-            name="Page60"
-            geometry={nodes.Page60.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.133, 24.909]}
-            rotation={[3.138, -0.006, -3.139]}
-            scale={[0.625, 1.011, 1.029]}
-          >
-            <group
-              name="Rotacao061"
-              position={[-0.971, 0.002, -0.057]}
-              rotation={[-1.586, 0.008, 3.102]}
-              scale={[1.6, 0.972, 0.989]}
-            />
-          </mesh>
-          <mesh
-            name="Page59"
-            geometry={nodes.Page59.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.135, 24.909]}
-            rotation={[3.138, -0.006, -3.139]}
-            scale={[0.625, 1.011, 1.029]}
-          >
-            <group
-              name="Rotacao045"
-              position={[-0.971, 0.002, -0.057]}
-              rotation={[-1.586, 0.008, 3.102]}
-              scale={[1.6, 0.972, 0.989]}
-            />
-          </mesh>
-          <mesh
-            name="Page58"
-            geometry={nodes.Page58.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.137, 24.909]}
-            rotation={[3.138, -0.006, -3.139]}
-            scale={[0.625, 1.011, 1.029]}
-          >
-            <group
-              name="Rotacao062"
-              position={[-0.971, 0.002, -0.057]}
-              rotation={[-1.586, 0.008, 3.102]}
-              scale={[1.6, 0.972, 0.989]}
-            />
-          </mesh>
-          <mesh
-            name="Page57"
-            geometry={nodes.Page57.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.139, 24.909]}
-            rotation={[3.138, -0.006, -3.139]}
-            scale={[0.625, 1.011, 1.029]}
-          >
-            <group
-              name="Rotacao063"
-              position={[-0.971, 0.002, -0.057]}
+              position={[0.342, 0.012, -0.051]}
               rotation={[-1.586, 0.008, 3.102]}
               scale={[1.6, 0.972, 0.989]}
             />
           </mesh>
           <mesh
             name="Page41"
+            castShadow
+            receiveShadow
             geometry={nodes.Page41.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.169, 24.909]}
-            rotation={[3.138, -0.002, -3.139]}
+            material={materials.PageMaterial}
+            position={[-19.332, 9.166, 24.904]}
+            rotation={[-3.138, 0.002, 0.005]}
             scale={[0.625, 1.011, 1.029]}
           >
             <group
               name="Rotacao046"
-              position={[-0.971, 0.002, -0.057]}
-              rotation={[-1.586, 0.008, 3.102]}
-              scale={[1.6, 0.972, 0.989]}
-            />
-          </mesh>
-          <mesh
-            name="Page42"
-            geometry={nodes.Page42.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.167, 24.909]}
-            rotation={[3.138, -0.002, -3.139]}
-            scale={[0.625, 1.011, 1.029]}
-          >
-            <group
-              name="Rotacao047"
-              position={[-0.971, 0.002, -0.057]}
-              rotation={[-1.586, 0.008, 3.102]}
-              scale={[1.6, 0.972, 0.989]}
-            />
-          </mesh>
-          <mesh
-            name="Page43"
-            geometry={nodes.Page43.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.165, 24.909]}
-            rotation={[3.138, -0.002, -3.139]}
-            scale={[0.625, 1.011, 1.029]}
-          >
-            <group
-              name="Rotacao049"
-              position={[-0.971, 0.002, -0.057]}
-              rotation={[-1.586, 0.008, 3.102]}
-              scale={[1.6, 0.972, 0.989]}
-            />
-          </mesh>
-          <mesh
-            name="Page44"
-            geometry={nodes.Page44.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.163, 24.909]}
-            rotation={[3.138, -0.002, -3.139]}
-            scale={[0.625, 1.011, 1.029]}
-          >
-            <group
-              name="Rotacao048"
-              position={[-0.971, 0.002, -0.057]}
-              rotation={[-1.586, 0.008, 3.102]}
-              scale={[1.6, 0.972, 0.989]}
-            />
-          </mesh>
-          <mesh
-            name="Page48"
-            geometry={nodes.Page48.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.156, 24.909]}
-            rotation={[3.138, -0.002, -3.139]}
-            scale={[0.625, 1.011, 1.029]}
-          >
-            <group
-              name="Rotacao051"
-              position={[-0.971, 0.002, -0.057]}
-              rotation={[-1.586, 0.008, 3.102]}
-              scale={[1.6, 0.972, 0.989]}
-            />
-          </mesh>
-          <mesh
-            name="Page47"
-            geometry={nodes.Page47.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.158, 24.909]}
-            rotation={[3.138, -0.002, -3.139]}
-            scale={[0.625, 1.011, 1.029]}
-          >
-            <group
-              name="Rotacao050"
-              position={[-0.971, 0.002, -0.057]}
-              rotation={[-1.586, 0.008, 3.102]}
-              scale={[1.6, 0.972, 0.989]}
-            />
-          </mesh>
-          <mesh
-            name="Page46"
-            geometry={nodes.Page46.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.159, 24.909]}
-            rotation={[3.138, -0.002, -3.139]}
-            scale={[0.625, 1.011, 1.029]}
-          >
-            <group
-              name="Rotacao052"
-              position={[-0.971, 0.002, -0.057]}
+              position={[0.342, 0.012, -0.051]}
               rotation={[-1.586, 0.008, 3.102]}
               scale={[1.6, 0.972, 0.989]}
             />
           </mesh>
           <mesh
             name="Page45"
+            castShadow
+            receiveShadow
             geometry={nodes.Page45.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.161, 24.909]}
-            rotation={[3.138, -0.002, -3.139]}
+            material={materials.PageMaterial}
+            position={[-19.332, 9.158, 24.904]}
+            rotation={[-3.138, 0.002, 0.005]}
             scale={[0.625, 1.011, 1.029]}
           >
             <group
               name="Rotacao053"
-              position={[-0.971, 0.002, -0.057]}
-              rotation={[-1.586, 0.008, 3.102]}
-              scale={[1.6, 0.972, 0.989]}
-            />
-          </mesh>
-          <mesh
-            name="Page37"
-            geometry={nodes.Page37.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.176, 24.909]}
-            rotation={[3.138, -0.002, -3.139]}
-            scale={[0.625, 1.011, 1.029]}
-          >
-            <group
-              name="Rotacao054"
-              position={[-0.971, 0.002, -0.057]}
+              position={[0.342, 0.012, -0.051]}
               rotation={[-1.586, 0.008, 3.102]}
               scale={[1.6, 0.972, 0.989]}
             />
           </mesh>
           <mesh
             name="Page38"
+            castShadow
+            receiveShadow
             geometry={nodes.Page38.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.174, 24.909]}
-            rotation={[3.138, -0.002, -3.139]}
+            material={materials.PageMaterial}
+            position={[-19.332, 9.171, 24.904]}
+            rotation={[-3.138, 0.002, 0.005]}
             scale={[0.625, 1.011, 1.029]}
           >
             <group
               name="Rotacao055"
-              position={[-0.971, 0.002, -0.057]}
-              rotation={[-1.586, 0.008, 3.102]}
-              scale={[1.6, 0.972, 0.989]}
-            />
-          </mesh>
-          <mesh
-            name="Page39"
-            geometry={nodes.Page39.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.173, 24.909]}
-            rotation={[3.138, -0.002, -3.139]}
-            scale={[0.625, 1.011, 1.029]}
-          >
-            <group
-              name="Rotacao057"
-              position={[-0.971, 0.002, -0.057]}
-              rotation={[-1.586, 0.008, 3.102]}
-              scale={[1.6, 0.972, 0.989]}
-            />
-          </mesh>
-          <mesh
-            name="Page40"
-            geometry={nodes.Page40.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.171, 24.909]}
-            rotation={[3.138, -0.002, -3.139]}
-            scale={[0.625, 1.011, 1.029]}
-          >
-            <group
-              name="Rotacao056"
-              position={[-0.971, 0.002, -0.057]}
-              rotation={[-1.586, 0.008, 3.102]}
-              scale={[1.6, 0.972, 0.989]}
-            />
-          </mesh>
-          <mesh
-            name="Page36"
-            geometry={nodes.Page36.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.178, 24.909]}
-            rotation={[3.138, -0.002, -3.139]}
-            scale={[0.625, 1.011, 1.029]}
-          >
-            <group
-              name="Rotacao059"
-              position={[-0.971, 0.002, -0.057]}
+              position={[0.342, 0.012, -0.051]}
               rotation={[-1.586, 0.008, 3.102]}
               scale={[1.6, 0.972, 0.989]}
             />
           </mesh>
           <mesh
             name="Page35"
+            castShadow
+            receiveShadow
             geometry={nodes.Page35.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.18, 24.909]}
-            rotation={[3.138, -0.002, -3.139]}
+            material={materials.PageMaterial}
+            position={[-19.332, 9.177, 24.904]}
+            rotation={[-3.138, 0.002, 0.005]}
             scale={[0.625, 1.011, 1.029]}
           >
             <group
               name="Rotacao058"
-              position={[-0.971, 0.002, -0.057]}
+              position={[0.342, 0.012, -0.051]}
               rotation={[-1.586, 0.008, 3.102]}
               scale={[1.6, 0.972, 0.989]}
             />
           </mesh>
           <mesh
-            name="Page34"
-            geometry={nodes.Page34.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.182, 24.909]}
-            rotation={[3.138, -0.002, -3.139]}
+            name="Page6"
+            castShadow
+            receiveShadow
+            geometry={nodes.Page6.geometry}
+            material={materials.PageMaterial}
+            position={[-19.332, 9.231, 24.904]}
+            rotation={[-3.138, 0.002, 0.005]}
             scale={[0.625, 1.011, 1.029]}
           >
             <group
-              name="Rotacao060"
-              position={[-0.971, 0.002, -0.057]}
+              name="Rotacao010"
+              position={[0.342, 0.012, -0.051]}
+              rotation={[-1.586, 0.008, 3.102]}
+              scale={[1.6, 0.972, 0.989]}
+            />
+          </mesh>
+          <mesh
+            name="Page5"
+            castShadow
+            receiveShadow
+            geometry={nodes.Page5.geometry}
+            material={materials.PageMaterial}
+            position={[-19.332, 9.233, 24.904]}
+            rotation={[-3.138, 0.002, 0.005]}
+            scale={[0.625, 1.011, 1.029]}
+          >
+            <group
+              name="Rotacao011"
+              position={[0.342, 0.012, -0.051]}
+              rotation={[-1.586, 0.008, 3.102]}
+              scale={[1.6, 0.972, 0.989]}
+            />
+          </mesh>
+          <mesh
+            name="Page13"
+            castShadow
+            receiveShadow
+            geometry={nodes.Page13.geometry}
+            material={materials.PageMaterial}
+            position={[-19.332, 9.218, 24.904]}
+            rotation={[-3.138, 0.002, 0.005]}
+            scale={[0.625, 1.011, 1.029]}
+          >
+            <group
+              name="Rotacao012"
+              position={[0.342, 0.012, -0.051]}
+              rotation={[-1.586, 0.008, 3.102]}
+              scale={[1.6, 0.972, 0.989]}
+            />
+          </mesh>
+          <mesh
+            name="Page11"
+            castShadow
+            receiveShadow
+            geometry={nodes.Page11.geometry}
+            material={materials.PageMaterial}
+            position={[-19.332, 9.222, 24.904]}
+            rotation={[-3.138, 0.002, 0.005]}
+            scale={[0.625, 1.011, 1.029]}
+          >
+            <group
+              name="Rotacao016"
+              position={[0.342, 0.012, -0.051]}
+              rotation={[-1.586, 0.008, 3.102]}
+              scale={[1.6, 0.972, 0.989]}
+            />
+          </mesh>
+          <mesh
+            name="Page25"
+            castShadow
+            receiveShadow
+            geometry={nodes.Page25.geometry}
+            material={materials.PageMaterial}
+            position={[-19.332, 9.196, 24.904]}
+            rotation={[-3.138, 0.002, 0.005]}
+            scale={[0.625, 1.011, 1.029]}
+          >
+            <group
+              name="Rotacao002"
+              position={[0.342, 0.012, -0.051]}
+              rotation={[-1.586, 0.008, 3.102]}
+              scale={[1.6, 0.972, 0.989]}
+            />
+          </mesh>
+          <mesh
+            name="Page28"
+            castShadow
+            receiveShadow
+            geometry={nodes.Page28.geometry}
+            material={materials.PageMaterial}
+            position={[-19.332, 9.19, 24.904]}
+            rotation={[-3.138, 0.002, 0.005]}
+            scale={[0.625, 1.011, 1.029]}
+          >
+            <group
+              name="Rotacao004"
+              position={[0.342, 0.012, -0.051]}
+              rotation={[-1.586, 0.008, 3.102]}
+              scale={[1.6, 0.972, 0.989]}
+            />
+          </mesh>
+          <mesh
+            name="Page20"
+            castShadow
+            receiveShadow
+            geometry={nodes.Page20.geometry}
+            material={materials.PageMaterial}
+            position={[-19.332, 9.205, 24.904]}
+            rotation={[-3.138, 0.002, 0.005]}
+            scale={[0.625, 1.011, 1.029]}
+          >
+            <group
+              name="Rotacao030"
+              position={[0.342, 0.012, -0.051]}
+              rotation={[-1.586, 0.008, 3.102]}
+              scale={[1.6, 0.972, 0.989]}
+            />
+          </mesh>
+          <mesh
+            name="Page44"
+            castShadow
+            receiveShadow
+            geometry={nodes.Page44.geometry}
+            material={materials.PageMaterial}
+            position={[-19.332, 9.16, 24.904]}
+            rotation={[-3.138, 0.002, 0.005]}
+            scale={[0.625, 1.011, 1.029]}
+          >
+            <group
+              name="Rotacao048"
+              position={[0.342, 0.012, -0.051]}
+              rotation={[-1.586, 0.008, 3.102]}
+              scale={[1.6, 0.972, 0.989]}
+            />
+          </mesh>
+          <mesh
+            name="Page37"
+            castShadow
+            receiveShadow
+            geometry={nodes.Page37.geometry}
+            material={materials.PageMaterial}
+            position={[-19.332, 9.173, 24.904]}
+            rotation={[-3.138, 0.002, 0.005]}
+            scale={[0.625, 1.011, 1.029]}
+          >
+            <group
+              name="Rotacao054"
+              position={[0.342, 0.012, -0.051]}
+              rotation={[-1.586, 0.008, 3.102]}
+              scale={[1.6, 0.972, 0.989]}
+            />
+          </mesh>
+          <mesh
+            name="Page15"
+            castShadow
+            receiveShadow
+            geometry={nodes.Page15.geometry}
+            material={materials.PageMaterial}
+            position={[-19.332, 9.215, 24.904]}
+            rotation={[-3.138, 0.002, 0.005]}
+            scale={[0.625, 1.011, 1.029]}
+          >
+            <group
+              name="Rotacao015"
+              position={[0.342, 0.012, -0.051]}
+              rotation={[-1.586, 0.008, 3.102]}
+              scale={[1.6, 0.972, 0.989]}
+            />
+          </mesh>
+          <mesh
+            name="Page16"
+            castShadow
+            receiveShadow
+            geometry={nodes.Page16.geometry}
+            material={materials.PageMaterial}
+            position={[-19.332, 9.213, 24.904]}
+            rotation={[-3.138, 0.002, 0.005]}
+            scale={[0.625, 1.011, 1.029]}
+          >
+            <group
+              name="Rotacao014"
+              position={[0.342, 0.012, -0.051]}
+              rotation={[-1.586, 0.008, 3.102]}
+              scale={[1.6, 0.972, 0.989]}
+            />
+          </mesh>
+          <mesh
+            name="Page12"
+            castShadow
+            receiveShadow
+            geometry={nodes.Page12.geometry}
+            material={materials.PageMaterial}
+            position={[-19.332, 9.22, 24.904]}
+            rotation={[-3.138, 0.002, 0.005]}
+            scale={[0.625, 1.011, 1.029]}
+          >
+            <group
+              name="Rotacao017"
+              position={[0.342, 0.012, -0.051]}
+              rotation={[-1.586, 0.008, 3.102]}
+              scale={[1.6, 0.972, 0.989]}
+            />
+          </mesh>
+          <mesh
+            name="Page9"
+            castShadow
+            receiveShadow
+            geometry={nodes.Page9.geometry}
+            material={materials.PageMaterial}
+            position={[-19.332, 9.226, 24.904]}
+            rotation={[-3.138, 0.002, 0.005]}
+            scale={[0.625, 1.011, 1.029]}
+          >
+            <group
+              name="Rotacao019"
+              position={[0.342, 0.012, -0.051]}
+              rotation={[-1.586, 0.008, 3.102]}
+              scale={[1.6, 0.972, 0.989]}
+            />
+          </mesh>
+          <mesh
+            name="Page27"
+            castShadow
+            receiveShadow
+            geometry={nodes.Page27.geometry}
+            material={materials.PageMaterial}
+            position={[-19.332, 9.192, 24.904]}
+            rotation={[-3.138, 0.002, 0.005]}
+            scale={[0.625, 1.011, 1.029]}
+          >
+            <group
+              name="Rotacao020"
+              position={[0.342, 0.012, -0.051]}
+              rotation={[-1.586, 0.008, 3.102]}
+              scale={[1.6, 0.972, 0.989]}
+            />
+          </mesh>
+          <mesh
+            name="Page32"
+            castShadow
+            receiveShadow
+            geometry={nodes.Page32.geometry}
+            material={materials.PageMaterial}
+            position={[-19.332, 9.183, 24.904]}
+            rotation={[-3.138, 0.002, 0.005]}
+            scale={[0.625, 1.011, 1.029]}
+          >
+            <group
+              name="Rotacao022"
+              position={[0.342, 0.012, -0.051]}
+              rotation={[-1.586, 0.008, 3.102]}
+              scale={[1.6, 0.972, 0.989]}
+            />
+          </mesh>
+          <mesh
+            name="Page24"
+            castShadow
+            receiveShadow
+            geometry={nodes.Page24.geometry}
+            material={materials.PageMaterial}
+            position={[-19.332, 9.198, 24.904]}
+            rotation={[-3.138, 0.002, 0.005]}
+            scale={[0.625, 1.011, 1.029]}
+          >
+            <group
+              name="Rotacao027"
+              position={[0.342, 0.012, -0.051]}
+              rotation={[-1.586, 0.008, 3.102]}
+              scale={[1.6, 0.972, 0.989]}
+            />
+          </mesh>
+          <mesh
+            name="Page19"
+            castShadow
+            receiveShadow
+            geometry={nodes.Page19.geometry}
+            material={materials.PageMaterial}
+            position={[-19.332, 9.207, 24.904]}
+            rotation={[-3.138, 0.002, 0.005]}
+            scale={[0.625, 1.011, 1.029]}
+          >
+            <group
+              name="Rotacao029"
+              position={[0.342, 0.012, -0.051]}
+              rotation={[-1.586, 0.008, 3.102]}
+              scale={[1.6, 0.972, 0.989]}
+            />
+          </mesh>
+          <mesh
+            name="Page48"
+            castShadow
+            receiveShadow
+            geometry={nodes.Page48.geometry}
+            material={materials.PageMaterial}
+            position={[-19.332, 9.153, 24.904]}
+            rotation={[-3.138, 0.002, 0.005]}
+            scale={[0.625, 1.011, 1.029]}
+          >
+            <group
+              name="Rotacao051"
+              position={[0.342, 0.012, -0.051]}
+              rotation={[-1.586, 0.008, 3.102]}
+              scale={[1.6, 0.972, 0.989]}
+            />
+          </mesh>
+          <mesh
+            name="Page40"
+            castShadow
+            receiveShadow
+            geometry={nodes.Page40.geometry}
+            material={materials.PageMaterial}
+            position={[-19.332, 9.168, 24.904]}
+            rotation={[-3.138, 0.002, 0.005]}
+            scale={[0.625, 1.011, 1.029]}
+          >
+            <group
+              name="Rotacao056"
+              position={[0.342, 0.012, -0.051]}
+              rotation={[-1.586, 0.008, 3.102]}
+              scale={[1.6, 0.972, 0.989]}
+            />
+          </mesh>
+          <mesh
+            name="Page36"
+            castShadow
+            receiveShadow
+            geometry={nodes.Page36.geometry}
+            material={materials.PageMaterial}
+            position={[-19.332, 9.175, 24.904]}
+            rotation={[-3.138, 0.002, 0.005]}
+            scale={[0.625, 1.011, 1.029]}
+          >
+            <group
+              name="Rotacao059"
+              position={[0.342, 0.012, -0.051]}
+              rotation={[-1.586, 0.008, 3.102]}
+              scale={[1.6, 0.972, 0.989]}
+            />
+          </mesh>
+          <mesh
+            name="Page10"
+            castShadow
+            receiveShadow
+            geometry={nodes.Page10.geometry}
+            material={materials.PageMaterial}
+            position={[-19.332, 9.224, 24.904]}
+            rotation={[-3.138, 0.002, 0.005]}
+            scale={[0.625, 1.011, 1.029]}
+          >
+            <group
+              name="Rotacao018"
+              position={[0.342, 0.012, -0.051]}
+              rotation={[-1.586, 0.008, 3.102]}
+              scale={[1.6, 0.972, 0.989]}
+            />
+          </mesh>
+          <mesh
+            name="Page26"
+            castShadow
+            receiveShadow
+            geometry={nodes.Page26.geometry}
+            material={materials.PageMaterial}
+            position={[-19.332, 9.194, 24.904]}
+            rotation={[-3.138, 0.002, 0.005]}
+            scale={[0.625, 1.011, 1.029]}
+          >
+            <group
+              name="Rotacao003"
+              position={[0.342, 0.012, -0.051]}
+              rotation={[-1.586, 0.008, 3.102]}
+              scale={[1.6, 0.972, 0.989]}
+            />
+          </mesh>
+          <mesh
+            name="Page31"
+            castShadow
+            receiveShadow
+            geometry={nodes.Page31.geometry}
+            material={materials.PageMaterial}
+            position={[-19.332, 9.185, 24.904]}
+            rotation={[-3.138, 0.002, 0.005]}
+            scale={[0.625, 1.011, 1.029]}
+          >
+            <group
+              name="Rotacao021"
+              position={[0.342, 0.012, -0.051]}
+              rotation={[-1.586, 0.008, 3.102]}
+              scale={[1.6, 0.972, 0.989]}
+            />
+          </mesh>
+          <mesh
+            name="Page30"
+            castShadow
+            receiveShadow
+            geometry={nodes.Page30.geometry}
+            material={materials.PageMaterial}
+            position={[-19.332, 9.186, 24.904]}
+            rotation={[-3.138, 0.002, 0.005]}
+            scale={[0.625, 1.011, 1.029]}
+          >
+            <group
+              name="Rotacao023"
+              position={[0.342, 0.012, -0.051]}
+              rotation={[-1.586, 0.008, 3.102]}
+              scale={[1.6, 0.972, 0.989]}
+            />
+          </mesh>
+          <mesh
+            name="Page21"
+            castShadow
+            receiveShadow
+            geometry={nodes.Page21.geometry}
+            material={materials.PageMaterial}
+            position={[-19.332, 9.203, 24.904]}
+            rotation={[-3.138, 0.002, 0.005]}
+            scale={[0.625, 1.011, 1.029]}
+          >
+            <group
+              name="Rotacao025"
+              position={[0.342, 0.012, -0.051]}
+              rotation={[-1.586, 0.008, 3.102]}
+              scale={[1.6, 0.972, 0.989]}
+            />
+          </mesh>
+          <mesh
+            name="Page17"
+            castShadow
+            receiveShadow
+            geometry={nodes.Page17.geometry}
+            material={materials.PageMaterial}
+            position={[-19.332, 9.211, 24.904]}
+            rotation={[-3.138, 0.002, 0.005]}
+            scale={[0.625, 1.011, 1.029]}
+          >
+            <group
+              name="Rotacao032"
+              position={[0.342, 0.012, -0.051]}
+              rotation={[-1.586, 0.008, 3.102]}
+              scale={[1.6, 0.972, 0.989]}
+            />
+          </mesh>
+          <mesh
+            name="Page46"
+            castShadow
+            receiveShadow
+            geometry={nodes.Page46.geometry}
+            material={materials.PageMaterial}
+            position={[-19.332, 9.156, 24.904]}
+            rotation={[-3.138, 0.002, 0.005]}
+            scale={[0.625, 1.011, 1.029]}
+          >
+            <group
+              name="Rotacao052"
+              position={[0.342, 0.012, -0.051]}
               rotation={[-1.586, 0.008, 3.102]}
               scale={[1.6, 0.972, 0.989]}
             />
           </mesh>
           <mesh
             name="Page33"
+            castShadow
+            receiveShadow
             geometry={nodes.Page33.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.184, 24.909]}
-            rotation={[3.138, -0.002, -3.139]}
+            material={materials.PageMaterial}
+            position={[-19.332, 9.181, 24.904]}
+            rotation={[-3.138, 0.002, 0.005]}
             scale={[0.625, 1.011, 1.029]}
           >
             <group
               name="Rotacao064"
-              position={[-0.971, 0.002, -0.057]}
+              position={[0.342, 0.012, -0.051]}
               rotation={[-1.586, 0.008, 3.102]}
               scale={[1.6, 0.972, 0.989]}
             />
           </mesh>
           <mesh
-            name="Page65"
-            geometry={nodes.Page65.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.124, 24.909]}
+            name="Page22"
+            castShadow
+            receiveShadow
+            geometry={nodes.Page22.geometry}
+            material={materials.PageMaterial}
+            position={[-19.332, 9.201, 24.904]}
+            rotation={[-3.138, 0.002, 0.005]}
+            scale={[0.625, 1.011, 1.029]}
+          >
+            <group
+              name="Rotacao026"
+              position={[0.342, 0.012, -0.051]}
+              rotation={[-1.586, 0.008, 3.102]}
+              scale={[1.6, 0.972, 0.989]}
+            />
+          </mesh>
+          <mesh
+            name="Page23"
+            castShadow
+            receiveShadow
+            geometry={nodes.Page23.geometry}
+            material={materials.PageMaterial}
+            position={[-19.332, 9.2, 24.904]}
+            rotation={[-3.138, 0.002, 0.005]}
+            scale={[0.625, 1.011, 1.029]}
+          >
+            <group
+              name="Rotacao028"
+              position={[0.342, 0.012, -0.051]}
+              rotation={[-1.586, 0.008, 3.102]}
+              scale={[1.6, 0.972, 0.989]}
+            />
+          </mesh>
+          <mesh
+            name="Page18"
+            castShadow
+            receiveShadow
+            geometry={nodes.Page18.geometry}
+            material={materials.PageMaterial}
+            position={[-19.332, 9.209, 24.904]}
+            rotation={[-3.138, 0.002, 0.005]}
+            scale={[0.625, 1.011, 1.029]}
+          >
+            <group
+              name="Rotacao031"
+              position={[0.342, 0.012, -0.051]}
+              rotation={[-1.586, 0.008, 3.102]}
+              scale={[1.6, 0.972, 0.989]}
+            />
+          </mesh>
+          <mesh
+            name="Page49LastFlip"
+            castShadow
+            receiveShadow
+            geometry={nodes.Page49LastFlip.geometry}
+            material={materials.PageMaterial}
+            position={[-19.332, 9.151, 24.904]}
+            rotation={[-3.138, 0.002, 0.005]}
+            scale={[0.625, 1.011, 1.029]}
+          >
+            <group
+              name="Rotacao033"
+              position={[0.342, 0.012, -0.051]}
+              rotation={[-1.586, 0.008, 3.102]}
+              scale={[1.6, 0.972, 0.989]}
+            />
+          </mesh>
+          <mesh
+            name="Page34"
+            castShadow
+            receiveShadow
+            geometry={nodes.Page34.geometry}
+            material={materials.PageMaterial}
+            position={[-19.332, 9.179, 24.904]}
+            rotation={[-3.138, 0.002, 0.005]}
+            scale={[0.625, 1.011, 1.029]}
+          >
+            <group
+              name="Rotacao060"
+              position={[0.342, 0.012, -0.051]}
+              rotation={[-1.586, 0.008, 3.102]}
+              scale={[1.6, 0.972, 0.989]}
+            />
+          </mesh>
+          <mesh
+            name="Page56"
+            castShadow
+            receiveShadow
+            geometry={nodes.Page56.geometry}
+            material={materials.PageMaterial}
+            position={[-20.525, 9.258, 24.912]}
             rotation={[3.138, -0.006, -3.139]}
             scale={[0.625, 1.011, 1.029]}
           >
             <group
-              name="Rotacao065"
-              position={[-0.971, 0.002, -0.057]}
+              name="Rotacao038"
+              position={[0.518, 0.014, -0.051]}
+              rotation={[-1.586, 0.008, 3.102]}
+              scale={[1.6, 0.972, 0.989]}
+            />
+          </mesh>
+          <mesh
+            name="Page55"
+            castShadow
+            receiveShadow
+            geometry={nodes.Page55.geometry}
+            material={materials.PageMaterial}
+            position={[-20.525, 9.26, 24.912]}
+            rotation={[3.138, -0.006, -3.139]}
+            scale={[0.625, 1.011, 1.029]}
+          >
+            <group
+              name="Rotacao037"
+              position={[0.518, 0.014, -0.051]}
+              rotation={[-1.586, 0.008, 3.102]}
+              scale={[1.6, 0.972, 0.989]}
+            />
+          </mesh>
+          <mesh
+            name="Page60"
+            castShadow
+            receiveShadow
+            geometry={nodes.Page60.geometry}
+            material={materials.PageMaterial}
+            position={[-20.525, 9.25, 24.912]}
+            rotation={[3.138, -0.006, -3.139]}
+            scale={[0.625, 1.011, 1.029]}
+          >
+            <group
+              name="Rotacao061"
+              position={[0.518, 0.014, -0.051]}
+              rotation={[-1.586, 0.008, 3.102]}
+              scale={[1.6, 0.972, 0.989]}
+            />
+          </mesh>
+          <mesh
+            name="Page58"
+            castShadow
+            receiveShadow
+            geometry={nodes.Page58.geometry}
+            material={materials.PageMaterial}
+            position={[-20.525, 9.254, 24.912]}
+            rotation={[3.138, -0.006, -3.139]}
+            scale={[0.625, 1.011, 1.029]}
+          >
+            <group
+              name="Rotacao062"
+              position={[0.518, 0.014, -0.051]}
               rotation={[-1.586, 0.008, 3.102]}
               scale={[1.6, 0.972, 0.989]}
             />
           </mesh>
           <mesh
             name="Page66"
+            castShadow
+            receiveShadow
             geometry={nodes.Page66.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.122, 24.909]}
+            material={materials.PageMaterial}
+            position={[-20.525, 9.239, 24.912]}
             rotation={[3.138, -0.006, -3.139]}
             scale={[0.625, 1.011, 1.029]}
           >
             <group
               name="Rotacao069"
-              position={[-0.971, 0.002, -0.057]}
-              rotation={[-1.586, 0.008, 3.102]}
-              scale={[1.6, 0.972, 0.989]}
-            />
-          </mesh>
-          <mesh
-            name="Page67"
-            geometry={nodes.Page67.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.121, 24.909]}
-            rotation={[3.138, -0.006, -3.139]}
-            scale={[0.625, 1.011, 1.029]}
-          >
-            <group
-              name="Rotacao071"
-              position={[-0.971, 0.002, -0.057]}
+              position={[0.518, 0.014, -0.051]}
               rotation={[-1.586, 0.008, 3.102]}
               scale={[1.6, 0.972, 0.989]}
             />
           </mesh>
           <mesh
             name="Page68"
+            castShadow
+            receiveShadow
             geometry={nodes.Page68.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.119, 24.909]}
+            material={materials.PageMaterial}
+            position={[-20.525, 9.236, 24.912]}
             rotation={[3.138, -0.006, -3.139]}
             scale={[0.625, 1.011, 1.029]}
           >
             <group
               name="Rotacao070"
-              position={[-0.971, 0.002, -0.057]}
+              position={[0.518, 0.014, -0.051]}
               rotation={[-1.586, 0.008, 3.102]}
               scale={[1.6, 0.972, 0.989]}
             />
           </mesh>
           <mesh
             name="Page72"
+            castShadow
+            receiveShadow
             geometry={nodes.Page72.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.111, 24.909]}
+            material={materials.PageMaterial}
+            position={[-20.525, 9.228, 24.912]}
             rotation={[3.138, -0.006, -3.139]}
             scale={[0.625, 1.011, 1.029]}
           >
             <group
               name="Rotacao073"
-              position={[-0.971, 0.002, -0.057]}
-              rotation={[-1.586, 0.008, 3.102]}
-              scale={[1.6, 0.972, 0.989]}
-            />
-          </mesh>
-          <mesh
-            name="Page71"
-            geometry={nodes.Page71.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.113, 24.909]}
-            rotation={[3.138, -0.006, -3.139]}
-            scale={[0.625, 1.011, 1.029]}
-          >
-            <group
-              name="Rotacao072"
-              position={[-0.971, 0.002, -0.057]}
-              rotation={[-1.586, 0.008, 3.102]}
-              scale={[1.6, 0.972, 0.989]}
-            />
-          </mesh>
-          <mesh
-            name="Page70"
-            geometry={nodes.Page70.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.115, 24.909]}
-            rotation={[3.138, -0.006, -3.139]}
-            scale={[0.625, 1.011, 1.029]}
-          >
-            <group
-              name="Rotacao074"
-              position={[-0.971, 0.002, -0.057]}
+              position={[0.518, 0.014, -0.051]}
               rotation={[-1.586, 0.008, 3.102]}
               scale={[1.6, 0.972, 0.989]}
             />
           </mesh>
           <mesh
             name="Page69"
+            castShadow
+            receiveShadow
             geometry={nodes.Page69.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.117, 24.909]}
+            material={materials.PageMaterial}
+            position={[-20.525, 9.234, 24.912]}
             rotation={[3.138, -0.006, -3.139]}
             scale={[0.625, 1.011, 1.029]}
           >
             <group
               name="Rotacao075"
-              position={[-0.971, 0.002, -0.057]}
-              rotation={[-1.586, 0.008, 3.102]}
-              scale={[1.6, 0.972, 0.989]}
-            />
-          </mesh>
-          <mesh
-            name="Page77"
-            geometry={nodes.Page77.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.102, 24.909]}
-            rotation={[3.138, -0.006, -3.139]}
-            scale={[0.625, 1.011, 1.029]}
-          >
-            <group
-              name="Rotacao076"
-              position={[-0.971, 0.002, -0.057]}
+              position={[0.518, 0.014, -0.051]}
               rotation={[-1.586, 0.008, 3.102]}
               scale={[1.6, 0.972, 0.989]}
             />
           </mesh>
           <mesh
             name="Page78"
+            castShadow
+            receiveShadow
             geometry={nodes.Page78.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.1, 24.909]}
+            material={materials.PageMaterial}
+            position={[-20.525, 9.217, 24.912]}
             rotation={[3.138, -0.006, -3.139]}
             scale={[0.625, 1.011, 1.029]}
           >
             <group
               name="Rotacao077"
-              position={[-0.971, 0.002, -0.057]}
+              position={[0.518, 0.014, -0.051]}
               rotation={[-1.586, 0.008, 3.102]}
               scale={[1.6, 0.972, 0.989]}
             />
           </mesh>
           <mesh
             name="Page79"
+            castShadow
+            receiveShadow
             geometry={nodes.Page79.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.098, 24.909]}
+            material={materials.PageMaterial}
+            position={[-20.525, 9.215, 24.912]}
             rotation={[3.138, -0.006, -3.139]}
             scale={[0.625, 1.011, 1.029]}
           >
             <group
               name="Rotacao079"
-              position={[-0.971, 0.002, -0.057]}
-              rotation={[-1.586, 0.008, 3.102]}
-              scale={[1.6, 0.972, 0.989]}
-            />
-          </mesh>
-          <mesh
-            name="Page80"
-            geometry={nodes.Page80.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.096, 24.909]}
-            rotation={[3.138, -0.006, -3.139]}
-            scale={[0.625, 1.011, 1.029]}
-          >
-            <group
-              name="Rotacao078"
-              position={[-0.971, 0.002, -0.057]}
-              rotation={[-1.586, 0.008, 3.102]}
-              scale={[1.6, 0.972, 0.989]}
-            />
-          </mesh>
-          <mesh
-            name="Page76"
-            geometry={nodes.Page76.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.104, 24.909]}
-            rotation={[3.138, -0.006, -3.139]}
-            scale={[0.625, 1.011, 1.029]}
-          >
-            <group
-              name="Rotacao081"
-              position={[-0.971, 0.002, -0.057]}
+              position={[0.518, 0.014, -0.051]}
               rotation={[-1.586, 0.008, 3.102]}
               scale={[1.6, 0.972, 0.989]}
             />
           </mesh>
           <mesh
             name="Page75"
+            castShadow
+            receiveShadow
             geometry={nodes.Page75.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.106, 24.909]}
+            material={materials.PageMaterial}
+            position={[-20.525, 9.223, 24.912]}
             rotation={[3.138, -0.006, -3.139]}
             scale={[0.625, 1.011, 1.029]}
           >
             <group
               name="Rotacao080"
-              position={[-0.971, 0.002, -0.057]}
-              rotation={[-1.586, 0.008, 3.102]}
-              scale={[1.6, 0.972, 0.989]}
-            />
-          </mesh>
-          <mesh
-            name="Page74"
-            geometry={nodes.Page74.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.107, 24.909]}
-            rotation={[3.138, -0.006, -3.139]}
-            scale={[0.625, 1.011, 1.029]}
-          >
-            <group
-              name="Rotacao082"
-              position={[-0.971, 0.002, -0.057]}
+              position={[0.518, 0.014, -0.051]}
               rotation={[-1.586, 0.008, 3.102]}
               scale={[1.6, 0.972, 0.989]}
             />
           </mesh>
           <mesh
             name="Page73"
+            castShadow
+            receiveShadow
             geometry={nodes.Page73.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.109, 24.909]}
+            material={materials.PageMaterial}
+            position={[-20.525, 9.226, 24.912]}
             rotation={[3.138, -0.006, -3.139]}
             scale={[0.625, 1.011, 1.029]}
           >
             <group
               name="Rotacao083"
-              position={[-0.971, 0.002, -0.057]}
+              position={[0.518, 0.014, -0.051]}
               rotation={[-1.586, 0.008, 3.102]}
               scale={[1.6, 0.972, 0.989]}
             />
           </mesh>
           <mesh
             name="Page89"
+            castShadow
+            receiveShadow
             geometry={nodes.Page89.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.08, 24.909]}
+            material={materials.PageMaterial}
+            position={[-20.525, 9.197, 24.912]}
             rotation={[3.138, -0.006, -3.139]}
             scale={[0.625, 1.011, 1.029]}
           >
             <group
               name="Rotacao066"
-              position={[-0.971, 0.002, -0.057]}
-              rotation={[-1.586, 0.008, 3.102]}
-              scale={[1.6, 0.972, 0.989]}
-            />
-          </mesh>
-          <mesh
-            name="Page90"
-            geometry={nodes.Page90.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.078, 24.909]}
-            rotation={[3.138, -0.006, -3.139]}
-            scale={[0.625, 1.011, 1.029]}
-          >
-            <group
-              name="Rotacao067"
-              position={[-0.971, 0.002, -0.057]}
+              position={[0.518, 0.014, -0.051]}
               rotation={[-1.586, 0.008, 3.102]}
               scale={[1.6, 0.972, 0.989]}
             />
           </mesh>
           <mesh
             name="Page91"
+            castShadow
+            receiveShadow
             geometry={nodes.Page91.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.076, 24.909]}
+            material={materials.PageMaterial}
+            position={[-20.525, 9.193, 24.912]}
             rotation={[3.138, -0.006, -3.139]}
             scale={[0.625, 1.011, 1.029]}
           >
             <group
               name="Rotacao084"
-              position={[-0.971, 0.002, -0.057]}
-              rotation={[-1.586, 0.008, 3.102]}
-              scale={[1.6, 0.972, 0.989]}
-            />
-          </mesh>
-          <mesh
-            name="Page92"
-            geometry={nodes.Page92.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.074, 24.909]}
-            rotation={[3.138, -0.006, -3.139]}
-            scale={[0.625, 1.011, 1.029]}
-          >
-            <group
-              name="Rotacao068"
-              position={[-0.971, 0.002, -0.057]}
-              rotation={[-1.586, 0.008, 3.102]}
-              scale={[1.6, 0.972, 0.989]}
-            />
-          </mesh>
-          <mesh
-            name="Page96"
-            geometry={nodes.Page96.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.067, 24.909]}
-            rotation={[3.138, -0.006, -3.139]}
-            scale={[0.625, 1.011, 1.029]}
-          >
-            <group
-              name="Rotacao086"
-              position={[-0.971, 0.002, -0.057]}
+              position={[0.518, 0.014, -0.051]}
               rotation={[-1.586, 0.008, 3.102]}
               scale={[1.6, 0.972, 0.989]}
             />
           </mesh>
           <mesh
             name="Page95"
+            castShadow
+            receiveShadow
             geometry={nodes.Page95.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.069, 24.909]}
+            material={materials.PageMaterial}
+            position={[-20.525, 9.186, 24.912]}
             rotation={[3.138, -0.006, -3.139]}
             scale={[0.625, 1.011, 1.029]}
           >
             <group
               name="Rotacao085"
-              position={[-0.971, 0.002, -0.057]}
-              rotation={[-1.586, 0.008, 3.102]}
-              scale={[1.6, 0.972, 0.989]}
-            />
-          </mesh>
-          <mesh
-            name="Page94"
-            geometry={nodes.Page94.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.07, 24.909]}
-            rotation={[3.138, -0.006, -3.139]}
-            scale={[0.625, 1.011, 1.029]}
-          >
-            <group
-              name="Rotacao087"
-              position={[-0.971, 0.002, -0.057]}
-              rotation={[-1.586, 0.008, 3.102]}
-              scale={[1.6, 0.972, 0.989]}
-            />
-          </mesh>
-          <mesh
-            name="Page93"
-            geometry={nodes.Page93.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.072, 24.909]}
-            rotation={[3.138, -0.006, -3.139]}
-            scale={[0.625, 1.011, 1.029]}
-          >
-            <group
-              name="Rotacao088"
-              position={[-0.971, 0.002, -0.057]}
+              position={[0.518, 0.014, -0.051]}
               rotation={[-1.586, 0.008, 3.102]}
               scale={[1.6, 0.972, 0.989]}
             />
           </mesh>
           <mesh
             name="Page85"
+            castShadow
+            receiveShadow
             geometry={nodes.Page85.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.087, 24.909]}
+            material={materials.PageMaterial}
+            position={[-20.525, 9.204, 24.912]}
             rotation={[3.138, -0.006, -3.139]}
             scale={[0.625, 1.011, 1.029]}
           >
             <group
               name="Rotacao089"
-              position={[-0.971, 0.002, -0.057]}
-              rotation={[-1.586, 0.008, 3.102]}
-              scale={[1.6, 0.972, 0.989]}
-            />
-          </mesh>
-          <mesh
-            name="Page86"
-            geometry={nodes.Page86.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.085, 24.909]}
-            rotation={[3.138, -0.006, -3.139]}
-            scale={[0.625, 1.011, 1.029]}
-          >
-            <group
-              name="Rotacao090"
-              position={[-0.971, 0.002, -0.057]}
-              rotation={[-1.586, 0.008, 3.102]}
-              scale={[1.6, 0.972, 0.989]}
-            />
-          </mesh>
-          <mesh
-            name="Page87"
-            geometry={nodes.Page87.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.083, 24.909]}
-            rotation={[3.138, -0.006, -3.139]}
-            scale={[0.625, 1.011, 1.029]}
-          >
-            <group
-              name="Rotacao092"
-              position={[-0.971, 0.002, -0.057]}
-              rotation={[-1.586, 0.008, 3.102]}
-              scale={[1.6, 0.972, 0.989]}
-            />
-          </mesh>
-          <mesh
-            name="Page88"
-            geometry={nodes.Page88.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.081, 24.909]}
-            rotation={[3.138, -0.006, -3.139]}
-            scale={[0.625, 1.011, 1.029]}
-          >
-            <group
-              name="Rotacao091"
-              position={[-0.971, 0.002, -0.057]}
+              position={[0.518, 0.014, -0.051]}
               rotation={[-1.586, 0.008, 3.102]}
               scale={[1.6, 0.972, 0.989]}
             />
           </mesh>
           <mesh
             name="Page84"
+            castShadow
+            receiveShadow
             geometry={nodes.Page84.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.089, 24.909]}
+            material={materials.PageMaterial}
+            position={[-20.525, 9.206, 24.912]}
             rotation={[3.138, -0.006, -3.139]}
             scale={[0.625, 1.011, 1.029]}
           >
             <group
               name="Rotacao094"
-              position={[-0.971, 0.002, -0.057]}
-              rotation={[-1.586, 0.008, 3.102]}
-              scale={[1.6, 0.972, 0.989]}
-            />
-          </mesh>
-          <mesh
-            name="Page83"
-            geometry={nodes.Page83.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.091, 24.909]}
-            rotation={[3.138, -0.006, -3.139]}
-            scale={[0.625, 1.011, 1.029]}
-          >
-            <group
-              name="Rotacao093"
-              position={[-0.971, 0.002, -0.057]}
+              position={[0.518, 0.014, -0.051]}
               rotation={[-1.586, 0.008, 3.102]}
               scale={[1.6, 0.972, 0.989]}
             />
           </mesh>
           <mesh
             name="Page82"
+            castShadow
+            receiveShadow
             geometry={nodes.Page82.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.093, 24.909]}
+            material={materials.PageMaterial}
+            position={[-20.525, 9.21, 24.912]}
             rotation={[3.138, -0.006, -3.139]}
             scale={[0.625, 1.011, 1.029]}
           >
             <group
               name="Rotacao095"
-              position={[-0.971, 0.002, -0.057]}
-              rotation={[-1.586, 0.008, 3.102]}
-              scale={[1.6, 0.972, 0.989]}
-            />
-          </mesh>
-          <mesh
-            name="Page81"
-            geometry={nodes.Page81.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.094, 24.909]}
-            rotation={[3.138, -0.006, -3.139]}
-            scale={[0.625, 1.011, 1.029]}
-          >
-            <group
-              name="Rotacao096"
-              position={[-0.971, 0.002, -0.057]}
+              position={[0.518, 0.014, -0.051]}
               rotation={[-1.586, 0.008, 3.102]}
               scale={[1.6, 0.972, 0.989]}
             />
           </mesh>
           <mesh
             name="Page99"
+            castShadow
+            receiveShadow
             geometry={nodes.Page99.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.062, 24.909]}
+            material={materials.PageMaterial}
+            position={[-20.525, 9.179, 24.912]}
             rotation={[3.138, -0.006, -3.139]}
             scale={[0.625, 1.011, 1.029]}
           >
             <group
               name="Rotacao097"
-              position={[-0.971, 0.002, -0.057]}
+              position={[0.518, 0.014, -0.051]}
               rotation={[-1.586, 0.008, 3.102]}
               scale={[1.6, 0.972, 0.989]}
             />
           </mesh>
           <mesh
-            name="Page98"
-            geometry={nodes.Page98.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.063, 24.909]}
+            name="Page61"
+            castShadow
+            receiveShadow
+            geometry={nodes.Page61.geometry}
+            material={materials.PageMaterial}
+            position={[-20.525, 9.248, 24.912]}
             rotation={[3.138, -0.006, -3.139]}
             scale={[0.625, 1.011, 1.029]}
           >
             <group
-              name="Rotacao102"
-              position={[-0.971, 0.002, -0.057]}
+              name="Rotacao041"
+              position={[0.518, 0.014, -0.051]}
+              rotation={[-1.586, 0.008, 3.102]}
+              scale={[1.6, 0.972, 0.989]}
+            />
+          </mesh>
+          <mesh
+            name="Page62"
+            castShadow
+            receiveShadow
+            geometry={nodes.Page62.geometry}
+            material={materials.PageMaterial}
+            position={[-20.525, 9.246, 24.912]}
+            rotation={[3.138, -0.006, -3.139]}
+            scale={[0.625, 1.011, 1.029]}
+          >
+            <group
+              name="Rotacao042"
+              position={[0.518, 0.014, -0.051]}
+              rotation={[-1.586, 0.008, 3.102]}
+              scale={[1.6, 0.972, 0.989]}
+            />
+          </mesh>
+          <mesh
+            name="Page63"
+            castShadow
+            receiveShadow
+            geometry={nodes.Page63.geometry}
+            material={materials.PageMaterial}
+            position={[-20.525, 9.245, 24.912]}
+            rotation={[3.138, -0.006, -3.139]}
+            scale={[0.625, 1.011, 1.029]}
+          >
+            <group
+              name="Rotacao044"
+              position={[0.518, 0.014, -0.051]}
+              rotation={[-1.586, 0.008, 3.102]}
+              scale={[1.6, 0.972, 0.989]}
+            />
+          </mesh>
+          <mesh
+            name="Page64"
+            castShadow
+            receiveShadow
+            geometry={nodes.Page64.geometry}
+            material={materials.PageMaterial}
+            position={[-20.525, 9.243, 24.912]}
+            rotation={[3.138, -0.006, -3.139]}
+            scale={[0.625, 1.011, 1.029]}
+          >
+            <group
+              name="Rotacao043"
+              position={[0.518, 0.014, -0.051]}
+              rotation={[-1.586, 0.008, 3.102]}
+              scale={[1.6, 0.972, 0.989]}
+            />
+          </mesh>
+          <mesh
+            name="Page57"
+            castShadow
+            receiveShadow
+            geometry={nodes.Page57.geometry}
+            material={materials.PageMaterial}
+            position={[-20.525, 9.256, 24.912]}
+            rotation={[3.138, -0.006, -3.139]}
+            scale={[0.625, 1.011, 1.029]}
+          >
+            <group
+              name="Rotacao063"
+              position={[0.518, 0.014, -0.051]}
+              rotation={[-1.586, 0.008, 3.102]}
+              scale={[1.6, 0.972, 0.989]}
+            />
+          </mesh>
+          <mesh
+            name="Page67"
+            castShadow
+            receiveShadow
+            geometry={nodes.Page67.geometry}
+            material={materials.PageMaterial}
+            position={[-20.525, 9.238, 24.912]}
+            rotation={[3.138, -0.006, -3.139]}
+            scale={[0.625, 1.011, 1.029]}
+          >
+            <group
+              name="Rotacao071"
+              position={[0.518, 0.014, -0.051]}
+              rotation={[-1.586, 0.008, 3.102]}
+              scale={[1.6, 0.972, 0.989]}
+            />
+          </mesh>
+          <mesh
+            name="Page70"
+            castShadow
+            receiveShadow
+            geometry={nodes.Page70.geometry}
+            material={materials.PageMaterial}
+            position={[-20.525, 9.232, 24.912]}
+            rotation={[3.138, -0.006, -3.139]}
+            scale={[0.625, 1.011, 1.029]}
+          >
+            <group
+              name="Rotacao074"
+              position={[0.518, 0.014, -0.051]}
+              rotation={[-1.586, 0.008, 3.102]}
+              scale={[1.6, 0.972, 0.989]}
+            />
+          </mesh>
+          <mesh
+            name="Page77"
+            castShadow
+            receiveShadow
+            geometry={nodes.Page77.geometry}
+            material={materials.PageMaterial}
+            position={[-20.525, 9.219, 24.912]}
+            rotation={[3.138, -0.006, -3.139]}
+            scale={[0.625, 1.011, 1.029]}
+          >
+            <group
+              name="Rotacao076"
+              position={[0.518, 0.014, -0.051]}
+              rotation={[-1.586, 0.008, 3.102]}
+              scale={[1.6, 0.972, 0.989]}
+            />
+          </mesh>
+          <mesh
+            name="Page76"
+            castShadow
+            receiveShadow
+            geometry={nodes.Page76.geometry}
+            material={materials.PageMaterial}
+            position={[-20.525, 9.221, 24.912]}
+            rotation={[3.138, -0.006, -3.139]}
+            scale={[0.625, 1.011, 1.029]}
+          >
+            <group
+              name="Rotacao081"
+              position={[0.518, 0.014, -0.051]}
+              rotation={[-1.586, 0.008, 3.102]}
+              scale={[1.6, 0.972, 0.989]}
+            />
+          </mesh>
+          <mesh
+            name="Page74"
+            castShadow
+            receiveShadow
+            geometry={nodes.Page74.geometry}
+            material={materials.PageMaterial}
+            position={[-20.525, 9.224, 24.912]}
+            rotation={[3.138, -0.006, -3.139]}
+            scale={[0.625, 1.011, 1.029]}
+          >
+            <group
+              name="Rotacao082"
+              position={[0.518, 0.014, -0.051]}
+              rotation={[-1.586, 0.008, 3.102]}
+              scale={[1.6, 0.972, 0.989]}
+            />
+          </mesh>
+          <mesh
+            name="Page92"
+            castShadow
+            receiveShadow
+            geometry={nodes.Page92.geometry}
+            material={materials.PageMaterial}
+            position={[-20.525, 9.191, 24.912]}
+            rotation={[3.138, -0.006, -3.139]}
+            scale={[0.625, 1.011, 1.029]}
+          >
+            <group
+              name="Rotacao068"
+              position={[0.518, 0.014, -0.051]}
+              rotation={[-1.586, 0.008, 3.102]}
+              scale={[1.6, 0.972, 0.989]}
+            />
+          </mesh>
+          <mesh
+            name="Page93"
+            castShadow
+            receiveShadow
+            geometry={nodes.Page93.geometry}
+            material={materials.PageMaterial}
+            position={[-20.525, 9.189, 24.912]}
+            rotation={[3.138, -0.006, -3.139]}
+            scale={[0.625, 1.011, 1.029]}
+          >
+            <group
+              name="Rotacao088"
+              position={[0.518, 0.014, -0.051]}
+              rotation={[-1.586, 0.008, 3.102]}
+              scale={[1.6, 0.972, 0.989]}
+            />
+          </mesh>
+          <mesh
+            name="Page87"
+            castShadow
+            receiveShadow
+            geometry={nodes.Page87.geometry}
+            material={materials.PageMaterial}
+            position={[-20.525, 9.2, 24.912]}
+            rotation={[3.138, -0.006, -3.139]}
+            scale={[0.625, 1.011, 1.029]}
+          >
+            <group
+              name="Rotacao092"
+              position={[0.518, 0.014, -0.051]}
+              rotation={[-1.586, 0.008, 3.102]}
+              scale={[1.6, 0.972, 0.989]}
+            />
+          </mesh>
+          <mesh
+            name="Page83"
+            castShadow
+            receiveShadow
+            geometry={nodes.Page83.geometry}
+            material={materials.PageMaterial}
+            position={[-20.525, 9.208, 24.912]}
+            rotation={[3.138, -0.006, -3.139]}
+            scale={[0.625, 1.011, 1.029]}
+          >
+            <group
+              name="Rotacao093"
+              position={[0.518, 0.014, -0.051]}
               rotation={[-1.586, 0.008, 3.102]}
               scale={[1.6, 0.972, 0.989]}
             />
           </mesh>
           <mesh
             name="Page97"
+            castShadow
+            receiveShadow
             geometry={nodes.Page97.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.065, 24.909]}
+            material={materials.PageMaterial}
+            position={[-20.525, 9.182, 24.912]}
             rotation={[3.138, -0.006, -3.139]}
             scale={[0.625, 1.011, 1.029]}
           >
             <group
               name="Rotacao101"
-              position={[-0.971, 0.002, -0.057]}
+              position={[0.518, 0.014, -0.051]}
               rotation={[-1.586, 0.008, 3.102]}
               scale={[1.6, 0.972, 0.989]}
             />
           </mesh>
           <mesh
             name="Page50"
+            castShadow
+            receiveShadow
             geometry={nodes.Page50.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.152, 24.909]}
+            material={materials.PageMaterial}
+            position={[-20.525, 9.269, 24.912]}
             rotation={[3.138, -0.006, -3.139]}
             scale={[0.625, 1.011, 1.029]}
           >
             <group
               name="Rotacao034"
-              position={[-0.971, 0.002, -0.057]}
+              position={[0.518, 0.014, -0.051]}
+              rotation={[-1.586, 0.008, 3.102]}
+              scale={[1.6, 0.972, 0.989]}
+            />
+          </mesh>
+          <mesh
+            name="Page59"
+            castShadow
+            receiveShadow
+            geometry={nodes.Page59.geometry}
+            material={materials.PageMaterial}
+            position={[-20.525, 9.252, 24.912]}
+            rotation={[3.138, -0.006, -3.139]}
+            scale={[0.625, 1.011, 1.029]}
+          >
+            <group
+              name="Rotacao045"
+              position={[0.518, 0.014, -0.051]}
+              rotation={[-1.586, 0.008, 3.102]}
+              scale={[1.6, 0.972, 0.989]}
+            />
+          </mesh>
+          <mesh
+            name="Page65"
+            castShadow
+            receiveShadow
+            geometry={nodes.Page65.geometry}
+            material={materials.PageMaterial}
+            position={[-20.525, 9.241, 24.912]}
+            rotation={[3.138, -0.006, -3.139]}
+            scale={[0.625, 1.011, 1.029]}
+          >
+            <group
+              name="Rotacao065"
+              position={[0.518, 0.014, -0.051]}
+              rotation={[-1.586, 0.008, 3.102]}
+              scale={[1.6, 0.972, 0.989]}
+            />
+          </mesh>
+          <mesh
+            name="Page80"
+            castShadow
+            receiveShadow
+            geometry={nodes.Page80.geometry}
+            material={materials.PageMaterial}
+            position={[-20.525, 9.213, 24.912]}
+            rotation={[3.138, -0.006, -3.139]}
+            scale={[0.625, 1.011, 1.029]}
+          >
+            <group
+              name="Rotacao078"
+              position={[0.518, 0.014, -0.051]}
+              rotation={[-1.586, 0.008, 3.102]}
+              scale={[1.6, 0.972, 0.989]}
+            />
+          </mesh>
+          <mesh
+            name="Page90"
+            castShadow
+            receiveShadow
+            geometry={nodes.Page90.geometry}
+            material={materials.PageMaterial}
+            position={[-20.525, 9.195, 24.912]}
+            rotation={[3.138, -0.006, -3.139]}
+            scale={[0.625, 1.011, 1.029]}
+          >
+            <group
+              name="Rotacao067"
+              position={[0.518, 0.014, -0.051]}
+              rotation={[-1.586, 0.008, 3.102]}
+              scale={[1.6, 0.972, 0.989]}
+            />
+          </mesh>
+          <mesh
+            name="Page86"
+            castShadow
+            receiveShadow
+            geometry={nodes.Page86.geometry}
+            material={materials.PageMaterial}
+            position={[-20.525, 9.202, 24.912]}
+            rotation={[3.138, -0.006, -3.139]}
+            scale={[0.625, 1.011, 1.029]}
+          >
+            <group
+              name="Rotacao090"
+              position={[0.518, 0.014, -0.051]}
+              rotation={[-1.586, 0.008, 3.102]}
+              scale={[1.6, 0.972, 0.989]}
+            />
+          </mesh>
+          <mesh
+            name="Page88"
+            castShadow
+            receiveShadow
+            geometry={nodes.Page88.geometry}
+            material={materials.PageMaterial}
+            position={[-20.525, 9.198, 24.912]}
+            rotation={[3.138, -0.006, -3.139]}
+            scale={[0.625, 1.011, 1.029]}
+          >
+            <group
+              name="Rotacao091"
+              position={[0.518, 0.014, -0.051]}
+              rotation={[-1.586, 0.008, 3.102]}
+              scale={[1.6, 0.972, 0.989]}
+            />
+          </mesh>
+          <mesh
+            name="Page42"
+            castShadow
+            receiveShadow
+            geometry={nodes.Page42.geometry}
+            material={materials.PageMaterial}
+            position={[-19.332, 9.164, 24.904]}
+            rotation={[-3.138, 0.002, 0.005]}
+            scale={[0.625, 1.011, 1.029]}
+          >
+            <group
+              name="Rotacao047"
+              position={[0.342, 0.012, -0.051]}
+              rotation={[-1.586, 0.008, 3.102]}
+              scale={[1.6, 0.972, 0.989]}
+            />
+          </mesh>
+          <mesh
+            name="Page43"
+            castShadow
+            receiveShadow
+            geometry={nodes.Page43.geometry}
+            material={materials.PageMaterial}
+            position={[-19.332, 9.162, 24.904]}
+            rotation={[-3.138, 0.002, 0.005]}
+            scale={[0.625, 1.011, 1.029]}
+          >
+            <group
+              name="Rotacao049"
+              position={[0.342, 0.012, -0.051]}
+              rotation={[-1.586, 0.008, 3.102]}
+              scale={[1.6, 0.972, 0.989]}
+            />
+          </mesh>
+          <mesh
+            name="Page47"
+            castShadow
+            receiveShadow
+            geometry={nodes.Page47.geometry}
+            material={materials.PageMaterial}
+            position={[-19.332, 9.155, 24.904]}
+            rotation={[-3.138, 0.002, 0.005]}
+            scale={[0.625, 1.011, 1.029]}
+          >
+            <group
+              name="Rotacao050"
+              position={[0.342, 0.012, -0.051]}
+              rotation={[-1.586, 0.008, 3.102]}
+              scale={[1.6, 0.972, 0.989]}
+            />
+          </mesh>
+          <mesh
+            name="Page39"
+            castShadow
+            receiveShadow
+            geometry={nodes.Page39.geometry}
+            material={materials.PageMaterial}
+            position={[-19.332, 9.17, 24.904]}
+            rotation={[-3.138, 0.002, 0.005]}
+            scale={[0.625, 1.011, 1.029]}
+          >
+            <group
+              name="Rotacao057"
+              position={[0.342, 0.012, -0.051]}
+              rotation={[-1.586, 0.008, 3.102]}
+              scale={[1.6, 0.972, 0.989]}
+            />
+          </mesh>
+          <mesh
+            name="Page71"
+            castShadow
+            receiveShadow
+            geometry={nodes.Page71.geometry}
+            material={materials.PageMaterial}
+            position={[-20.525, 9.23, 24.912]}
+            rotation={[3.138, -0.006, -3.139]}
+            scale={[0.625, 1.011, 1.029]}
+          >
+            <group
+              name="Rotacao072"
+              position={[0.518, 0.014, -0.051]}
+              rotation={[-1.586, 0.008, 3.102]}
+              scale={[1.6, 0.972, 0.989]}
+            />
+          </mesh>
+          <mesh
+            name="Page96"
+            castShadow
+            receiveShadow
+            geometry={nodes.Page96.geometry}
+            material={materials.PageMaterial}
+            position={[-20.525, 9.184, 24.912]}
+            rotation={[3.138, -0.006, -3.139]}
+            scale={[0.625, 1.011, 1.029]}
+          >
+            <group
+              name="Rotacao086"
+              position={[0.518, 0.014, -0.051]}
+              rotation={[-1.586, 0.008, 3.102]}
+              scale={[1.6, 0.972, 0.989]}
+            />
+          </mesh>
+          <mesh
+            name="Page94"
+            castShadow
+            receiveShadow
+            geometry={nodes.Page94.geometry}
+            material={materials.PageMaterial}
+            position={[-20.525, 9.187, 24.912]}
+            rotation={[3.138, -0.006, -3.139]}
+            scale={[0.625, 1.011, 1.029]}
+          >
+            <group
+              name="Rotacao087"
+              position={[0.518, 0.014, -0.051]}
+              rotation={[-1.586, 0.008, 3.102]}
+              scale={[1.6, 0.972, 0.989]}
+            />
+          </mesh>
+          <mesh
+            name="Page98"
+            castShadow
+            receiveShadow
+            geometry={nodes.Page98.geometry}
+            material={materials.PageMaterial}
+            position={[-20.525, 9.18, 24.912]}
+            rotation={[3.138, -0.006, -3.139]}
+            scale={[0.625, 1.011, 1.029]}
+          >
+            <group
+              name="Rotacao102"
+              position={[0.518, 0.014, -0.051]}
+              rotation={[-1.586, 0.008, 3.102]}
+              scale={[1.6, 0.972, 0.989]}
+            />
+          </mesh>
+          <mesh
+            name="Page81"
+            castShadow
+            receiveShadow
+            geometry={nodes.Page81.geometry}
+            material={materials.PageMaterial}
+            position={[-20.525, 9.211, 24.912]}
+            rotation={[3.138, -0.006, -3.139]}
+            scale={[0.625, 1.011, 1.029]}
+          >
+            <group
+              name="Rotacao096"
+              position={[0.518, 0.014, -0.051]}
               rotation={[-1.586, 0.008, 3.102]}
               scale={[1.6, 0.972, 0.989]}
             />
           </mesh>
           <mesh
             name="Page51"
+            castShadow
+            receiveShadow
             geometry={nodes.Page51.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.15, 24.909]}
+            material={materials.PageMaterial}
+            position={[-20.525, 9.267, 24.912]}
             rotation={[3.138, -0.006, -3.139]}
             scale={[0.625, 1.011, 1.029]}
           >
             <group
               name="Rotacao036"
-              position={[-3.859, 0.1, -0.066]}
-              rotation={[1.611, -0.359, -0.15]}
-              scale={[1.546, 0.972, 1.073]}
+              position={[0.324, -0.539, -0.044]}
+              rotation={[-1.681, 0.658, 2.958]}
+              scale={[1.405, 0.972, 1.251]}
             />
           </mesh>
           <mesh
             name="Page52"
+            castShadow
+            receiveShadow
             geometry={nodes.Page52.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.148, 24.909]}
+            material={materials.PageMaterial}
+            position={[-20.525, 9.265, 24.912]}
             rotation={[3.138, -0.006, -3.139]}
             scale={[0.625, 1.011, 1.029]}
           >
             <group
               name="Rotacao035"
-              position={[-0.971, 0.002, -0.057]}
+              position={[0.518, 0.014, -0.051]}
               rotation={[-1.586, 0.008, 3.102]}
               scale={[1.6, 0.972, 0.989]}
             />
           </mesh>
           <mesh
             name="Page53"
+            castShadow
+            receiveShadow
             geometry={nodes.Page53.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.146, 24.909]}
+            material={materials.PageMaterial}
+            position={[-20.525, 9.263, 24.912]}
             rotation={[3.138, -0.006, -3.139]}
             scale={[0.625, 1.011, 1.029]}
           >
             <group
               name="Rotacao040"
-              position={[-0.971, 0.002, -0.057]}
+              position={[0.518, 0.014, -0.051]}
               rotation={[-1.586, 0.008, 3.102]}
               scale={[1.6, 0.972, 0.989]}
             />
           </mesh>
           <mesh
             name="Page54"
+            castShadow
+            receiveShadow
             geometry={nodes.Page54.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-20.712, 9.144, 24.909]}
+            material={materials.PageMaterial}
+            position={[-20.525, 9.261, 24.912]}
             rotation={[3.138, -0.006, -3.139]}
             scale={[0.625, 1.011, 1.029]}
           >
             <group
               name="Rotacao039"
-              position={[-0.971, 0.002, -0.057]}
+              position={[0.518, 0.014, -0.051]}
               rotation={[-1.586, 0.008, 3.102]}
               scale={[1.6, 0.972, 0.989]}
             />
           </mesh>
         </group>
+        {/* #endregion */}
         <group name="Janela">
           <mesh
             name="Mesh019"
+            castShadow
+            receiveShadow
             geometry={nodes.Mesh019.geometry}
             material={materials.MoldeVidroMaterial}
           />
           <mesh
             name="Mesh019_1"
+            castShadow
+            receiveShadow
             geometry={nodes.Mesh019_1.geometry}
-            material={materials.PaletteMaterial012}
+            material={materials.HingeMaterial}
           />
           <mesh
             name="Wood_W-L"
+            castShadow
+            receiveShadow
             geometry={nodes["Wood_W-L"].geometry}
             material={materials.MoldeVidroMaterial}
             position={[-12.242, 25.541, -26.025]}
-            rotation={[-Math.PI, -0.003, 0]}
+            rotation={[0, -0.82, Math.PI]}
           />
           <mesh
             name="Wood_W-R"
+            castShadow
+            receiveShadow
             geometry={nodes["Wood_W-R"].geometry}
             material={materials.MoldeVidroMaterial}
             position={[5.15, 25.711, -26.024]}
-            rotation={[0, -0.003, 0]}
+            rotation={[Math.PI, -0.709, Math.PI]}
           />
         </group>
-        <group name="Vitrola">
-          <group
-            name="Disc"
-            position={[-26.031, 9.362, 25.874]}
-            scale={[1.025, 0.003, 1.025]}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <mesh
-              name="Cylinder"
-              geometry={nodes.Cylinder.geometry}
-              material={materials.PaletteMaterial002}
-            />
-            <mesh
-              name="Cylinder_1"
-              geometry={nodes.Cylinder_1.geometry}
-              material={materials.centerVitrola}
-            />
-          </group>
+
+        {/* <mesh
+          name="Operating_glass_L"
+          castShadow
+          receiveShadow
+          geometry={nodes.Operating_glass_L.geometry}
+          material={materials["vidro  janela"]}
+          rotation={[-Math.PI, 0, -Math.PI]}
+        /> */}
+      </group>
+      <group name="Teclado">
+        <mesh
+          name="MoldeTeclado"
+          castShadow
+          receiveShadow
+          geometry={nodes.MoldeTeclado.geometry}
+          material={materials.MusicaTecladoBase}
+          position={[-16.274, 9.157, 9.032]}
+          rotation={[-Math.PI, 1.55, -Math.PI]}
+          scale={[0.019, 0.019, 0.034]}
+        />
+        <group
+          name="Pad7"
+          position={[-19.207, 9.294, 9.02]}
+          rotation={[-Math.PI, 1.55, -Math.PI]}
+          scale={[0.019, 0.011, 0.019]}
+        >
           <mesh
-            name="HolderVitrola"
-            geometry={nodes.HolderVitrola.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-26.03, 9.366, 25.874]}
-            scale={[0.026, 0.059, 0.026]}
+            name="Mesh016"
+            castShadow
+            receiveShadow
+            geometry={nodes.Mesh016.geometry}
+            material={materials.MaterialPianoPad}
           />
           <mesh
-            name="BotoesVitrola"
-            geometry={nodes.BotoesVitrola.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-26.111, 9.395, 24.729]}
+            name="Mesh016_1"
+            castShadow
+            receiveShadow
+            geometry={nodes.Mesh016_1.geometry}
+            material={materials.MaterialPianoPadRed}
           />
-          <mesh
-            name="DetalhePlastico"
-            geometry={nodes.DetalhePlastico.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-25.485, 9.182, 26.19]}
-          />
-          <mesh
-            name="DetalheVitrola"
-            geometry={nodes.DetalheVitrola.geometry}
-            material={materials.vitrolaWood}
-            position={[-26.42, 9.328, 27.615]}
-          />
-          <mesh
-            name="HolderAgulha"
-            geometry={nodes.HolderAgulha.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-26.965, 9.4, 24.689]}
-          />
-          <mesh
-            name="HolderVara"
-            geometry={nodes.HolderVara.geometry}
-            material={materials.vitrolaWood}
-            position={[-27.478, 9.36, 25.272]}
-          />
-          <mesh
-            name="MoldeVitrola"
-            geometry={nodes.MoldeVitrola.geometry}
-            material={materials.vitrolaWood}
-            position={[-26.101, 9.231, 25.871]}
-            onClick={(e) => e.stopPropagation()}
-          />
-          <mesh
-            name="PecasPlasticoPretoVitrola"
-            geometry={nodes.PecasPlasticoPretoVitrola.geometry}
-            material={materials.PaletteMaterial002}
-            position={[-26.24, 9.35, 25.936]}
-          />
-          <mesh
-            name="TampaVitrola"
-            geometry={nodes.TampaVitrola.geometry}
-            material={materials.PaletteMaterial006}
-            position={[-26.558, 10.718, 26.171]}
-          />
-          <group name="Operating_glass_L" rotation={[-Math.PI, 0, -Math.PI]}>
-            <mesh
-              name="Mesh033"
-              geometry={nodes.Mesh033.geometry}
-              material={materials.MoldeVidroMaterial}
-            />
-            <mesh
-              name="Mesh033_1"
-              geometry={nodes.Mesh033_1.geometry}
-              material={materials.PaletteMaterial011}
-            />
-            <mesh
-              name="Mesh033_2"
-              geometry={nodes.Mesh033_2.geometry}
-              material={materials.PaletteMaterial012}
-            />
-          </group>
-          <group name="Operating_glass_R" rotation={[0, 0, -Math.PI]}>
-            <mesh
-              name="Mesh034"
-              geometry={nodes.Mesh034.geometry}
-              material={materials.MoldeVidroMaterial}
-            />
-            <mesh
-              name="Mesh034_1"
-              geometry={nodes.Mesh034_1.geometry}
-              material={materials.PaletteMaterial011}
-            />
-          </group>
         </group>
+        <mesh
+          name="CutoffSlider"
+          castShadow
+          receiveShadow
+          geometry={nodes.CutoffSlider.geometry}
+          material={materials.MusicTecladoWhite}
+          position={[-17.093, 9.301, 9.159]}
+          rotation={[-Math.PI, 1.55, -Math.PI]}
+          scale={0.019}
+        />
+        <group
+          name="CuttoffMarker"
+          position={[-17.092, 9.361, 9.147]}
+          rotation={[-Math.PI, 1.55, -Math.PI]}
+          scale={[0.008, 0.009, 0.009]}
+        >
+          <mesh
+            name="Mesh022"
+            castShadow
+            receiveShadow
+            geometry={nodes.Mesh022.geometry}
+            material={materials.MaterialPianoPadRed}
+          />
+          <mesh
+            name="Mesh022_1"
+            castShadow
+            receiveShadow
+            geometry={nodes.Mesh022_1.geometry}
+            material={nodes.Mesh022_1.material}
+          />
+        </group>
+        <mesh
+          name="C3"
+          castShadow
+          receiveShadow
+          geometry={nodes.C3.geometry}
+          material={materials.MusicTecladoWhite}
+          position={[-17.281, 9.196, 10.156]}
+          rotation={[-Math.PI, 1.55, -Math.PI]}
+          scale={0.019}
+        />
+        <mesh
+          name="B2"
+          castShadow
+          receiveShadow
+          geometry={nodes.B2.geometry}
+          material={materials.MusicTecladoWhite}
+          position={[-17.518, 9.196, 10.155]}
+          rotation={[-Math.PI, 1.55, -Math.PI]}
+          scale={0.019}
+        />
+        <mesh
+          name="A2"
+          castShadow
+          receiveShadow
+          geometry={nodes.A2.geometry}
+          material={materials.MusicTecladoWhite}
+          position={[-17.755, 9.196, 10.156]}
+          rotation={[-Math.PI, 1.55, -Math.PI]}
+          scale={0.019}
+        />
+        <mesh
+          name="G2"
+          castShadow
+          receiveShadow
+          geometry={nodes.G2.geometry}
+          material={materials.MusicTecladoWhite}
+          position={[-17.998, 9.196, 10.159]}
+          rotation={[-Math.PI, 1.55, -Math.PI]}
+          scale={0.019}
+        />
+        <mesh
+          name="F2"
+          castShadow
+          receiveShadow
+          geometry={nodes.F2.geometry}
+          material={materials.MusicTecladoWhite}
+          position={[-18.237, 9.196, 10.166]}
+          rotation={[-Math.PI, 1.55, -Math.PI]}
+          scale={0.019}
+        />
+        <mesh
+          name="E2"
+          castShadow
+          receiveShadow
+          geometry={nodes.E2.geometry}
+          material={materials.MusicTecladoWhite}
+          position={[-18.481, 9.196, 10.171]}
+          rotation={[-Math.PI, 1.55, -Math.PI]}
+          scale={0.019}
+        />
+        <mesh
+          name="D2"
+          castShadow
+          receiveShadow
+          geometry={nodes.D2.geometry}
+          material={materials.MusicTecladoWhite}
+          position={[-18.728, 9.196, 10.182]}
+          rotation={[-Math.PI, 1.55, -Math.PI]}
+          scale={0.019}
+        />
+        <mesh
+          name="C2"
+          castShadow
+          receiveShadow
+          geometry={nodes.C2.geometry}
+          material={materials.MusicTecladoWhite}
+          position={[-18.976, 9.196, 10.186]}
+          rotation={[-Math.PI, 1.55, -Math.PI]}
+          scale={0.019}
+        />
+        <mesh
+          name="B1"
+          castShadow
+          receiveShadow
+          geometry={nodes.B1.geometry}
+          material={materials.MusicTecladoWhite}
+          position={[-19.214, 9.196, 10.187]}
+          rotation={[-Math.PI, 1.55, -Math.PI]}
+          scale={0.019}
+        />
+        <mesh
+          name="A1"
+          castShadow
+          receiveShadow
+          geometry={nodes.A1.geometry}
+          material={materials.MusicTecladoWhite}
+          position={[-19.45, 9.196, 10.197]}
+          rotation={[-Math.PI, 1.55, -Math.PI]}
+          scale={0.019}
+        />
+        <mesh
+          name="G1"
+          castShadow
+          receiveShadow
+          geometry={nodes.G1.geometry}
+          material={materials.MusicTecladoWhite}
+          position={[-19.688, 9.196, 10.194]}
+          rotation={[-Math.PI, 1.55, -Math.PI]}
+          scale={0.019}
+        />
+        <mesh
+          name="F1"
+          castShadow
+          receiveShadow
+          geometry={nodes.F1.geometry}
+          material={materials.MusicTecladoWhite}
+          position={[-19.931, 9.196, 10.207]}
+          rotation={[-Math.PI, 1.55, -Math.PI]}
+          scale={0.019}
+        />
+        <mesh
+          name="E1"
+          castShadow
+          receiveShadow
+          geometry={nodes.E1.geometry}
+          material={materials.MusicTecladoWhite}
+          position={[-20.17, 9.206, 10.219]}
+          rotation={[-Math.PI, 1.55, -Math.PI]}
+          scale={0.019}
+        />
+        <mesh
+          name="D1"
+          castShadow
+          receiveShadow
+          geometry={nodes.D1.geometry}
+          material={materials.MusicTecladoWhite}
+          position={[-20.421, 9.206, 10.226]}
+          rotation={[-Math.PI, 1.55, -Math.PI]}
+          scale={0.019}
+        />
+        <mesh
+          name="C1"
+          castShadow
+          receiveShadow
+          geometry={nodes.C1.geometry}
+          material={materials.MusicTecladoWhite}
+          position={[-20.661, 9.206, 10.235]}
+          rotation={[-Math.PI, 1.55, -Math.PI]}
+          scale={0.019}
+        />
+        <mesh
+          name="D3"
+          castShadow
+          receiveShadow
+          geometry={nodes.D3.geometry}
+          material={materials.MusicTecladoWhite}
+          position={[-17.04, 9.196, 10.158]}
+          rotation={[-Math.PI, 1.55, -Math.PI]}
+          scale={0.019}
+        />
+        <mesh
+          name="E3"
+          castShadow
+          receiveShadow
+          geometry={nodes.E3.geometry}
+          material={materials.MusicTecladoWhite}
+          position={[-16.793, 9.196, 10.153]}
+          rotation={[-Math.PI, 1.55, -Math.PI]}
+          scale={0.019}
+        />
+        <mesh
+          name="F3"
+          castShadow
+          receiveShadow
+          geometry={nodes.F3.geometry}
+          material={materials.MusicTecladoWhite}
+          position={[-16.549, 9.196, 10.148]}
+          rotation={[-Math.PI, 1.55, -Math.PI]}
+          scale={0.019}
+        />
+        <mesh
+          name="G3"
+          castShadow
+          receiveShadow
+          geometry={nodes.G3.geometry}
+          material={materials.MusicTecladoWhite}
+          position={[-16.31, 9.196, 10.143]}
+          rotation={[-Math.PI, 1.55, -Math.PI]}
+          scale={0.019}
+        />
+        <mesh
+          name="A3"
+          castShadow
+          receiveShadow
+          geometry={nodes.A3.geometry}
+          material={materials.MusicTecladoWhite}
+          position={[-16.067, 9.196, 10.146]}
+          rotation={[-Math.PI, 1.55, -Math.PI]}
+          scale={0.019}
+        />
+        <mesh
+          name="B3"
+          castShadow
+          receiveShadow
+          geometry={nodes.B3.geometry}
+          material={materials.MusicTecladoWhite}
+          position={[-15.83, 9.196, 10.141]}
+          rotation={[-Math.PI, 1.55, -Math.PI]}
+          scale={0.019}
+        />
+        <mesh
+          name="C4"
+          castShadow
+          receiveShadow
+          geometry={nodes.C4.geometry}
+          material={materials.MusicTecladoWhite}
+          position={[-15.593, 9.196, 10.136]}
+          rotation={[-Math.PI, 1.55, -Math.PI]}
+          scale={0.019}
+        />
+        <mesh
+          name="D4"
+          castShadow
+          receiveShadow
+          geometry={nodes.D4.geometry}
+          material={materials.MusicTecladoWhite}
+          position={[-15.352, 9.196, 10.125]}
+          rotation={[-Math.PI, 1.55, -Math.PI]}
+          scale={0.019}
+        />
+        <mesh
+          name="E4"
+          castShadow
+          receiveShadow
+          geometry={nodes.E4.geometry}
+          material={materials.MusicTecladoWhite}
+          position={[-15.105, 9.196, 10.12]}
+          rotation={[-Math.PI, 1.55, -Math.PI]}
+          scale={0.019}
+        />
+        <mesh
+          name="F4"
+          castShadow
+          receiveShadow
+          geometry={nodes.F4.geometry}
+          material={materials.MusicTecladoWhite}
+          position={[-14.861, 9.196, 10.115]}
+          rotation={[-Math.PI, 1.55, -Math.PI]}
+          scale={0.019}
+        />
+        <mesh
+          name="A#2"
+          castShadow
+          receiveShadow
+          geometry={nodes["A#2"].geometry}
+          material={materials.MusicTecladoBlack}
+          position={[-17.653, 9.254, 9.968]}
+          rotation={[-Math.PI, 1.55, -Math.PI]}
+          scale={[0.019, 0.011, 0.019]}
+        />
+        <mesh
+          name="G#2"
+          castShadow
+          receiveShadow
+          geometry={nodes["G#2"].geometry}
+          material={materials.MusicTecladoBlack}
+          position={[-17.881, 9.254, 9.98]}
+          rotation={[-Math.PI, 1.55, -Math.PI]}
+          scale={[0.019, 0.011, 0.019]}
+        />
+        <mesh
+          name="F#2"
+          castShadow
+          receiveShadow
+          geometry={nodes["F#2"].geometry}
+          material={materials.MusicTecladoBlack}
+          position={[-18.125, 9.254, 9.982]}
+          rotation={[-Math.PI, 1.55, -Math.PI]}
+          scale={[0.019, 0.011, 0.019]}
+        />
+        <mesh
+          name="D#2"
+          castShadow
+          receiveShadow
+          geometry={nodes["D#2"].geometry}
+          material={materials.MusicTecladoBlack}
+          position={[-18.604, 9.254, 9.997]}
+          rotation={[-Math.PI, 1.55, -Math.PI]}
+          scale={[0.019, 0.011, 0.019]}
+        />
+        <mesh
+          name="C#2"
+          castShadow
+          receiveShadow
+          geometry={nodes["C#2"].geometry}
+          material={materials.MusicTecladoBlack}
+          position={[-18.847, 9.254, 10.007]}
+          rotation={[-Math.PI, 1.55, -Math.PI]}
+          scale={[0.019, 0.011, 0.019]}
+        />
+        <mesh
+          name="A#1"
+          castShadow
+          receiveShadow
+          geometry={nodes["A#1"].geometry}
+          material={materials.MusicTecladoBlack}
+          position={[-19.336, 9.254, 10.007]}
+          rotation={[-Math.PI, 1.55, -Math.PI]}
+          scale={[0.019, 0.011, 0.019]}
+        />
+        <mesh
+          name="G#1"
+          castShadow
+          receiveShadow
+          geometry={nodes["G#1"].geometry}
+          material={materials.MusicTecladoBlack}
+          position={[-19.565, 9.254, 10.009]}
+          rotation={[-Math.PI, 1.55, -Math.PI]}
+          scale={[0.019, 0.011, 0.019]}
+        />
+        <mesh
+          name="F#1"
+          castShadow
+          receiveShadow
+          geometry={nodes["F#1"].geometry}
+          material={materials.MusicTecladoBlack}
+          position={[-19.809, 9.254, 10.02]}
+          rotation={[-Math.PI, 1.55, -Math.PI]}
+          scale={[0.019, 0.011, 0.019]}
+        />
+        <mesh
+          name="D#1"
+          castShadow
+          receiveShadow
+          geometry={nodes["D#1"].geometry}
+          material={materials.MusicTecladoBlack}
+          position={[-20.294, 9.254, 10.043]}
+          rotation={[-Math.PI, 1.55, -Math.PI]}
+          scale={[0.019, 0.011, 0.019]}
+        />
+        <mesh
+          name="C#1"
+          castShadow
+          receiveShadow
+          geometry={nodes["C#1"].geometry}
+          material={materials.MusicTecladoBlack}
+          position={[-20.537, 9.254, 10.047]}
+          rotation={[-Math.PI, 1.55, -Math.PI]}
+          scale={[0.019, 0.011, 0.019]}
+        />
+        <mesh
+          name="A#3"
+          castShadow
+          receiveShadow
+          geometry={nodes["A#3"].geometry}
+          material={materials.MusicTecladoBlack}
+          position={[-15.965, 9.254, 9.967]}
+          rotation={[-Math.PI, 1.55, -Math.PI]}
+          scale={[0.019, 0.011, 0.019]}
+        />
+        <mesh
+          name="C#3"
+          castShadow
+          receiveShadow
+          geometry={nodes["C#3"].geometry}
+          material={materials.MusicTecladoBlack}
+          position={[-17.16, 9.254, 9.971]}
+          rotation={[-Math.PI, 1.55, -Math.PI]}
+          scale={[0.019, 0.011, 0.019]}
+        />
+        <mesh
+          name="C#4"
+          castShadow
+          receiveShadow
+          geometry={nodes["C#4"].geometry}
+          material={materials.MusicTecladoBlack}
+          position={[-15.471, 9.254, 9.939]}
+          rotation={[-Math.PI, 1.55, -Math.PI]}
+          scale={[0.019, 0.011, 0.019]}
+        />
+        <mesh
+          name="D#3"
+          castShadow
+          receiveShadow
+          geometry={nodes["D#3"].geometry}
+          material={materials.MusicTecladoBlack}
+          position={[-16.916, 9.254, 9.979]}
+          rotation={[-Math.PI, 1.55, -Math.PI]}
+          scale={[0.019, 0.011, 0.019]}
+        />
+        <mesh
+          name="D#4"
+          castShadow
+          receiveShadow
+          geometry={nodes["D#4"].geometry}
+          material={materials.MusicTecladoBlack}
+          position={[-15.228, 9.254, 9.934]}
+          rotation={[-Math.PI, 1.55, -Math.PI]}
+          scale={[0.019, 0.011, 0.019]}
+        />
+        <mesh
+          name="F#3"
+          castShadow
+          receiveShadow
+          geometry={nodes["F#3"].geometry}
+          material={materials.MusicTecladoBlack}
+          position={[-16.437, 9.254, 9.969]}
+          rotation={[-Math.PI, 1.55, -Math.PI]}
+          scale={[0.019, 0.011, 0.019]}
+        />
+        <mesh
+          name="G#3"
+          castShadow
+          receiveShadow
+          geometry={nodes["G#3"].geometry}
+          material={materials.MusicTecladoBlack}
+          position={[-16.193, 9.254, 9.964]}
+          rotation={[-Math.PI, 1.55, -Math.PI]}
+          scale={[0.019, 0.011, 0.019]}
+        />
+      </group>
+      <group name="Monitor">
+      <mesh
+          name="MousePad"
+          castShadow
+          receiveShadow
+          geometry={nodes.MousePad.geometry}
+          material={materials.MousePadMaterial}
+          position={[-25.798, 9.025, 17.987]}
+        />
+        <mesh
+          name="MonitorBotao"
+          castShadow
+          receiveShadow
+          geometry={nodes.MonitorBotao.geometry}
+          material={materials.BotoesMonitorImg}
+          position={[-26.967, 10.242, 16.06]}
+        />
+        <mesh
+          name="MonitorAtras1"
+          castShadow
+          receiveShadow
+          geometry={nodes.MonitorAtras1.geometry}
+          material={materials.BackMonitorMaterial}
+          position={[-27.106, 11.156, 17.987]}
+        />
+        <mesh
+          name="MonitorAtras2"
+          castShadow
+          receiveShadow
+          geometry={nodes.MonitorAtras2.geometry}
+          material={materials["achter.ribbel.001"]}
+          position={[-26.995, 11.665, 18.021]}
+        />
+        <mesh
+          name="MonitorAtras3"
+          castShadow
+          receiveShadow
+          geometry={nodes.MonitorAtras3.geometry}
+          material={materials["logo.coutout.smooth.001"]}
+          position={[-27.186, 11.025, 18.049]}
+        />
+        <mesh
+          name="MonitorAtras4"
+          castShadow
+          receiveShadow
+          geometry={nodes.MonitorAtras4.geometry}
+          material={materials.MonitorBackMaterial2}
+          position={[-27.12, 10.162, 17.954]}
+        />
+        <mesh
+          name="PeMonitor2"
+          castShadow
+          receiveShadow
+          geometry={nodes.PeMonitor2.geometry}
+          material={materials["logo.coutout.smooth"]}
+          position={[-27.176, 9.103, 18.012]}
+        />
+        <mesh
+          name="PeMonitor3"
+          castShadow
+          receiveShadow
+          geometry={nodes.PeMonitor3.geometry}
+          material={materials.PeMonitorMaterial2}
+          position={[-27.368, 9.126, 17.994]}
+        />
+        <mesh
+          name="FerroMonitor"
+          castShadow
+          receiveShadow
+          geometry={nodes.FerroMonitor.geometry}
+          material={materials.zwart_metaal}
+          position={[-26.992, 9.957, 18.006]}
+        />
+        <mesh
+          name="Tela"
+          castShadow
+          receiveShadow
+          geometry={nodes.Tela.geometry}
+          material={materials.ScreenMaterial}
+          position={[-26.878, 10.931, 17.998]}
+        />
+        <mesh
+          name="AcerHold"
+          castShadow
+          receiveShadow
+          geometry={nodes.AcerHold.geometry}
+          material={materials.AcerLoogo}
+          position={[-26.846, 9.713, 18.007]}
+        />
+        <mesh
+          name="MoldeTela"
+          castShadow
+          receiveShadow
+          geometry={nodes.MoldeTela.geometry}
+          material={materials.VoltaMonitorMaterial}
+          position={[-26.901, 11.097, 17.998]}
+        />
+        <mesh
+          name="KeyBoard"
+          castShadow
+          receiveShadow
+          geometry={nodes.KeyBoard.geometry}
+          material={materials.TecladoMaterial}
+          position={[-25.453, 9.2, 19.918]}
+        />
+      </group>
+      <group name="LivrosPrateleira">
+      <mesh
+          name="Livro6"
+          castShadow
+          receiveShadow
+          geometry={nodes.Livro6.geometry}
+          material={materials.Books}
+          position={[-9.473, 20.583, 26.927]}
+        />
+        <mesh
+          name="BookStack4"
+          castShadow
+          receiveShadow
+          geometry={nodes.BookStack4.geometry}
+          material={materials.PropBooksMaterial2}
+          position={[-26.728, 21.03, 18.123]}
+        />
+        <mesh
+          name="BookStack1"
+          castShadow
+          receiveShadow
+          geometry={nodes.BookStack1.geometry}
+          material={materials.PropBookMaterial}
+          position={[-26.755, 20.674, 12.341]}
+        />
       </group>
     </group>
   );

@@ -1,18 +1,26 @@
-import { Canvas, useFrame } from "@react-three/fiber";
-import { Suspense, useRef, useState } from "react";
+import { Canvas, extend, useFrame, useThree } from "@react-three/fiber";
+import { Suspense, useEffect, useRef, useState } from "react";
 import {
+  BakeShadows,
+  Effects,
+  Environment,
   Loader,
   OrbitControls,
   PerformanceMonitor,
   PerspectiveCamera,
   PivotControls,
   Sky,
-  TransformControls,
   useHelper,
 } from "@react-three/drei";
-import { DirectionalLightHelper, CameraHelper } from "three";
+import {
+  DirectionalLightHelper,
+  CameraHelper,
+  MeshBasicMaterial,
+  Color,
+} from "three";
 import { Perf } from "r3f-perf";
 import { Model } from "../Models/ActualLastBlend";
+import { Bloom, EffectComposer } from "@react-three/postprocessing";
 
 const MyLight = () => {
   const ref = useRef<any>(null);
@@ -47,50 +55,32 @@ const CameraPerspective = () => {
 };
 
 export default function World() {
-  const [dpr, setDpr] = useState(1.5);
-
   return (
     <>
       <Canvas
-        style={{ width: "100%", height: "100vh" }}
+        style={{ height: "100vh", width: "100%" }}
         camera={{ position: [50, 10, 0] }}
+        dpr={0.9}
       >
         <Perf />
-        <PerformanceMonitor
-          onIncline={() => setDpr(2)}
-          onDecline={() => setDpr(1)}
-        />
-        {/* <PerspectiveCamera makeDefault position={[0.23,22.5,11.72]} far={1} fov={40}/> */}
-        <CameraPerspective />
+        {/* <PerspectiveCamera makeDefault={true} /> */}
         <color attach="background" args={["#c1ddef"]} />
-        <Sky inclination={0.52} distance={500} />
-        <ambientLight intensity={0.5} />
+        <ambientLight intensity={0.2} />
         <MyLight />
         <directionalLight
-          color={"red"}
+          color={"white"}
           position={[1, 4, 0]}
-          intensity={0.45}
+          intensity={0.5}
           castShadow
           shadow-mapSize-height={512}
           shadow-mapSize-width={512}
           shadow-bias={-0.0001}
         />
-
+        {/* <EffectComposer>
+          <Bloom luminanceThreshold={1} intensity={1} />
+        </EffectComposer> */}
         <Model />
-        {/* <Environment files={"http://localhost:3000/envmap.hdr"} background /> */}
-        {/* <PerspectiveCamera makeDefault fov={40}  position={[0, 2, 10]}  /> */}
-        {/* <OrbitControls target={[-2.64, -0.71, 0.03]} /> */}
-
-        {/* <Box
-              scale={0.5}
-              onPointerEnter={(e) => console.log(e.currentTarget)}
-              castShadow
-              receiveShadow
-              position={[0, 0.5, 1]}
-            >
-              <meshStandardMaterial attach="material" color="white" />
-            </Box> */}
-          {/* <OrbitControls/>   */}
+        <BakeShadows />
       </Canvas>
       <Loader />
     </>
