@@ -65,7 +65,7 @@ export default function World() {
         <Perf />
         {/* <PerspectiveCamera makeDefault={true} /> */}
         <color attach="background" args={["#c1ddef"]} />
-        {/* <ambientLight intensity={0.2} />
+        <ambientLight intensity={0.2} />
         <MyLight />
         <directionalLight
           color={"white"}
@@ -75,10 +75,10 @@ export default function World() {
           shadow-mapSize-height={512}
           shadow-mapSize-width={512}
           shadow-bias={-0.0001}
-        /> */}
-        <EffectComposer>
+        />
+        {/* <EffectComposer>
           <Bloom luminanceThreshold={1} intensity={1} />
-        </EffectComposer>
+        </EffectComposer> */}
         <Model />
         <BakeShadows />
       </Canvas>
