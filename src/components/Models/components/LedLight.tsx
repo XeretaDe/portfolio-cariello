@@ -1,7 +1,7 @@
-import { useGLTF} from "@react-three/drei";
+import { useGLTF } from "@react-three/drei";
 import { useEffect, useRef } from "react";
 import { Vector3, InstancedMesh, Matrix4, Color, Euler } from "three";
-import { GLTF} from "three-stdlib";
+import { GLTF } from "three-stdlib";
 
 // types
 type LEDProps = GLTF & {
@@ -51,14 +51,18 @@ export function LedStripes(props: JSX.IntrinsicElements["group"]) {
 
   const meshRef1 = useRef<InstancedMesh>(null);
   const meshRef2 = useRef<InstancedMesh>(null);
+  const meshRef3 = useRef<InstancedMesh>(null);
+  const meshRef4 = useRef<InstancedMesh>(null);
 
   useEffect(() => {
     const tempMatrix = new Matrix4();
-    if (meshRef1.current && meshRef2.current) {
+    if (meshRef1.current && meshRef2.current && meshRef3.current && meshRef4.current) {
       for (let i = 0; i < 20; i++) {
         tempMatrix.makeTranslation(i * 1.12, 0, 0);
         meshRef1.current.setMatrixAt(i, tempMatrix);
         meshRef2.current.setMatrixAt(i, tempMatrix);
+        meshRef3.current.setMatrixAt(i, tempMatrix);
+        meshRef4.current.setMatrixAt(i, tempMatrix);
       }
 
       for (let a = 20; a < 40; a++) {
@@ -66,39 +70,81 @@ export function LedStripes(props: JSX.IntrinsicElements["group"]) {
         tempMatrix.multiply(new Matrix4().makeRotationZ(-Math.PI / 2));
         meshRef1.current.setMatrixAt(a, tempMatrix);
         meshRef2.current.setMatrixAt(a, tempMatrix);
+        meshRef3.current.setMatrixAt(a, tempMatrix);
+        meshRef4.current.setMatrixAt(a, tempMatrix);
       }
 
       meshRef1.current.instanceMatrix.needsUpdate = true;
       meshRef2.current.instanceMatrix.needsUpdate = true;
+      meshRef3.current.instanceMatrix.needsUpdate = true;
+      meshRef4.current.instanceMatrix.needsUpdate = true;
       console.log(meshRef1.current.rotation, meshRef2.current.rotation);
     }
   }, []);
 
   return (
-    <group {...props} dispose={null}>
-      <group
-        position={[-28.865, 19.268, 28.15]}
-        rotation={[Math.PI / 2, 0, -Math.PI / 2]}
-      >
-        <RectArealightWithHelper
-          position={[0.1, 10, -0.1]}
-          color={materials["LED Light"].emissive}
-          rotation={[0, 3.15, 0]}
-        />
-        <RectArealightWithHelper
-          position={[12, 0.55, 0]}
-          color={materials["LED Light"].emissive}
-          rotation={[0, 3.15, Math.PI / 2]}
-        />
-        <instancedMesh
-          ref={meshRef1}
-          args={[nodes.Plane.geometry, materials["LED Stripe"], 40]}
-        />
-        <instancedMesh
-          ref={meshRef2}
-          args={[nodes.Plane_1.geometry, materials["LED Light"], 40]}
-        />
+    <>
+
+      {/* //#region Upper LED Stripes*/}
+      <group {...props} dispose={null}>
+        <group
+          position={[-28.865, 19.268, 28.15]}
+          rotation={[Math.PI / 2, 0, -Math.PI / 2]}
+        >
+          <RectArealightWithHelper
+            position={[0.1, 10, -0.1]}
+            color={materials["LED Light"].emissive}
+            rotation={[0, 3.15, 0]}
+          />
+          <RectArealightWithHelper
+            position={[12, 0.55, 0]}
+            color={materials["LED Light"].emissive}
+            rotation={[0, 3.15, Math.PI / 2]}
+          />
+
+          <instancedMesh
+            ref={meshRef1}
+            args={[nodes.Plane.geometry, materials["LED Stripe"], 40]}
+          />
+          <instancedMesh
+            ref={meshRef2}
+            args={[nodes.Plane_1.geometry, materials["LED Light"], 40]}
+          />
+        </group>
+
       </group>
-    </group>
+      {/* //#endregion Upper LED Stripes*/}
+
+
+      {/*#region Lower LED Stripes*/}
+      <group>
+        <group
+          position={[-28.865, 9, 28.15]}
+          rotation={[Math.PI / 2, 0, -Math.PI / 2]}
+        >
+          <RectArealightWithHelper
+            position={[0.1, 10, -0.1]}
+            color={materials["LED Light"].emissive}
+            rotation={[0, 3.15, 0]}
+          />
+          <RectArealightWithHelper
+            position={[12, 0.55, 0]}
+            color={materials["LED Light"].emissive}
+            rotation={[0, 3.15, Math.PI / 2]}
+          />
+
+          <instancedMesh
+            ref={meshRef3}
+            args={[nodes.Plane.geometry, materials["LED Stripe"], 40]}
+          />
+          <instancedMesh
+            ref={meshRef4}
+            args={[nodes.Plane_1.geometry, materials["LED Light"], 40]}
+          />
+        </group>
+      </group>
+      {/*#endregion Lower LED Stripes*/}
+
+    </>
   );
 }
