@@ -51,9 +51,15 @@ export default function useCamera(object: ObjectProps, clicked: boolean) {
       [
         "Teclado",
         {
-          Position: new Vector3(0, 3, 3),
-          Rotation: new Vector3(0, 0, -3),
+          Position: new Vector3(1.2, 3, 5),
+          Rotation: new Vector3(0, 1, 0),
         },
+      ],
+      [
+        "Window",{
+          Position: new Vector3(3,3,15),
+          Rotation: new Vector3(0,0,-3),
+        }
       ],
       [
         "Default",

@@ -27,7 +27,26 @@ const MyLight = () => {
   useHelper(ref, DirectionalLightHelper);
   return (
     <>
-      <directionalLight intensity={0.1} ref={ref} position={[5, 5, 5]} />
+      <directionalLight 
+        ref={ref}
+        color={"blue"}
+        position={[1, 10, 0]}
+        intensity={0.1} 
+        castShadow={true}
+        shadow-mapSize-height={4096}
+        shadow-mapSize-width={4096}
+        shadow-bias={-0.0001}
+        shadow-camera-left={-200}    
+        shadow-camera-right={200}    
+        shadow-camera-top={200}      
+        shadow-camera-bottom={-200}  
+        shadow-camera-near={1}   
+        shadow-camera-far={500}     
+      />
+      {/* Caso queira usar helper de posição da camera de luz sei lá ativa ai */}
+        {/* {ref.current && ( 
+          <cameraHelper args={[ref.current.shadow.camera]} />
+        )} */}
     </>
   );
 };
@@ -61,24 +80,16 @@ export default function World() {
         style={{ height: "100vh", width: "100%" }}
         camera={{ position: [50, 10, 0] }}
         dpr={0.9}
+        shadows
       >
         <Perf />
         {/* <PerspectiveCamera makeDefault={true} /> */}
         <color attach="background" args={["#c1ddef"]} />
-        <ambientLight intensity={0.2} />
         <MyLight />
-        <directionalLight
-          color={"white"}
-          position={[1, 4, 0]}
-          intensity={0.5}
-          castShadow
-          shadow-mapSize-height={512}
-          shadow-mapSize-width={512}
-          shadow-bias={-0.0001}
-        />
-        {/* <EffectComposer>
-          <Bloom luminanceThreshold={1} intensity={1} />
-        </EffectComposer> */}
+        {/*<OrbitControls></OrbitControls> {/*Para debugar posições, comentar prod */ }
+        <EffectComposer>
+          <Bloom luminanceThreshold={1} intensity={0.3} />
+        </EffectComposer>
         <Model />
         <BakeShadows />
       </Canvas>

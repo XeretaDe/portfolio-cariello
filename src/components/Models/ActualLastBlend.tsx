@@ -6,7 +6,7 @@ Files: ./ActualLastBlend.glb [68.95MB] > ActualLastBlend-transformed.glb [9.44MB
 
 import * as THREE from "three";
 import React, { useEffect, useState, useRef } from "react";
-import { useGLTF, useAnimations, Box } from "@react-three/drei";
+import { useGLTF, useAnimations, Box, PivotControls } from "@react-three/drei";
 import { GLTFResult } from "../../types/MainScene";
 import useCamera from "../../hook/useCamera";
 import { Vector3 } from "three";
@@ -26,6 +26,11 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
     position: new Vector3(),
   });
 
+  const pos = new THREE.Vector3()
+  const quat = new THREE.Quaternion()
+  const scl = new THREE.Vector3()
+  const eul = new THREE.Euler()
+
   const { nodes, materials, animations } = useGLTF(
     "/cena-transformed.glb",
   ) as GLTFResult;
@@ -38,7 +43,7 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
     });
   }, []);
 
-  useCamera(object, isClicked);
+  useCamera(object, isClicked); // desabilitado para testes, habilitar PROD
 
   function BoxSafeGuard({
     pos,
@@ -46,18 +51,21 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
     opacity,
     size,
     name,
+    rot,
   }: {
     pos: Vector3;
     color?: string;
     opacity: number;
     size: Vector3;
     name: string;
+    rot: THREE.Euler;
   }) {
     return (
       <>
         <Box
           name="Box"
           position={pos}
+          rotation={rot}
           scale={size}
           onPointerEnter={() => setHovering(true)}
           onPointerLeave={() => setHovering(false)}
@@ -82,36 +90,63 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
   }
 
   const vitrolaPos = new Vector3(-25.208, 10.718, 25.0);
-  const tecladoPos = new Vector3(-17.774, 9.5, 9.432);
-
+  const tecladoPos = new Vector3(-17.8, 9, 9.432);
+  const monitorPos = new Vector3(-26.95, 10.9, 17.9);
+  const livroPos = new Vector3(-19.843, 9.04, 24.949);
+  const windowPos = new Vector3(-3.5, 25.37, -25.303);
   useEffect(() => {
     document.body.style.cursor = isHovering ? "pointer" : "auto";
   }, [isHovering]);
 
   return (
     <group ref={group} {...props} dispose={null}>
-      <BoxSafeGuard
-        pos={vitrolaPos}
-        opacity={0}
-        size={[3, 3, 3] as unknown as Vector3}
-        name="Vitrola"
-      />
-      <BoxSafeGuard
-        pos={tecladoPos}
-        opacity={0}
-        size={[7, 1, 3] as unknown as Vector3}
-        name="Teclado"
-      />
-
+      <group name="SafeGuards">
+        <BoxSafeGuard
+          pos={vitrolaPos}
+          rot={new THREE.Euler(0, 10, 0)}
+          opacity={0}
+          size={[3, 3, 3] as unknown as Vector3}
+          name="Vitrola"
+        />
+        <BoxSafeGuard
+          pos={tecladoPos}
+          rot={new THREE.Euler(0, 0.2, 0)}
+          opacity={0}
+          size={[7, 1, 2.5] as unknown as Vector3}
+          name="Teclado"
+        />
+        <BoxSafeGuard
+          pos={monitorPos}
+          rot={new THREE.Euler(0, 0, 0)}
+          opacity={0}
+          size={[0.7, 2.2, 4] as unknown as Vector3}
+          name="Monitor"
+        />
+        <BoxSafeGuard
+          pos={livroPos}
+          rot={new THREE.Euler(0, 0, 0)}
+          opacity={0}
+          size={[2.4, 0.9, 2.3] as unknown as Vector3}
+          name="Livro"
+        />
+        <BoxSafeGuard
+          pos={windowPos}
+          rot={new THREE.Euler(0, 0, 0)}
+          opacity={0}
+          size={[19, 16, 1] as unknown as Vector3}
+          name="Window"
+        />
+      </group>
       <group name="Scene">
+        <LedStripes />
         <group name="Mesa" position={[-22.853, 7.13, 17.035]}>
           <mesh
             name="Cube014"
-            castShadow
+            castShadow={true}
             receiveShadow
             geometry={nodes.Cube014.geometry}
           >
-            <meshStandardMaterial color={"gray"} attach={"material"} />
+            <meshPhysicalMaterial color={"gray"} attach={"material"} />
           </mesh>
         </group>
         <group name="PC">
@@ -2198,7 +2233,8 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
           rotation={[-Math.PI, 0, -Math.PI]}
         /> */}
       </group>
-      <group name="Teclado">
+      {/* rotation={[0, 0.189, 0]} position={[-1.9848675319164332, 0, -3.35924801249831]} */}
+      <group name="Teclado" rotation={[0, 0.185, 0.001]} position={[-1.9848675319164332, 0, -3.35924801249831]}>
         <mesh
           name="MoldeTeclado"
           castShadow
@@ -2208,7 +2244,10 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
           position={[-16.274, 9.157, 9.032]}
           rotation={[-Math.PI, 1.55, -Math.PI]}
           scale={[0.019, 0.019, 0.034]}
-        />
+        >
+          {/* <meshStandardMaterial color={materials.MusicaTecladoBase.color} attach={"material"}/> */}
+
+        </mesh>
         <group
           name="Pad7"
           position={[-19.207, 9.294, 9.02]}
@@ -2225,6 +2264,7 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
           <mesh
             name="Mesh016_1"
             castShadow
+            position={[0, 0, 0]}
             receiveShadow
             geometry={nodes.Mesh016_1.geometry}
             material={materials.MaterialPianoPadRed}
@@ -2236,15 +2276,15 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
           receiveShadow
           geometry={nodes.CutoffSlider.geometry}
           material={materials.MusicTecladoWhite}
-          position={[-17.093, 9.301, 9.159]}
+          position={[-17.038, 9.304, 9.163]}
           rotation={[-Math.PI, 1.55, -Math.PI]}
           scale={0.019}
         />
         <group
           name="CuttoffMarker"
-          position={[-17.092, 9.361, 9.147]}
+          position={[-17.03, 9.361, 9.16]}
           rotation={[-Math.PI, 1.55, -Math.PI]}
-          scale={[0.008, 0.009, 0.009]}
+          scale={[0.008, 0.01, 0.0095]}
         >
           <mesh
             name="Mesh022"
@@ -2683,7 +2723,7 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
         />
       </group>
       <group name="Monitor">
-      <mesh
+        <mesh
           name="MousePad"
           castShadow
           receiveShadow
@@ -2789,7 +2829,7 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
         />
       </group>
       <group name="LivrosPrateleira">
-      <mesh
+        <mesh
           name="Livro6"
           castShadow
           receiveShadow
