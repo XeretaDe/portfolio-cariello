@@ -2,6 +2,7 @@ import { useGLTF } from "@react-three/drei";
 import { useEffect, useRef } from "react";
 import { Vector3, InstancedMesh, Matrix4, Color, Euler } from "three";
 import { GLTF } from "three-stdlib";
+import * as THREE from "three";
 
 // types
 type LEDProps = GLTF & {
@@ -16,15 +17,19 @@ type LEDProps = GLTF & {
 };
 
 const RectArealightWithHelper = ({
+  castShadow = true,
   position,
   color,
   rotation,
 }: {
+  castShadow?: boolean;
   position: number[];
   color: string | Color;
   rotation?: number[];
 }) => {
   const meshRef = useRef<any>(null);
+  const directionalLightRef = useRef<any>(null);
+
   // helper caso precise modificar a posição 
   // useHelper(meshRef, RectAreaLightHelper, "blue");
 
@@ -34,13 +39,34 @@ const RectArealightWithHelper = ({
         <rectAreaLight
           ref={meshRef}
           rotation={rotation as unknown as Euler}
-          castShadow
+          castShadow={castShadow}
           width={1}
           height={21}
           color={color}
-          intensity={15}
+          intensity={1.6}
           position={position as unknown as Vector3}
         />
+        {/* Talvez muito caro computacionalmente, mas fica bonito, só tem q ajustar o tamanho da camera */}
+        <directionalLight
+          ref={directionalLightRef}
+          castShadow
+          intensity={0.01}
+          color={color}
+          position={position as unknown as Vector3}
+          shadow-mapSize={[2048, 2048]}
+          shadow-camera-near={0.1}
+          shadow-camera-far={50}
+          shadow-camera-left={-20}
+          shadow-camera-right={20}
+          shadow-camera-top={20}
+          shadow-camera-bottom={-20}
+          shadow-bias={-0.0001}
+          shadow-normalBias={0.02}
+        />
+        {/* Caso queira usar helper de posição da camera de luz sei lá ativa ai */}
+        {/* {directionalLightRef.current && (
+          <cameraHelper args={[directionalLightRef.current.shadow.camera]} />
+        )} */}
       </group>
     </>
   );
@@ -119,7 +145,7 @@ export function LedStripes(props: JSX.IntrinsicElements["group"]) {
       {/*#region Lower LED Stripes*/}
       <group>
         <group
-          position={[-28.865, 9, 28.15]}
+          position={[-28.865, 10, 28.15]}
           rotation={[Math.PI / 2, 0, -Math.PI / 2]}
         >
           <RectArealightWithHelper
