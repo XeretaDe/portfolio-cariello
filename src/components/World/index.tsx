@@ -1,24 +1,52 @@
-import { Canvas, useFrame } from "@react-three/fiber";
-import { Suspense, useRef } from "react";
+import { Canvas, extend, useFrame, useThree } from "@react-three/fiber";
+import { Suspense, useEffect, useRef, useState } from "react";
 import {
+  BakeShadows,
+  Effects,
+  Environment,
   Loader,
   OrbitControls,
+  PerformanceMonitor,
   PerspectiveCamera,
   PivotControls,
   Sky,
-  TransformControls,
   useHelper,
 } from "@react-three/drei";
-import { Cena } from "../Models/Cena";
-import { DirectionalLightHelper, CameraHelper } from "three";
+import {
+  DirectionalLightHelper,
+  CameraHelper,
+  MeshBasicMaterial,
+  Color,
+} from "three";
 import { Perf } from "r3f-perf";
+import { Model } from "../Models/ActualLastBlend";
+import { Bloom, EffectComposer } from "@react-three/postprocessing";
 
 const MyLight = () => {
   const ref = useRef<any>(null);
   useHelper(ref, DirectionalLightHelper);
   return (
     <>
-      <directionalLight intensity={0.1} ref={ref} position={[5, 5, 5]} />
+      <directionalLight 
+        ref={ref}
+        color={"blue"}
+        position={[1, 10, 0]}
+        intensity={0.1} 
+        castShadow={true}
+        shadow-mapSize-height={4096}
+        shadow-mapSize-width={4096}
+        shadow-bias={-0.0001}
+        shadow-camera-left={-200}    
+        shadow-camera-right={200}    
+        shadow-camera-top={200}      
+        shadow-camera-bottom={-200}  
+        shadow-camera-near={1}   
+        shadow-camera-far={500}     
+      />
+      {/* Caso queira usar helper de posição da camera de luz sei lá ativa ai */}
+        {/* {ref.current && ( 
+          <cameraHelper args={[ref.current.shadow.camera]} />
+        )} */}
     </>
   );
 };
@@ -29,16 +57,17 @@ const CameraPerspective = () => {
   return (
     <>
       <PivotControls
-       
-         rotation={[0, -Math.PI / 2, 0]}
-         depthTest={false}
-         lineWidth={2}
-         anchor={[0, 1, 0]}
+        rotation={[0, -Math.PI / 2, 0]}
+        depthTest={false}
+        lineWidth={2}
+        anchor={[0, 1, 0]}
       >
-        
-      
-          <PerspectiveCamera ref={camera} position={[0.23, 22.5, 11.72]} far={1} fov={40} />
-       
+        <PerspectiveCamera
+          ref={camera}
+          position={[0.23, 22.5, 11.72]}
+          far={1}
+          fov={40}
+        />
       </PivotControls>
     </>
   );
@@ -47,39 +76,22 @@ const CameraPerspective = () => {
 export default function World() {
   return (
     <>
-      <Canvas style={{ width: "100%", height: "100vh" }}>
+      <Canvas
+        style={{ height: "100vh", width: "100%" }}
+        camera={{ position: [50, 10, 0] }}
+        dpr={0.9}
+        shadows
+      >
         <Perf />
-        {/* <PerspectiveCamera makeDefault position={[0.23,22.5,11.72]} far={1} fov={40}/> */}
-        <CameraPerspective />
+        {/* <PerspectiveCamera makeDefault={true} /> */}
         <color attach="background" args={["#c1ddef"]} />
-        <Sky inclination={0.52} distance={500} />
-        <ambientLight intensity={0.5} />
         <MyLight />
-        <directionalLight
-          color={"red"}
-          position={[1, 4, 0]}
-          intensity={0.45}
-          castShadow
-          shadow-mapSize-height={512}
-          shadow-mapSize-width={512}
-          shadow-bias={-0.0001}
-        />
-
-        <Cena />
-        {/* <Environment files={"http://localhost:3000/envmap.hdr"} background /> */}
-        {/* <PerspectiveCamera makeDefault fov={40}  position={[0, 2, 10]}  /> */}
-        {/* <OrbitControls target={[-2.64, -0.71, 0.03]} /> */}
-
-        {/* <Box
-              scale={0.5}
-              onPointerEnter={(e) => console.log(e.currentTarget)}
-              castShadow
-              receiveShadow
-              position={[0, 0.5, 1]}
-            >
-              <meshStandardMaterial attach="material" color="white" />
-            </Box> */}
-      
+        {/*<OrbitControls></OrbitControls> {/*Para debugar posições, comentar prod */ }
+        <EffectComposer>
+          <Bloom luminanceThreshold={1} intensity={0.3} />
+        </EffectComposer>
+        <Model />
+        <BakeShadows />
       </Canvas>
       <Loader />
     </>
