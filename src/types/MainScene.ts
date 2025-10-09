@@ -3,6 +3,7 @@ import { GLTF } from "three-stdlib";
 import {
   AnimationClip,
 } from "three";
+import * as THREE from "three";
 
 export type ObjectProps = {
   name: string;
