@@ -73,7 +73,8 @@ const RectArealightWithHelper = ({
 };
 
 export function LedStripes(props: JSX.IntrinsicElements["group"]) {
-  const { nodes, materials } = useGLTF("/LED.glb") as LEDProps;
+  const ledProps = useGLTF("/LED.glb");
+  const { nodes, materials } = (ledProps as unknown) as LEDProps;
 
   const meshRef1 = useRef<InstancedMesh>(null);
   const meshRef2 = useRef<InstancedMesh>(null);
