@@ -1,6 +1,7 @@
 import { AiFillHome, AiOutlinePaperClip } from "react-icons/ai";
 import { SiNintendogamecube } from "react-icons/si";
 import { BsFillGearFill } from "react-icons/bs";
+import { JSX } from "react";
 export interface Props {
   title: string;
   icon: JSX.Element;

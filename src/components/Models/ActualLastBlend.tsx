@@ -33,7 +33,7 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
 
   const { nodes, materials, animations } = useGLTF(
     "/cena-transformed.glb",
-  ) as GLTFResult;
+  ) as unknown as GLTFResult;
 
   const { actions } = useAnimations(animations, group);
 

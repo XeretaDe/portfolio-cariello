@@ -52,7 +52,7 @@ const MyLight = () => {
 };
 
 const CameraPerspective = () => {
-  const camera = useRef<any>();
+  const camera = useRef<any>(null);
   useHelper(camera, CameraHelper);
   return (
     <>

@@ -3,7 +3,8 @@
 import { data } from "../../../utils/hotbar/data";
 import { Props } from "../../../utils/hotbar/data";
 import { useSpring, animated, easings } from "@react-spring/web";
-import { MutableRefObject, RefObject, useRef, useState } from "react";
+import { RefObject, useRef, useState } from "react";
+
 
 type Data = {
   data: Props;
@@ -63,7 +64,7 @@ export function HotBar() {
       <animated.nav
         style={props}
         className=" fixed bottom-3 left-1/2 z-10 flex h-[57px] w-auto gap-4 rounded-full border-gray-200 bg-white/70 p-2 pl-4 pr-4 dark:bg-[#161616]/70   "
-        onMouseMove={(event) => {
+        onMouseMove={(event: any) => {
           HandleMouse(event), console.log(mouseCoords);
         }}
       >
