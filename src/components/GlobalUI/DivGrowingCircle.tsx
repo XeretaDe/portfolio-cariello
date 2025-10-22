@@ -7,19 +7,37 @@ import { useThemeStore } from "../../store";
 // const vhToPixel = value => `${(window.innerHeight * value) / 100}px`
 // const vwToPixel = value => `${(window.innerWidth * value) / 100}px`
 
+
+
+
 export const GrowingCircleDiv = () => {
   const { isClicked, setIsClicked } = useContext(GlobalLayout);
   const { theme } = useThemeStore();
   const [isFinished, setIsFinished] = useState(false);
   const divRef = useRef<HTMLDivElement>(null);
+
+    function TailwindToggle() {
+    if (theme === false) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }
+
   const props = useSpring({
     scale: theme ? 1 : 0,
     borderRadius: theme ? "0%" : "50%",
     config: {
-      duration: 600,
-      easing: easings.easeInOutExpo,
+      duration: 1000,
+      easing: easings.easeOutSine,
     },
-    onRest: () => setIsFinished(true),
+    onRest: () => {
+      if(isClicked){
+        setIsFinished(true)
+        setIsClicked(() => false);
+        TailwindToggle();
+      }
+    },
   });
   return (
     <>

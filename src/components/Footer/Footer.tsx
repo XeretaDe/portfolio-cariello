@@ -11,9 +11,9 @@ export const Footer: React.FC = () => {
             <AiFillLinkedin size={40} className=" hover:cursor-pointer hover:scale-110 dark:fill-white "/>
             <AiFillInstagram size={40} className=" hover:cursor-pointer hover:scale-110 dark:fill-white "/>
             </div>
-            {/* <div className=" relative flex place-content-center dark:text-slate-50 transition delay-600">
+            <div className=" relative flex place-content-center dark:text-slate-50 transition delay-600 font-rubik italic">
             ©{Ano} - Rodrigo Cariello
-            </div> */}
+            </div>
         </div>
     </>
   )

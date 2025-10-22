@@ -149,15 +149,12 @@ const m: Props = {
       (m.radiusMultiplier! <= 0 && m.isDark) ||
       (m.radiusMultiplier! >= m.maxRadiusMultiplier! && !m.isDark)
     ) {
-      // just fill the canvas - at the limit. no more drawing is necessary.
       m.ctx.fillStyle = m.isDark ? COLORS.midnightBlack : COLORS.white;
       m.ctx.fillRect(0, 0, m.width, m.height);
-      // reset radius multiplier values in case we overshoot (can get negative value when shrinking)
       m.radiusMultiplier = m.isDark ? 0 : m.maxRadiusMultiplier;
-      return null; // no next step - end of state machine
+      return null; 
     }
 
-    // clear canvas before drawing the next circle
     m.ctx.clearRect(0, 0, m.width, m.height);
     return m.drawCircle;
   },
@@ -174,8 +171,6 @@ const m: Props = {
     );
     m.ctx.fill();
 
-    // Note the time when we start drawing. This will be used to determine how much time has passed
-    // since last draw. Circle growth is based on time delta, not CPU performance
     m.timeAtPreviousDraw = Date.now();
 
     return new Promise((rtn) => {
@@ -217,7 +212,6 @@ const GrowingCircle: React.FC<{ isDark: boolean }> = ({ isDark }) => {
     stateMachineRunner();
 
     const handleClick = (event: any) => {
-      // fill in the mouse coordinates when we receive a click so we know the center of the circle
       circleCenterCoordinates.x = event.detail.x;
       circleCenterCoordinates.y = event.detail.y;
     };
@@ -248,8 +242,6 @@ const GrowingCircle: React.FC<{ isDark: boolean }> = ({ isDark }) => {
   );
 };
 
-GrowingCircle.propTypes = {
-  isDark: PropTypes.bool.isRequired,
-};
+
 
 export default GrowingCircle;

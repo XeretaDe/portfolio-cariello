@@ -4,6 +4,13 @@ import { useSpring, animated } from "@react-spring/web";
 import { StoreCoordinatesOnClick } from "./GrowingCIrcle2";
 import { useThemeStore } from "../../store";
 
+
+function sleep(ms: number) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+
+
 function ToggleColorMode({
   isDark,
   onClickMethod,
@@ -18,6 +25,7 @@ function ToggleColorMode({
     scale: isHovering ? 1.25 : 1,
     backgroundColor: theme ? "white" : "#0B0B0B",
   });
+
   function TailwindToggle() {
     if (theme === false) {
       document.documentElement.classList.add("dark");
@@ -27,14 +35,17 @@ function ToggleColorMode({
   }
 
   return (
-    <div className=" absolute right-5 top-3 z-10 m-1">
+    <div className="flex self-center right-5 top-3 z-10 m-1">
       <animated.div
         style={props}
         onClick={(event) => {
           StoreCoordinatesOnClick(event);
-          // setIsClicked((isClicked) => !isClicked);
+          setIsClicked((isClicked) => !isClicked);
           setTheme();
-          TailwindToggle();
+          sleep(500).then(() => {
+            TailwindToggle();
+          });
+
         }}
         onMouseOver={() => setHovering(true)}
         onMouseLeave={() => setHovering(false)}
