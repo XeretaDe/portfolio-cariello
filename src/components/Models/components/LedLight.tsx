@@ -2,7 +2,7 @@ import { useGLTF} from "@react-three/drei";
 import { useEffect, useRef } from "react";
 import { Vector3, InstancedMesh, Matrix4, Color, Euler } from "three";
 import { GLTF} from "three-stdlib";
-
+import type THREE from "three"
 // types
 type LEDProps = GLTF & {
   nodes: {
@@ -38,7 +38,7 @@ const RectArealightWithHelper = ({
           width={1}
           height={21}
           color={color}
-          intensity={15}
+          intensity={30}
           position={position as unknown as Vector3}
         />
       </group>

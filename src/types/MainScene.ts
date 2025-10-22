@@ -285,6 +285,7 @@ export type GLTFResult = GLTF & {
     vitrolaVidro: THREE.MeshStandardMaterial
     ['vidro  janela']: THREE.MeshPhysicalMaterial
   }
+  animations: GLTFAction[]
 }
 // #endregion
 

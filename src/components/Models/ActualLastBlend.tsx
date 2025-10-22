@@ -6,11 +6,15 @@ Files: ./ActualLastBlend.glb [68.95MB] > ActualLastBlend-transformed.glb [9.44MB
 
 import * as THREE from "three";
 import React, { useEffect, useState, useRef } from "react";
-import { useGLTF, useAnimations, Box } from "@react-three/drei";
+import { useGLTF, useAnimations, Box, Html } from "@react-three/drei";
 import { GLTFResult } from "../../types/MainScene";
 import useCamera from "../../hook/useCamera";
 import { Vector3 } from "three";
 import { LedStripes } from "./components/LedLight";
+import { Monitor } from "../3dMonitor";
+import { GLTFActions } from "../../types/MainScene";
+
+
 
 type ObjectProps = {
   name: string;
@@ -32,13 +36,16 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
 
   const { actions } = useAnimations(animations, group);
 
+
   useEffect(() => {
     document.addEventListener("contextmenu", (event) => {
       event.preventDefault();
     });
   }, []);
 
-  useCamera(object, isClicked);
+
+  // isso tem que estar ativado para a camera lockar nos objetos 
+  // useCamera(object, isClicked);
 
   function BoxSafeGuard({
     pos,
@@ -108,7 +115,6 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
           <mesh
             name="Cube014"
             castShadow
-            receiveShadow
             geometry={nodes.Cube014.geometry}
           >
             <meshStandardMaterial color={"gray"} attach={"material"} />
@@ -117,8 +123,6 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
         <group name="PC">
           <mesh
             name="PecasMetal"
-            castShadow
-            receiveShadow
             geometry={nodes.PecasMetal.geometry}
             material={materials.aiStandardSurface2SG}
             position={[-25.144, 9.748, 9.324]}
@@ -127,7 +131,6 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
           />
           <mesh
             name="Grades"
-            castShadow
             receiveShadow
             geometry={nodes.Grades.geometry}
             material={materials.aiStandardSurface4SG}
@@ -137,8 +140,6 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
           />
           <mesh
             name="PCPartes"
-            castShadow
-            receiveShadow
             geometry={nodes.PCPartes.geometry}
             material={materials.aiStandardSurface14SG}
             position={[-25.144, 9.748, 9.324]}
@@ -147,8 +148,6 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
           />
           <mesh
             name="Fios"
-            castShadow
-            receiveShadow
             geometry={nodes.Fios.geometry}
             material={materials.aiStandardSurface1SG}
             position={[-25.144, 9.748, 9.324]}
@@ -157,8 +156,6 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
           />
           <mesh
             name="PecasPe"
-            castShadow
-            receiveShadow
             geometry={nodes.PecasPe.geometry}
             material={materials.aiStandardSurface5SG}
             position={[-25.144, 9.748, 9.324]}
@@ -217,7 +214,6 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
           />
           <mesh
             name="Parafusos2001"
-            castShadow
             receiveShadow
             geometry={nodes.Parafusos2001.geometry}
             material={materials.conectores_0014aiStandardSurface5SG}
@@ -227,7 +223,6 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
           />
           <mesh
             name="Pinos"
-            castShadow
             receiveShadow
             geometry={nodes.Pinos.geometry}
             material={materials.initialShadingGroup}
@@ -2682,90 +2677,101 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
           scale={[0.019, 0.011, 0.019]}
         />
       </group>
-      <group name="Monitor">
-      <mesh
+      <group
+        name="Monitor"
+        onClick={(e) => {
+          e.stopPropagation();
+          console.log(e.object.getWorldPosition(new Vector3()), e.object.name);
+          const { x, y, z } = e.object.getWorldPosition(new Vector3());
+          setObject({
+            name: "Monitor",
+            position: new THREE.Vector3(x, y, z),
+          });
+          setClicked(!isClicked);
+        }}
+      >
+        <mesh
           name="MousePad"
-          castShadow
-          receiveShadow
           geometry={nodes.MousePad.geometry}
           material={materials.MousePadMaterial}
           position={[-25.798, 9.025, 17.987]}
         />
         <mesh
           name="MonitorBotao"
-          castShadow
-          receiveShadow
           geometry={nodes.MonitorBotao.geometry}
           material={materials.BotoesMonitorImg}
           position={[-26.967, 10.242, 16.06]}
         />
         <mesh
           name="MonitorAtras1"
-          castShadow
-          receiveShadow
           geometry={nodes.MonitorAtras1.geometry}
           material={materials.BackMonitorMaterial}
           position={[-27.106, 11.156, 17.987]}
         />
         <mesh
           name="MonitorAtras2"
-          castShadow
-          receiveShadow
           geometry={nodes.MonitorAtras2.geometry}
           material={materials["achter.ribbel.001"]}
           position={[-26.995, 11.665, 18.021]}
         />
         <mesh
           name="MonitorAtras3"
-          castShadow
-          receiveShadow
           geometry={nodes.MonitorAtras3.geometry}
           material={materials["logo.coutout.smooth.001"]}
           position={[-27.186, 11.025, 18.049]}
         />
         <mesh
           name="MonitorAtras4"
-          castShadow
-          receiveShadow
           geometry={nodes.MonitorAtras4.geometry}
           material={materials.MonitorBackMaterial2}
           position={[-27.12, 10.162, 17.954]}
         />
         <mesh
           name="PeMonitor2"
-          castShadow
-          receiveShadow
           geometry={nodes.PeMonitor2.geometry}
           material={materials["logo.coutout.smooth"]}
           position={[-27.176, 9.103, 18.012]}
         />
         <mesh
           name="PeMonitor3"
-          castShadow
-          receiveShadow
           geometry={nodes.PeMonitor3.geometry}
           material={materials.PeMonitorMaterial2}
           position={[-27.368, 9.126, 17.994]}
         />
         <mesh
           name="FerroMonitor"
-          castShadow
-          receiveShadow
           geometry={nodes.FerroMonitor.geometry}
           material={materials.zwart_metaal}
           position={[-26.992, 9.957, 18.006]}
         />
         <mesh
           name="Tela"
-          castShadow
-          receiveShadow
           geometry={nodes.Tela.geometry}
-          material={materials.ScreenMaterial}
+          material={new THREE.MeshBasicMaterial({
+            color: "black"
+          })}
           position={[-26.878, 10.931, 17.998]}
-        />
+        >
+          <Html
+            style={{ userSelect: "none", overflow: "hidden", backgroundColor: "black" }}
+            receiveShadow
+            occlude="blending"
+            transform
+            rotation={[0, (Math.PI / 2) - 0.015,0]}
+            scale={[0.0858,0.0861,1]}
+            position={[0.008,0,0]}
+            fullscreen
+            color="black"
+            
+           
+          >
+         
+             <Monitor/>
+          </Html>
+          <meshNormalMaterial   transparent  attach={"material"}/>
+        </mesh>
         <mesh
           name="AcerHold"
-          castShadow
           receiveShadow
           geometry={nodes.AcerHold.geometry}
           material={materials.AcerLoogo}
@@ -2773,7 +2779,6 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
         />
         <mesh
           name="MoldeTela"
-          castShadow
           receiveShadow
           geometry={nodes.MoldeTela.geometry}
           material={materials.VoltaMonitorMaterial}
@@ -2789,7 +2794,7 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
         />
       </group>
       <group name="LivrosPrateleira">
-      <mesh
+        <mesh
           name="Livro6"
           castShadow
           receiveShadow
@@ -2814,6 +2819,8 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
           position={[-26.755, 20.674, 12.341]}
         />
       </group>
+
+      <LedStripes/>
     </group>
   );
 }

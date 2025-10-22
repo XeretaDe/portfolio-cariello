@@ -72,7 +72,7 @@ export default function useCamera(object: ObjectProps, clicked: boolean) {
   const targetPosition = object.position.clone().add(Position);
 
   // target do objeto que queremos observar, mais o gap. "Rotation" é usado porque a rotação é feita a partir do lookat method e não do vector3 principal
-  // portanto, o target é passado pro lookat para fazer a rotação baseada numa distancia custom
+  // portanto, o target é passado pro lookat para fazer a rotação baseada numa distancia customizada
   const target = new Vector3(
     object.position.x + Rotation.x,
     object.position.y + Rotation.y,

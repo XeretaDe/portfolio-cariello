@@ -15,8 +15,6 @@ import {
 import {
   DirectionalLightHelper,
   CameraHelper,
-  MeshBasicMaterial,
-  Color,
 } from "three";
 import { Perf } from "r3f-perf";
 import { Model } from "../Models/ActualLastBlend";
@@ -65,7 +63,7 @@ export default function World() {
         <Perf />
         {/* <PerspectiveCamera makeDefault={true} /> */}
         <color attach="background" args={["#c1ddef"]} />
-        <ambientLight intensity={0.2} />
+        <ambientLight intensity={0.4} />
         <MyLight />
         <directionalLight
           color={"white"}
@@ -80,7 +78,8 @@ export default function World() {
           <Bloom luminanceThreshold={1} intensity={1} />
         </EffectComposer> */}
         <Model />
-        <BakeShadows />
+        {/* <BakeShadows /> */}
+        <OrbitControls/>
       </Canvas>
       <Loader />
     </>
