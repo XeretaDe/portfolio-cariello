@@ -1,75 +1,113 @@
-import Link from "next/link";
-import { useEffect, useRef, useState, useContext } from "react";
-import { HiCubeTransparent } from "react-icons/hi";
-import {
-  useTransition,
-  useSpring,
-  useChain,
-  config,
-  animated,
-  useSpringRef,
-} from "@react-spring/web";
-import { header_data } from "../../utils/DataGlobalLayout/data";
+// Header.tsx
 
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { HiCubeTransparent } from "react-icons/hi";
+import { VscChromeClose } from "react-icons/vsc";
+import { header_data } from "../../utils/DataGlobalLayout/data";
+import { use3dState } from '../../store/3dState';
+
+import { motion, AnimatePresence } from "framer-motion";
+
+// Variants for the sub-menu items (unchanged)
+const itemVariants = {
+  hidden: { x: 0, y: 20, opacity: 0, scale: 0 },
+  visible: (custom : any) => ({
+    x: custom.position.x,
+    y: custom.position.y,
+    opacity: 1,
+    scale: 0.6,
+    transition: {
+      delay: custom.trail / 1000,
+      type: "spring",
+      stiffness: 300,
+      damping: 20,
+    },
+  }),
+};
+
+// NEW: Variants for the main button
+const mainButtonVariants = {
+  hidden: {
+    y: 100, // Start 100px below its final position
+    opacity: 0,
+  },
+  visible: {
+    y: 0, // Animate to its final position
+    opacity: 1,
+    transition: {
+      type: "spring",
+      stiffness: 200,
+      damping: 20,
+      delay: 0.2 // Add a small delay so it appears after the camera starts moving
+    },
+  },
+};
 
 function Header() {
-  const [open, setOpen] = useState(false);
-  const [isDisabled, setDisabled] = useState(false);
-  const [isHover, setHover] = useState(false);
-  const transApi = useSpringRef();
+  const { activeInteraction, setActiveInteraction } = use3dState();
+  const [isMenuOpen, setMenuOpen] = useState(false);
 
-  const [transition, api] = useTransition(open ? header_data : [], () => ({
-    ref: transApi,
-    keys: (item) => item.id,
-    from: { x: 0, y: -40, opacity: 0, scale: 0 },
-    enter: (i) => ({
-      x: i.position.x,
-      y: i.position.y,
-      opacity: 1,
-      scale: 1,
-      delay: i.trail
-    }),
-    leave: (i) => ( { x: 0, y: -40, opacity: 0, scale: 0, delay: i.trail }),
-  }));
+  useEffect(() => {
+    if (activeInteraction === null) {
+      setMenuOpen(false);
+    }
+  }, [activeInteraction]);
 
-  useChain([transApi], [0, 0.5]);
-
-  function HeaderIcon() {
-    return (
-      <>
-        <HiCubeTransparent size={35} />
-      </>
-    );
-  }
+  const handleToggleMenu = () => setMenuOpen(!isMenuOpen);
+  const handleExitInteraction = () => setActiveInteraction(null);
 
   return (
-    <>
-    <div className="fixed bottom-0 right-1/2 z-50 w-20 h-20 place-content-center flex flex-col">
-      <nav className=" relative flex place-content-center">
-        <button
-          className="relative rounded-full border p-1 hover:scale-110 transition-all"
-          onClick={() => {
-            setOpen((open) => !open);
-           
-          }}
-        >
-          <HeaderIcon />
-        </button>
-      </nav>
-      <div className="flex w-full place-content-center">
-        {transition((style, item) => (
-          <Link href={item.path}>
-            <animated.div
-              key={item.id}
-              style={{ ...style }}
-              // onClick={() => setOpen(false)}
-              className={` z-10 rounded-full ${item.color} mt-2  w-5 m-[0.1rem] p-[0.7rem] hover:cursor-pointer hover:bg-slate-100`}
-            />
-          </Link>
-        ))}
+    <div className="fixed bottom-4 right-1/2 translate-x-1/2 z-[100] flex flex-col items-center pointer-events-auto">
+      <div className="relative w-48 h-48 flex justify-center items-end">
+        <AnimatePresence>
+          {isMenuOpen &&
+            header_data.map((item) => (
+              <motion.div
+                key={item.id}
+                custom={item}
+                variants={itemVariants as any}
+                initial="hidden"
+                animate="visible"
+                exit="hidden"
+                className="absolute"
+              >
+                {item.path !== null ? (
+                  <Link href={item.path} legacyBehavior passHref>
+                    <a
+                      title={item.name}
+                      className={`block rounded-full ${item.color} w-10 h-10 hover:scale-110 transition-transform`}
+                    />
+                  </Link>
+                ) : (
+                  <button
+                    title={item.name}
+                    onClick={handleExitInteraction}
+                    className={`flex items-center justify-center rounded-full ${item.color} w-10 h-10 text-white hover:scale-110 transition-transform`}
+                  >
+                    <VscChromeClose size={22} />
+                  </button>
+                )}
+              </motion.div>
+            ))}
+        </AnimatePresence>
       </div>
+
+      <AnimatePresence>
+        {activeInteraction && (
+          <motion.button
+            className="relative z-10 rounded-full border bg-gray-800/50 text-white backdrop-blur-sm p-2 hover:scale-110 transition-transform"
+            onClick={handleToggleMenu}
+            variants={mainButtonVariants as any}
+            initial="hidden"
+            animate="visible"
+            exit="hidden"
+          >
+            <HiCubeTransparent size={35} />
+          </motion.button>
+        )}
+      </AnimatePresence>
     </div>
-    </>
   );
 }
 

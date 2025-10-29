@@ -6,11 +6,13 @@ Files: ./ActualLastBlend.glb [68.95MB] > ActualLastBlend-transformed.glb [9.44MB
 
 import * as THREE from "three";
 import React, { useEffect, useState, useRef } from "react";
-import { useGLTF, useAnimations, Box, PivotControls } from "@react-three/drei";
+import { useGLTF, useAnimations, Box, PivotControls, Html } from "@react-three/drei";
 import { GLTFResult } from "../../types/MainScene";
 import useCamera from "../../hook/useCamera";
 import { Vector3 } from "three";
 import { LedStripes } from "./components/LedLight";
+import { Monitor } from "./components/ScreenHtml";
+import { use3dState } from "../../store/3dState";
 
 type ObjectProps = {
   name: string;
@@ -21,6 +23,13 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
   const group = useRef<THREE.Group>(null);
   const [isHovering, setHovering] = useState<boolean>();
   const [isClicked, setClicked] = useState<boolean>(false);
+
+  const { activeInteraction, setActiveInteraction, isPcOn, turnPcOn } = use3dState();
+
+
+  const isLocked = activeInteraction !== null;
+  // const isPowerOn = activeInteraction === 'Monitor';
+
   const [object, setObject] = useState<ObjectProps>({
     name: "Default",
     position: new Vector3(),
@@ -43,51 +52,56 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
     });
   }, []);
 
-  useCamera(object, isClicked); // desabilitado para testes, habilitar PROD
+  useCamera(object, isLocked); // desabilitado para testes, habilitar PROD
 
   function BoxSafeGuard({
     pos,
-    color,
     opacity,
     size,
     name,
     rot,
   }: {
     pos: Vector3;
-    color?: string;
     opacity: number;
     size: Vector3;
     name: string;
     rot: THREE.Euler;
   }) {
     return (
-      <>
-        <Box
-          name="Box"
-          position={pos}
-          rotation={rot}
-          scale={size}
-          onPointerEnter={() => setHovering(true)}
-          onPointerLeave={() => setHovering(false)}
-          onClick={(e) => {
-            e.stopPropagation();
-            console.log(
-              e.object.getWorldPosition(new Vector3()),
-              e.object.name,
-            );
-            const { x, y, z } = e.object.getWorldPosition(new Vector3());
-            setObject({
-              name: name,
-              position: new THREE.Vector3(x, y, z),
-            });
-            setClicked(!isClicked);
-          }}
-        >
-          <meshPhongMaterial color="#ff0000" opacity={opacity} transparent />
-        </Box>
-      </>
+      <Box
+        name={name}
+        position={pos}
+        rotation={rot}
+        scale={size}
+        onPointerEnter={() => !isLocked && setHovering(true)}
+        onPointerLeave={() => setHovering(false)}
+        onClick={(e) => {
+          if (isLocked) return;
+
+          e.stopPropagation();
+          const { x, y, z } = e.object.getWorldPosition(new Vector3());
+
+          setObject({
+            name: name,
+            position: new THREE.Vector3(x, y, z),
+          });
+          if (name === 'Monitor') {
+            if (!isPcOn) {
+              turnPcOn();
+            }
+          }
+          setActiveInteraction(name as any);
+        }}
+      >
+        <meshStandardMaterial
+          color="#00ff00"
+          opacity={isHovering && !isLocked ? 0.0 : 0.0}
+          transparent
+        />
+      </Box>
     );
   }
+
 
   const vitrolaPos = new Vector3(-25.208, 10.718, 25.0);
   const tecladoPos = new Vector3(-17.8, 9, 9.432);
@@ -100,6 +114,7 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
 
   return (
     <group ref={group} {...props} dispose={null}>
+
       <group name="SafeGuards">
         <BoxSafeGuard
           pos={vitrolaPos}
@@ -115,13 +130,15 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
           size={[7, 1, 2.5] as unknown as Vector3}
           name="Teclado"
         />
-        <BoxSafeGuard
-          pos={monitorPos}
-          rot={new THREE.Euler(0, 0, 0)}
-          opacity={0}
-          size={[0.7, 2.2, 4] as unknown as Vector3}
-          name="Monitor"
-        />
+        {(
+          <BoxSafeGuard
+            pos={monitorPos}
+            rot={new THREE.Euler(0, 0, 0)}
+            opacity={0.6}
+            size={[0.7, 2.2, 4] as unknown as Vector3}
+            name="Monitor"
+          />
+        )}
         <BoxSafeGuard
           pos={livroPos}
           rot={new THREE.Euler(0, 0, 0)}
@@ -2800,9 +2817,29 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
           castShadow
           receiveShadow
           geometry={nodes.Tela.geometry}
-          material={materials.ScreenMaterial}
+          material={new THREE.MeshBasicMaterial({ color: "black" })}
           position={[-26.878, 10.931, 17.998]}
-        />
+        >
+          {isPcOn && (
+            <Html
+              style={{ userSelect: "none", overflow: "hidden", backgroundColor: "black"}}
+              receiveShadow
+              zIndexRange={[100, 0]}
+              occlude="blending"
+              transform
+              rotation={[0, (Math.PI / 2) - 0.015, 0]}
+              scale={[0.0858, 0.0861, 1]}
+              position={[0.008, 0, 0]}
+              pointerEvents={activeInteraction === 'Monitor' ? 'auto' : 'none'}
+              color="black"
+            >
+
+              <Monitor isPowerOn={isPcOn} />
+
+            </Html>
+          )}
+          <meshNormalMaterial transparent attach={"material"} />
+        </mesh>
         <mesh
           name="AcerHold"
           castShadow
