@@ -21,30 +21,31 @@ import {
 import { Perf } from "r3f-perf";
 import { Model } from "../Models/ActualLastBlend";
 import { Bloom, EffectComposer } from "@react-three/postprocessing";
+import Header from '../GlobalUI/Header';
 
 const MyLight = () => {
   const ref = useRef<any>(null);
   useHelper(ref, DirectionalLightHelper);
   return (
     <>
-      <directionalLight 
+      <directionalLight
         ref={ref}
         color={"blue"}
         position={[1, 10, 0]}
-        intensity={0.1} 
+        intensity={0.1}
         castShadow={true}
         shadow-mapSize-height={4096}
         shadow-mapSize-width={4096}
         shadow-bias={-0.0001}
-        shadow-camera-left={-200}    
-        shadow-camera-right={200}    
-        shadow-camera-top={200}      
-        shadow-camera-bottom={-200}  
-        shadow-camera-near={1}   
-        shadow-camera-far={500}     
+        shadow-camera-left={-200}
+        shadow-camera-right={200}
+        shadow-camera-top={200}
+        shadow-camera-bottom={-200}
+        shadow-camera-near={1}
+        shadow-camera-far={500}
       />
       {/* Caso queira usar helper de posição da camera de luz sei lá ativa ai */}
-        {/* {ref.current && ( 
+      {/* {ref.current && ( 
           <cameraHelper args={[ref.current.shadow.camera]} />
         )} */}
     </>
@@ -78,7 +79,7 @@ export default function World() {
     <>
       <Canvas
         style={{ height: "100vh", width: "100%" }}
-        camera={{ position: [50, 10, 0] }}
+        camera={{ position: [50, 10, 0] }} // <- Posição inicial da câmera
         dpr={0.9}
         shadows
       >
@@ -86,13 +87,17 @@ export default function World() {
         {/* <PerspectiveCamera makeDefault={true} /> */}
         <color attach="background" args={["#c1ddef"]} />
         <MyLight />
-        {/*<OrbitControls></OrbitControls> {/*Para debugar posições, comentar prod */ }
+        {/*<OrbitControls></OrbitControls> {/*Para debugar posições, comentar prod */}
         <EffectComposer>
           <Bloom luminanceThreshold={1} intensity={0.3} />
         </EffectComposer>
         <Model />
         <BakeShadows />
       </Canvas>
+      <div className="absolute top-0 left-0 w-full h-full z-[100] pointer-events-none">
+        <Header />
+      </div>
+
       <Loader />
     </>
   );
